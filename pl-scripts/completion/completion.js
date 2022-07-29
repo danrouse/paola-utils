@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 const executeInHeadlessBrowser = require('../../puppeteer');
 const { CLIEngine } = require('eslint');
 const {
@@ -91,7 +92,7 @@ async function testProject({
 
   if (!project.skipLinting) {
     console.info(getTime(), logPrefix, 'Running linter on project...');
-    try { 
+    try {
       lintErrors = await lintProject(localRepoPath);
     } catch (err) {
       // error thrown by eslint
@@ -166,7 +167,33 @@ async function fetchAndTestProject({
     gitResult.code === GIT_RETURN_CODE.REPO_CLONED ||
     gitResult.code === GIT_RETURN_CODE.REPO_PULLED
   ) {
-    const result = await testProject({ project, localRepoPath, verbose, logPrefix });
+    if (project.studentFilesToCopy) {
+      // clone base repo
+      const baseRepoPath = path.resolve(localPathToStudentRepos, 'hackreactor', qualifiedRepoName);
+      await cloneOrPullRepository(
+        baseRepoPath,
+        `hackreactor/${qualifiedRepoName}.git`,
+        null,
+        githubAuthUser,
+        githubAuthToken,
+      );
+
+      // copy student files onto base repo
+      project.studentFilesToCopy.forEach((fileName) =>
+        fs.copyFileSync(
+          path.join(localRepoPath, fileName),
+          path.join(baseRepoPath, fileName),
+        ),
+      );
+    }
+
+    const result = await testProject({ project, localRepoPath: baseRepoPath, verbose, logPrefix });
+
+    if (project.studentFilesToCopy) {
+      // reset base repo
+      execSync(`cd ${baseRepoPath} && git reset --hard master`);
+    }
+
     lintErrors = result.lintErrors;
     failureMessages = result.failureMessages;
     repoCompletionChanges = result.repoCompletionChanges;

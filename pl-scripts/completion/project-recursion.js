@@ -2,6 +2,11 @@
 module.exports = {
   repoName: 'recursion',
   testRunnerFileName: 'SpecRunner.html',
+  studentFilesToCopy: [
+    'src/getElementsByClassName.js',
+    'src/parseJSON.js',
+    'src/stringifyJSON.js',
+  ],
   repoCompletionColumnNames: ['recursion'],
   getTestResults: (page) => {
     return page.evaluate(() => {

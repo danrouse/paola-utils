@@ -2,6 +2,7 @@
 module.exports = {
   repoName: 'underbar',
   testRunnerFileName: 'SpecRunner.html',
+  studentFilesToCopy: ['src/underbar.js'],
   repoCompletionColumnNames: ['underbarPartOne', 'underbarPartTwo'],
   getTestResults: (page) =>
     page.evaluate(() => {

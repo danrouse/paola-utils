@@ -8,6 +8,10 @@ const APPEND_TO_TEST_COUNT_ON_INCOMPLETE = ' ❌';
 module.exports = {
   repoName: 'testbuilder',
   testRunnerFileName: 'index.html',
+  studentFilesToCopy: [
+    'detectNetwork.js',
+    'detectNetwork.test.js',
+  ],
   repoCompletionColumnNames: ['testbuilder'],
   getTestResults: async (page) => {
     let hasCompletedMessage = false;
@@ -71,7 +75,7 @@ module.exports = {
         Number(document.querySelector('.failures em').innerText);
       return executedTests >= definedTests;
     });
-    
+
     let testsPassing =
       Number(
         await page.$$eval(

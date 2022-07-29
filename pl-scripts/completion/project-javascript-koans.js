@@ -2,6 +2,16 @@
 module.exports = {
   repoName: 'javascript-koans',
   testRunnerFileName: 'KoansRunner.html',
+  studentFilesToCopy: [
+    'koans/AboutApplyingWhatWeHaveLearnt.js',
+    'koans/AboutArrays.js',
+    'koans/AboutExpects.js',
+    'koans/AboutFunctions.js',
+    'koans/AboutHigherOrderFunctions.js',
+    'koans/AboutInheritance.js',
+    'koans/AboutMutability.js',
+    'koans/AboutObjects.js',
+  ],
   repoCompletionColumnNames: ['koansMinReqs', 'javascriptKoans'],
   getTestResults: (page) =>
     page.evaluate(() => {

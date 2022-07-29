@@ -167,6 +167,7 @@ async function fetchAndTestProject({
     gitResult.code === GIT_RETURN_CODE.REPO_CLONED ||
     gitResult.code === GIT_RETURN_CODE.REPO_PULLED
   ) {
+    let pathToTest = localRepoPath;
     if (project.studentFilesToCopy) {
       // clone base repo
       const baseRepoPath = path.resolve(localPathToStudentRepos, 'hackreactor', qualifiedRepoName);
@@ -185,9 +186,11 @@ async function fetchAndTestProject({
           path.join(baseRepoPath, fileName),
         ),
       );
+
+      pathToTest = baseRepoPath;
     }
 
-    const result = await testProject({ project, localRepoPath: baseRepoPath, verbose, logPrefix });
+    const result = await testProject({ project, localRepoPath: pathToTest, verbose, logPrefix });
 
     if (project.studentFilesToCopy) {
       // reset base repo

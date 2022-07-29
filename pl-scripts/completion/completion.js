@@ -194,7 +194,7 @@ async function fetchAndTestProject({
 
     if (project.studentFilesToCopy) {
       // reset base repo
-      execSync(`cd ${baseRepoPath} && git reset --hard master`);
+      execSync(`cd ${pathToTest} && git reset --hard master`);
     }
 
     lintErrors = result.lintErrors;

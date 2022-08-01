@@ -295,7 +295,10 @@ describe('Tweet UI Component', function() {
     }
   );
 
-  assertEveryTweet('contains an img tag with a class of "profile-photo"', '.tweet img.profile-photo');
+  assertEveryTweet(
+    'contains an img tag with a class of "profile-photo" with a "src" attribute',
+    '.tweet img.profile-photo[src]'
+  );
 
   assertEveryTweet('contains a child with a class of "timestamp"', '.tweet .timestamp');
   assertEveryTweet(
@@ -304,9 +307,9 @@ describe('Tweet UI Component', function() {
     function($timestamp, tweet, _window) {
       if (_window.jQuery.timeago) {
         expect($timestamp, 'timeago should be used to format the timestamp text.\n')
-          .to.contain(_window.jQuery.timeago(tweet.created_at));
+          .to.contain(_window.jQuery.timeago(tweet.createdAt));
       } else {
-        expect($timestamp).to.contain(tweet.created_at);
+        expect($timestamp).to.contain(tweet.createdAt);
       }
     }
   );
@@ -315,7 +318,7 @@ describe('Tweet UI Component', function() {
     var propertyAccessCount = 0;
     var propertySpy = {
       get: function(target, prop) {
-        if (prop === 'created_at') propertyAccessCount++;
+        if (prop === 'createdAt') propertyAccessCount++;
         return target[prop];
       },
     };
@@ -418,7 +421,8 @@ describe('User Feed', function() {
       });
       cy.get('.tweet .username').first().then(function($username) {
         selectedUsername = $username.text();
-        $username.click();
+        var usernameRect = $username.offset();
+        cy.get('body').click(usernameRect.left, usernameRect.top);
       });
     });
 
@@ -609,8 +613,8 @@ if (!Cypress.env('SKIP_EXTRA_CREDIT')) {
       });
 
       sharedTests.pageDoesNotRefreshAfter(function() {
-        cy.get('#new-tweet-form input[name="username"]').invoke('val', 'foo');
-        cy.get('#new-tweet-form input[name="message"]').invoke('val', 'bar');
+        cy.get('#new-tweet-form input[name="username"]').invoke('val', 'foo').trigger('change');
+        cy.get('#new-tweet-form input[name="message"]').invoke('val', 'bar').trigger('change');
         var submitButton;
         cy.get('#new-tweet-form').then(function($form) {
           submitButton = $form.find('button');
@@ -629,8 +633,8 @@ if (!Cypress.env('SKIP_EXTRA_CREDIT')) {
         ];
         before(function() {
           testMessages.forEach(function(testMessage) {
-            cy.get('#new-tweet-form input[name="username"]').invoke('val', testUsername);
-            cy.get('#new-tweet-form input[name="message"]').invoke('val', testMessage);
+            cy.get('#new-tweet-form input[name="username"]').invoke('val', testUsername).trigger('change');
+            cy.get('#new-tweet-form input[name="message"]').invoke('val', testMessage).trigger('change');
             var submitButton;
             cy.get('#new-tweet-form').then(function($form) {
               submitButton = $form.find('button');

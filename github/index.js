@@ -112,6 +112,9 @@ exports.addUsersToTeam = async (usernames, team, addAsMaintainer) => {
         `${GITHUB_API_TEAMS}/${team}/memberships/${username}`,
         payload,
       );
+      if (addUser.status === 404) {
+        console.log(`GitHub user ${username} does not exist! Cannot add to team.`);
+      }
       if (addUser.status !== 200) {
         throw new Error(`Error adding ${username}`);
       }

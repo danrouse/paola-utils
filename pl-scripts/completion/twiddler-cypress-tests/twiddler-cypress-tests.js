@@ -422,7 +422,7 @@ describe('User Feed', function() {
       cy.get('.tweet .username').first().then(function($username) {
         selectedUsername = $username.text();
         var usernameRect = $username.offset();
-        cy.get('body').click(usernameRect.left, usernameRect.top);
+        cy.get('html').click(usernameRect.left, usernameRect.top);
       });
     });
 

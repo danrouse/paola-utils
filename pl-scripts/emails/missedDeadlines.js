@@ -1,4 +1,13 @@
-const { DEADLINE_DATES } = require('../../constants');
+const {
+  DEADLINE_DATES,
+  TEST_COUNT_KOANS,
+  TEST_COUNT_TESTBUILDER_MIN,
+  TEST_COUNT_TESTBUILDER_MAX,
+  TEST_COUNT_UNDERBAR_PART_ONE,
+  TEST_COUNT_UNDERBAR_PART_TWO,
+  TEST_COUNT_TWIDDLER,
+  TEST_COUNT_RECURSION,
+} = require('../../constants');
 const { getRepoCompletionStudents, getRosterStudents } = require('./getStudents');
 
 const NO_FORK_TEXT = 'No Fork';
@@ -13,7 +22,7 @@ const getDeadline = (student, moduleNumber, final) => {
   return DEADLINE_DATES[deadlinesKey][moduleNumber - 1];
 };
 
-async function getMissedDeadlineStudents(moduleNumber) {
+async function getMissedDeadlineStudents(moduleNumber, daysInAdvance) {
   const repoCompletionStudents = await getRepoCompletionStudents();
   const rosterStudents = await getRosterStudents();
   return repoCompletionStudents.filter((student) => {
@@ -29,7 +38,17 @@ async function getMissedDeadlineStudents(moduleNumber) {
 
     const dateParts = softDeadline.split('/');
     const cutoff = new Date(dateParts[2], Number(dateParts[0]) - 1, Number(dateParts[1]) + 1);
-    return cutoff < new Date() && !isModuleComplete[moduleNumber - 1];
+    if (!daysInAdvance) {
+      return cutoff < new Date() && !isModuleComplete[moduleNumber - 1];
+    }
+    // if daysInAdvance is provided, only return students within the window
+    // between cutoff and cutoff - daysInAdvance
+    const endingCutoff = new Date(cutoff);
+    cutoff.setDate(Number(dateParts[1]) + 1 - daysInAdvance);
+    const now = new Date();
+    return cutoff < now
+      && endingCutoff > now
+      && !isModuleComplete[moduleNumber - 1];
   }).map((student) => ({
     ...student,
     preferredFirstName: rosterStudents.find((rosterStudent) => rosterStudent.fullName

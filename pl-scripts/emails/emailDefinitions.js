@@ -114,6 +114,22 @@ module.exports = [{
     }));
   },
 }, {
+  key: 'upcomingSoftDeadline1',
+  draftName: 'SEI Precourse - Upcoming Module 1 Soft Deadline',
+  async getEmails() {
+    const students = await getMissedDeadlineStudents(1, 8);
+    return students.map((student) => ({
+      student,
+      fields: {
+        name: formatName(student.preferredFirstName),
+        deadlineDate1: getDeadline(student, 1),
+        deadlineDate2: getDeadline(student, 1),
+        learnCohortId1: LEARN_COHORT_ID,
+        learnCohortId2: LEARN_COHORT_ID,
+      },
+    }));
+  },
+}, {
   key: 'precourseComplete',
   draftName: '🎉 Congratulations! You\'ve completed Precourse + Solution Video Password 🎉',
   async getEmails() {

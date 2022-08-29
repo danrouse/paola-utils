@@ -9,7 +9,7 @@ const { DOC_ID_CESP, SHEET_ID_CESP_ROSTER } = require('../constants');
 /*
   TODO:
   - Add YAML config files to each cohort definition
-  - Add Learn API support to POST /api/v1/cohorts/:cohort_id/resync with course_config_url body parameter 
+  - Add Learn API support to POST /api/v1/cohorts/:cohort_id/resync with course_config_url body parameter
     see https://learn-2.galvanize.com/api/docs#cohorts-resyncing-curriculum
   - Add and resync configs for each cohort upon creation
 */
@@ -212,11 +212,11 @@ const CONFIG = [{
 // if doing a late-run, or student population, set these manually!
 // the UIDs of newly-created cohorts are logged at creation-time
 const cohortIds = {
-//   'SEI-RFP2209': '',
-//   'SEI-RFC2209': '',
-//   'SEI-RFE2209': '',
-//   'SEI-RPP2209': '',
-//   'SEI - Precourse - October 2022': '',
+  'SEI-RFP2209': 'd2b43b937e89b8df0f',
+  'SEI-RFC2209': '4a217bdd03e841ab63',
+  'SEI-RFE2209': '0e6d1716b3da33e2a3',
+  'SEI-RPP2209': '5e5eae966ce77ee647',
+  'SEI - Precourse - October 2022': '943c2358b9423dcf8c',
 };
 
 // END OF CONFIGURATION
@@ -392,8 +392,8 @@ const printURLs = () => {
 };
 
 (async () => {
-  await initializeNewCohorts();
-  await populateNewCohortsWithStaff();
-  // await populateNewCohortsWithStudents();
+  // await initializeNewCohorts();
+  // await populateNewCohortsWithStaff();
+  await populateNewCohortsWithStudents();
   printURLs();
 })();

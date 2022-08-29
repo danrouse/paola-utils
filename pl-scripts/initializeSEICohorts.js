@@ -16,18 +16,18 @@ const { DOC_ID_CESP, SHEET_ID_CESP_ROSTER } = require('../constants');
 
 const DO_IT_LIVE = false;
 
-const LEARN_COHORT_FT_START_DATE = '2022-07-18'; // direct from product cal
-const LEARN_COHORT_FT_END_DATE = '2022-10-24'; // start date of round after NEXT
-const LEARN_COHORT_PT_START_DATE = '2022-07-19'; // direct from product cal
-const LEARN_COHORT_PT_END_DATE = '2023-04-15'; // direct from product cal
-const LEARN_COHORT_PRECOURSE_START_DATE = '2022-07-18'; // direct from product cal
-const LEARN_COHORT_PRECOURSE_END_DATE = '2022-09-05'; // start date of next round
+const LEARN_COHORT_FT_START_DATE = '2022-09-05'; // direct from product cal
+const LEARN_COHORT_FT_END_DATE = '2022-12-12'; // start date of round after NEXT
+const LEARN_COHORT_PT_START_DATE = '2022-09-07'; // direct from product cal
+const LEARN_COHORT_PT_END_DATE = '2023-06-03'; // direct from product cal
+const LEARN_COHORT_PRECOURSE_START_DATE = '2022-09-05'; // direct from product cal
+const LEARN_COHORT_PRECOURSE_END_DATE = '2022-10-24'; // start date of next round
 
 const CONFIG = [{
-  teamName: 'Students: RFP2207',
+  teamName: 'Students: RFP2209',
   learnCampusName: 'Remote Pacific',
-  learnCohortName: 'SEI-RFP2207',
-  learnCohortLabel: '22-07-SEI-RFP',
+  learnCohortName: 'SEI-RFP2209',
+  learnCohortLabel: '22-09-SEI-RFP',
   learnCohortStartDate: LEARN_COHORT_FT_START_DATE,
   learnCohortEndDate: LEARN_COHORT_FT_END_DATE,
   precourseCampusName: 'RFT Pacific',
@@ -42,7 +42,7 @@ const CONFIG = [{
   }, {
     firstName: 'Hilary', lastName: 'Upton', email: 'hilary.upton@galvanize.com', github: 'hilaryupton13',
   }, {
-    firstName: 'Itzel', lastName: 'Cortes', email: 'itzel.cortes@galvanize.com',
+    firstName: 'Itzel', lastName: 'Cortes', email: 'itzel.cortes@galvanize.com', github: 'itzel-ct',
   }, {
     firstName: 'Jess', lastName: 'Mason', email: 'jess.mason@galvanize.com', github: 'mason-jp',
   }, {
@@ -53,12 +53,24 @@ const CONFIG = [{
     firstName: 'Mylani', lastName: 'Demas', email: 'mylani.demas@galvanize.com', github: 'mylanidemas1',
   }, {
     firstName: 'Natalie', lastName: 'Massarany', email: 'natalie.massarany@galvanize.com',
+  }, {
+    firstName: 'Kevin', lastName: 'Goble', email: 'kevin.goble@galvanize.com', github: 'Gobleizer',
+  }, {
+    firstName: 'Gauri', lastName: 'Iyer', email: 'gauri.iyer@galvanize.com', github: 'iyergauri',
+  }, {
+    firstName: 'Carson', lastName: 'Liu', email: 'carson.liu@galvanize.com', github: 'carsonliu1',
+  }, {
+    firstName: 'Ibraheem', lastName: 'Azam', email: 'ibraheem.azam@galvanize.com', github: 'ibraheemazam',
+  }, {
+    firstName: 'Jasper', lastName: 'Bucad', email: 'jasper.bucad@galvanize.com', github: 'justjjasper',
+  }, {
+    firstName: 'Jessica', lastName: 'Chen', email: 'jessica.chen@galvanize.com', github: 'codingavatar',
   }],
 }, {
-  teamName: 'Students: RFE2207',
+  teamName: 'Students: RFE2209',
   learnCampusName: 'Remote Eastern',
-  learnCohortName: 'SEI-RFE2207',
-  learnCohortLabel: '22-07-SEI-RFE',
+  learnCohortName: 'SEI-RFE2209',
+  learnCohortLabel: '22-09-SEI-RFE',
   learnCohortStartDate: LEARN_COHORT_FT_START_DATE,
   learnCohortEndDate: LEARN_COHORT_FT_END_DATE,
   precourseCampusName: 'RFT Eastern',
@@ -76,12 +88,34 @@ const CONFIG = [{
     firstName: 'Tanya', lastName: 'Farirayi', email: 'tanya.farirayi@galvanize.com',
   }, {
     firstName: 'Tosi', lastName: 'Awofeso', email: 'tosin.awofeso@galvanize.com',
+  }, {
+    firstName: 'Andrew', lastName: 'Wallace', email: 'andrew.wallace@galvanize.com', github: 'andronicus217',
+  }, {
+    firstName: 'Nicholas', lastName: 'Kempkes', email: 'nicholas.kempkes@galvanize.com', github: 'kemp3673',
+  }, {
+    firstName: 'Juan', lastName: 'Pinol', email: 'juan.pinol@galvanize.com', github: 'JuanOfMany',
+  }, {
+    firstName: 'Manuel', lastName: 'Rosadilla', email: 'manny.rosadilla@galvanize.com', github: 'mrosadilla23',
+  }, {
+    firstName: 'Cory', lastName: 'Nickerson', email: 'cory.nickerson@galvanize.com', github: 'cory314',
+  }, {
+    firstName: 'Sonia Ann', lastName: 'Friscia', email: 'soniaann.friscia@galvanize.com', github: 'SoniaAnn',
+  }, {
+    firstName: 'Joy', lastName: 'Parker', email: 'joy.parker@galvanize.com', github: 'Parkerjn90',
+  }, {
+    firstName: 'Nicholas', lastName: 'Elliott', email: 'nikko.elliott@galvanize.com', github: 'nelliott82',
+  }, {
+    firstName: 'Fangzhuo', lastName: 'Xi', email: 'fangzhuo.xi@galvanize.com', github: 'FangzhuoXi',
+  }, {
+    firstName: 'Teck', lastName: 'Lee', email: 'teck.lee@galvanize.com', github: 'arkteck',
+  }, {
+    firstName: 'Yao', lastName: 'Yu', email: 'yao.yu@galvanize.com', github: 'amyyuyao',
   }],
 }, {
-  teamName: 'Students: RFC2207',
+  teamName: 'Students: RFC2209',
   learnCampusName: 'Remote Central',
-  learnCohortName: 'SEI-RFC2207',
-  learnCohortLabel: '22-07-SEI-RFC',
+  learnCohortName: 'SEI-RFC2209',
+  learnCohortLabel: '22-09-SEI-RFC',
   learnCohortStartDate: LEARN_COHORT_FT_START_DATE,
   learnCohortEndDate: LEARN_COHORT_FT_END_DATE,
   precourseCampusName: 'RFT Central',
@@ -99,12 +133,34 @@ const CONFIG = [{
     firstName: 'Tanya', lastName: 'Farirayi', email: 'tanya.farirayi@galvanize.com',
   }, {
     firstName: 'Tosi', lastName: 'Awofeso', email: 'tosin.awofeso@galvanize.com',
+  }, {
+    firstName: 'Andrew', lastName: 'Wallace', email: 'andrew.wallace@galvanize.com', github: 'andronicus217',
+  }, {
+    firstName: 'Nicholas', lastName: 'Kempkes', email: 'nicholas.kempkes@galvanize.com', github: 'kemp3673',
+  }, {
+    firstName: 'Juan', lastName: 'Pinol', email: 'juan.pinol@galvanize.com', github: 'JuanOfMany',
+  }, {
+    firstName: 'Manuel', lastName: 'Rosadilla', email: 'manny.rosadilla@galvanize.com', github: 'mrosadilla23',
+  }, {
+    firstName: 'Cory', lastName: 'Nickerson', email: 'cory.nickerson@galvanize.com', github: 'cory314',
+  }, {
+    firstName: 'Sonia Ann', lastName: 'Friscia', email: 'soniaann.friscia@galvanize.com', github: 'SoniaAnn',
+  }, {
+    firstName: 'Joy', lastName: 'Parker', email: 'joy.parker@galvanize.com', github: 'Parkerjn90',
+  }, {
+    firstName: 'Nicholas', lastName: 'Elliott', email: 'nikko.elliott@galvanize.com', github: 'nelliott82',
+  }, {
+    firstName: 'Fangzhuo', lastName: 'Xi', email: 'fangzhuo.xi@galvanize.com', github: 'FangzhuoXi',
+  }, {
+    firstName: 'Teck', lastName: 'Lee', email: 'teck.lee@galvanize.com', github: 'arkteck',
+  }, {
+    firstName: 'Yao', lastName: 'Yu', email: 'yao.yu@galvanize.com', github: 'amyyuyao',
   }],
 }, {
-  teamName: 'Students: RPP2207',
+  teamName: 'Students: RPP2209',
   learnCampusName: 'Remote Part Time',
-  learnCohortName: 'SEI-RPP2207',
-  learnCohortLabel: '22-07-SEI-RPT',
+  learnCohortName: 'SEI-RPP2209',
+  learnCohortLabel: '22-09-SEI-RPT',
   learnCohortStartDate: LEARN_COHORT_PT_START_DATE,
   learnCohortEndDate: LEARN_COHORT_PT_END_DATE,
   learnCohortIsPartTime: true,
@@ -127,9 +183,9 @@ const CONFIG = [{
     firstName: 'Stephanie', lastName: 'Reissner', email: 'stephanie.reissner@galvanize.com',
   }],
 }, {
-  teamName: 'Students: SEIP2209',
+  teamName: 'Students: SEIP2210',
   learnCampusName: 'Precourse',
-  learnCohortName: 'SEI - Precourse - September 2022',
+  learnCohortName: 'SEI - Precourse - October 2022',
   learnCohortLabel: null,
   learnCohortStartDate: LEARN_COHORT_PRECOURSE_START_DATE,
   learnCohortEndDate: LEARN_COHORT_PRECOURSE_END_DATE,
@@ -146,6 +202,8 @@ const CONFIG = [{
     firstName: 'Eliza', lastName: 'Drinker', email: 'eliza.drinker@galvanize.com', github: 'aesuan',
   }, {
     firstName: 'Steven', lastName: 'Chung', email: 'steven.chung@galvanize.com', github: 'stevenchung213',
+  }, {
+    firstName: 'Jake', lastName: 'Daurham', email: 'jake.daurham@galvanize.com', github: 'daurham',
   }],
 }];
 
@@ -154,11 +212,11 @@ const CONFIG = [{
 // if doing a late-run, or student population, set these manually!
 // the UIDs of newly-created cohorts are logged at creation-time
 const cohortIds = {
-  'SEI-RFP2207': 'c7d5ccfdbfb4ffe7ca',
-  'SEI-RFC2207': '6ddd43fe810c6439be',
-  'SEI-RFE2207': 'e101fbcd54a669f9ab',
-  'SEI-RPP2207': '18509cdf743efabec7',
-  'SEI - Precourse - September 2022': '583bcb1d7c32f96979',
+//   'SEI-RFP2209': '',
+//   'SEI-RFC2209': '',
+//   'SEI-RFE2209': '',
+//   'SEI-RPP2209': '',
+//   'SEI - Precourse - October 2022': '',
 };
 
 // END OF CONFIGURATION
@@ -334,8 +392,8 @@ const printURLs = () => {
 };
 
 (async () => {
-  // await initializeNewCohorts();
-  // await populateNewCohortsWithStaff();
+  await initializeNewCohorts();
+  await populateNewCohortsWithStaff();
   // await populateNewCohortsWithStudents();
   printURLs();
 })();

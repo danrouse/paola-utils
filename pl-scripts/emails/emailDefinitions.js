@@ -39,7 +39,7 @@ const numDaysAgo = (dateString) => Math.floor(
 
 module.exports = [{
   key: 'studentInfoFormReminder',
-  draftName: '[Action Required] Student Info Form Submission',
+  draftName: '[Action Required] Student Onboarding Form Submission',
   async getEmails() {
     const newStudents = await getNewStudentsFromSFDC();
     const naughtyList = newStudents

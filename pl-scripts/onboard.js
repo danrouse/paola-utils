@@ -153,6 +153,12 @@ const formatStudentForRepoCompletion = (student, techMentor, rowIndex) => ({
   allComplete: `=IF(AND(T${rowIndex}="Yes",U${rowIndex}="Yes",V${rowIndex}="Yes"),"Yes","No")`,
   completedDIF: `=IF(L${rowIndex} = 1, "N/A", IF(IFNA(MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0), "Not found") <> "Not found",` +
                 `HYPERLINK(CONCAT("#gid=1881266534&range=", MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0) & ":" & MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0)), "See responses"), "Not found"))`,
+  m1DiagnosticTask1: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 1'!A:Z, 9, false), "-")`,
+  m1DiagnosticTask2: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 1'!A:Z,11, false), "-")`,
+  m2DiagnosticTask1: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 2'!A:Z, 9, false), "-")`,
+  m2DiagnosticTask2: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 2'!A:Z,11, false), "-")`,
+  m3DiagnosticTask1: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 3'!A:Z, 9, false), "-")`,
+  m2DiagnosticTask2: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 3'!A:Z,11, false), "-")`,
 });
 
 const weightedPodSize = (pod) => Math.ceil(pod.podSize / (pod.podSizeRatio || 1));

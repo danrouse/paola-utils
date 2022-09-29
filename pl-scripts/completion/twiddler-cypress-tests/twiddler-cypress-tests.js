@@ -299,6 +299,12 @@ describe('Tweet UI Component', function() {
     'contains an img tag with a class of "profile-photo" with a "src" attribute',
     '.tweet img.profile-photo[src]'
   );
+  assertEveryTweet(
+    'uses the profilePhotoURL as the src of the img',
+    '.tweet img.profile-photo',
+    function($profilePhoto, tweet) {
+    expect($profilePhoto.attr('src')).to.equal(tweet.profilePhotoURL);
+  });
 
   assertEveryTweet('contains a child with a class of "timestamp"', '.tweet .timestamp');
   assertEveryTweet(
@@ -421,8 +427,7 @@ describe('User Feed', function() {
       });
       cy.get('.tweet .username').first().then(function($username) {
         selectedUsername = $username.text();
-        var usernameRect = $username.offset();
-        cy.get('html').click(usernameRect.left, usernameRect.top);
+        $username.click();
       });
     });
 

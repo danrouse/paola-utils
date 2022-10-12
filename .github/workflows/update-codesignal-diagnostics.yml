@@ -1,0 +1,32 @@
+name: Update CodeSignal Diagnostics
+on:
+  workflow_dispatch: {}
+#   schedule:
+#     - cron: '5 */10 * * *'
+jobs:
+  update-cesp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          
+      - uses: actions/cache@v2
+        id: cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: Update CodeSignal Diagnostic scores in Pulse
+        run: node codesignal/updateDiagnostics.js
+        env:
+          GOOGLE_SHEETS_CLIENT_EMAIL: ${{ secrets.GOOGLE_SHEETS_CLIENT_EMAIL }}
+          GOOGLE_SHEETS_PRIVATE_KEY: ${{ secrets.GOOGLE_SHEETS_PRIVATE_KEY }}
+          CODESIGNAL_API_KEY: ${{ secrets.CODESIGNAL_API_KEY }}
+

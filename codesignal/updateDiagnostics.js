@@ -1,6 +1,8 @@
 require('dotenv').config();
-const getCodeSignalResults = require('./helpers/index.js').getCodeSignalResults;
-const formatResultObject = require('./helpers/index.js').formatResultObject;
+const {
+  getCodeSignalResults,
+  formatResultObject,
+} = require('./helpers');
 const { loadGoogleSpreadsheet } = require('../googleSheets');
 const {
   PRECOURSE_COHORT_START_DATE,

@@ -1,5 +1,5 @@
-import fetch from "node-fetch";
-import fs from "fs";
+const fetch = require('node-fetch');
+const fs = require('fs');
 
 /*
   CODESIGNAL_API_KEY must be set in env for this file to function!
@@ -64,7 +64,7 @@ const mod2nullResultObject = {
 };
 
 // helper to format nested objects within the results
-export const formatResultObject = (obj, studentEmails) => {
+const formatResultObject = (obj, studentEmails) => {
   // console.log('KJSDHKJFSDHSDF: ', studentEmails);
   const {
     startDate,
@@ -137,7 +137,7 @@ export const formatResultObject = (obj, studentEmails) => {
 
 // main function to get CodeSignal results
 // used in the googlesheets/index.js file
-export const getCodeSignalResults = async (taskID, first = 0, offset = 0) => {
+const getCodeSignalResults = async (taskID, first = 0, offset = 0) => {
 
   const key = process.env.CODESIGNAL_API_KEY;
 
@@ -224,3 +224,8 @@ export const getCodeSignalResults = async (taskID, first = 0, offset = 0) => {
 // nullValueObjectDefaults must have proper number of task results according to how many tasks were set for that test
 // defaultNullObject
 // for handling the destructuring of null for 'result' value
+
+module.exports = {
+  getCodeSignalResults,
+  formatResultObject,
+};

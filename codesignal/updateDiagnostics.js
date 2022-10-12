@@ -1,20 +1,21 @@
-// import 'dotenv/config';
-// import { GoogleSpreadsheet } from 'google-spreadsheet';
-// import { getCodeSignalResults, formatResultObject } from "./helpers/index.js";
-
-// older node versions
 require('dotenv').config();
-const GoogleSpreadsheet = require('google-spreadsheet').GoogleSpreadsheet;
 const getCodeSignalResults = require('./helpers/index.js').getCodeSignalResults;
 const formatResultObject = require('./helpers/index.js').formatResultObject;
+const { loadGoogleSpreadsheet } = require('../googleSheets');
+const {
+  PRECOURSE_COHORT_START_DATE,
+  FULL_TIME_COURSE_START_DATE,
+  DOC_ID_PULSE,
+  DOC_ID_CESP,
+} = require('../constants');
 
 // TODO - update list of CodeSignal testIDs if needed
 const mod1DiagID = 'TmxaK6kMj4WA5wah4';
 const mod2DiagID = 'hxYP2PGXNYR8FLSWz';
 const mod3DiagID = 'XLY9N2TuxbEkXPkqo';
 const seiDiagID = 'kb3zp9cK5CYLadq22';
-const cohortStartDate = new Date('9/5/2022');
-const seiDiagnosticStartDate = new Date('10/24/2022');
+const cohortStartDate = new Date(PRECOURSE_COHORT_START_DATE);
+const seiDiagnosticStartDate = new Date(FULL_TIME_COURSE_START_DATE);
 const weekBeforeSei = seiDiagnosticStartDate.getDate() - 11;
 seiDiagnosticStartDate.setDate(weekBeforeSei);
 
@@ -50,25 +51,8 @@ const sheetTabs = {
 };
 
 const updatePulseDiagnostic = async (diagID, first = 0, offset = 0, seiD = false) => {
-  const realPulseSheetID = process.env.GOOGLE_SHEETS_PULSE_SHEET;
-  const realCESPSheetID = process.env.GOOGLE_SHEETS_CESP_SHEET;
-
-  const pulse = new GoogleSpreadsheet(realPulseSheetID);
-  const cesp = new GoogleSpreadsheet(realCESPSheetID);
-
-  await pulse.useServiceAccountAuth({
-    client_email: process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
-    private_key: process.env.GOOGLE_SHEETS_PRIVATE_KEY,
-  });
-
-  await cesp.useServiceAccountAuth({
-    client_email: process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
-    private_key: process.env.GOOGLE_SHEETS_PRIVATE_KEY,
-  });
-
-
-  await pulse.loadInfo();
-  await cesp.loadInfo();
+  const pulse = await loadGoogleSpreadsheet(DOC_ID_PULSE);
+  const cesp = await loadGoogleSpreadsheet(DOC_ID_CESP);
 
   // if we want to create a new sheet, use .addSheet() + logic below
   // const resultSheet = pulse.addSheet()

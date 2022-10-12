@@ -2,6 +2,10 @@ import fetch from "node-fetch";
 import fs from "fs";
 
 /*
+  CODESIGNAL_API_KEY must be set in env for this file to function!
+  */
+
+/*
   convertEpochTime by default converts epoch time to a human-readable Pacific timezone timestamp
 
   Optional input: timezoneOffset (default to PST: -8)

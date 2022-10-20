@@ -3,13 +3,13 @@ require("dotenv").config();
 const fetch = require("node-fetch");
 const https = require("https");
 const Bottleneck = require("bottleneck");
-
+const { getSlackToken } = require('./index');
 const apiConfig = {};
 
 // Send a message to a channel
 const sendMessageToChannel = async (channel, text) => {
   const headers = {
-    Authorization: `Bearer ${process.env.SLACK_TOKEN}`,
+    Authorization: `Bearer ${getSlackToken()}`,
     "Content-Type": "application/json; charset=utf-8",
   };
   const body = {
@@ -31,7 +31,7 @@ const sendMessageToChannel = async (channel, text) => {
 
 const getAllChannelsInWorkspace = async () => {
   const headers = {
-    Authorization: `Bearer ${process.env.SLACK_TOKEN}`,
+    Authorization: `Bearer ${getSlackToken()}`,
     "Content-Type": "application/x-www-form-urlencoded",
   };
   try {
@@ -73,7 +73,7 @@ const get = (url) =>
   );
 const options = {
   headers: {
-    Authorization: `Bearer ${process.env.SLACK_TOKEN}`,
+    Authorization: `Bearer ${getSlackToken()}`,
   },
 };
 const limiter = new Bottleneck({
@@ -174,9 +174,9 @@ exports.sendMessageToChannel = sendMessageToChannel;
 // // get history of messages from a channel.
 // const getChannelHistory = async (channelID) => {
 //   console.log(channelID);
-//   console.log(process.env.SLACK_TOKEN);
+//   console.log(getSlackToken());
 //   const headers = {
-//     Authorization: `Bearer ${process.env.SLACK_TOKEN}`,
+//     Authorization: `Bearer ${getSlackToken()}`,
 //     // 'Content-Type': 'application/x-www-form-urlencoded',
 //   };
 //   try {

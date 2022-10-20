@@ -8,7 +8,7 @@ const { sendEmailFromDraft } = require('../googleMail');
 const { loadGoogleSpreadsheet, replaceWorksheet } = require('../googleSheets');
 const { addUsersToTeam, createBranches } = require('../github');
 const { addStudentToCohort } = require('../learn');
-const { createChannelPerStudent, sendMessageToChannel } = require('../slack');
+const { createChannelPerStudent, sendMessageToChannel, getSlackInviteLink } = require('../slack');
 const techMentors = require('../tech-mentors');
 const { getNewStudentsFromSFDC, hasIntakeFormCompleted } = require('../salesforce');
 const { exitIfCohortIsNotActive, currentCohortWeek } = require('./runOnlyDuringActiveCohort');
@@ -24,7 +24,6 @@ const {
   DOC_ID_PULSE,
   SHEET_ID_HRPTIV_ROSTER,
   SHEET_ID_HRPTIV_NAUGHTY_LIST,
-  SLACK_JOIN_URL_STUB,
   TEST_COUNT_KOANS,
   TEST_COUNT_TESTBUILDER_MIN,
   TEST_COUNT_TESTBUILDER_MAX,
@@ -258,7 +257,7 @@ const sendWelcomeEmails = async (students) => {
       alias,
       {
         cohortId: COHORT_ID,
-        slackJoinURL: SLACK_JOIN_URL_STUB,
+        slackJoinURL: getSlackInviteLink(),
         learnCohortId: LEARN_COHORT_ID,
       },
     );

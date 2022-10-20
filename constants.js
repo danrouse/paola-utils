@@ -18,12 +18,7 @@ module.exports = {
   DOC_ID_PULSE: '1js3qogtnAybECSouQqg5Hi_pvZ_jqVhyAbS_KKWDauQ',
   DOC_ID_CESP: '1cKpAm2SOW8jdZnf2g8quPpw7lA-9_61hD0LX_4kN1i4',
   SHEET_ID_HRPTIV_ROSTER: '1416427324', // gid for each round's roster worksheet
-  // Slack invite URL toggles between each of these each round, since there are
-  // two workspaces that we alternate between
-//   Workspace 1 (2210)
-  SLACK_JOIN_URL_STUB: 'join.slack.com/t/hrseip/shared_invite/zt-u5go0u3k-9H_2XJZLp8JwSfvyhMNeRQ',
-  // Workspace 2 (2209)
-//   SLACK_JOIN_URL_STUB: 'join.slack.com/t/sei-opr/shared_invite/zt-1713wh5hc-vYsb9ut7gKri6CcGGJS~nQ',
+  SLACK_WORKSPACE: 'seiopr', // valid values: hrseip (precourse), seiopr (precourse 2)
 
   // Update these as changes are made to the assignment test suites (for repo completion formulas)
   TEST_COUNT_KOANS: 26,
@@ -61,10 +56,10 @@ module.exports = {
     'eliza.drinker@galvanize.com',
     'steven.chung@galvanize.com',
     'david.coleman@galvanize.com',
-    'raymond.yee@galvanize.com',
-    'jake.daurham@galvanize.com',
-    // Peter Muller isn't here since his Slack token creates the channels
+    'peter.muller@galvanize.com',
   ],
+  SLACK_JOIN_URL_STUB_HRSEIP: 'join.slack.com/t/hrseip/shared_invite/zt-u5go0u3k-9H_2XJZLp8JwSfvyhMNeRQ',
+  SLACK_JOIN_URL_STUB_SEIOPR: 'join.slack.com/t/sei-opr/shared_invite/zt-1713wh5hc-vYsb9ut7gKri6CcGGJS~nQ',
 
   /* Salesforce */
   SFDC_OPPTY_RECORD_ID: '012j0000000qVAP',

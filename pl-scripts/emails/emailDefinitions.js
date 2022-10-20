@@ -1,8 +1,7 @@
-const { getAllSlackUsers } = require('../../slack');
+const { getAllSlackUsers, getSlackInviteLink } = require('../../slack');
 const { getNewStudentsFromSFDC, hasIntakeFormCompleted } = require('../../salesforce');
 const {
   LEARN_COHORT_ID,
-  SLACK_JOIN_URL_STUB,
   FULL_TIME_COURSE_START_DATE,
   PART_TIME_COURSE_START_DATE
 } = require('../../constants');
@@ -61,7 +60,7 @@ module.exports = [{
       student,
       fields: {
         name: formatName(student.preferredFirstName),
-        slackJoinURL: SLACK_JOIN_URL_STUB,
+        slackJoinURL: getSlackInviteLink(),
       },
     }));
   },

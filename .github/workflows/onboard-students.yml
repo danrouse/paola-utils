@@ -37,4 +37,5 @@ jobs:
           SFDC_PASSWORD: ${{ secrets.SFDC_PASSWORD }}
           GITHUB_AUTH_TOKEN: ${{ secrets.GIT_AUTH_TOKEN }}
           LEARN_TOKEN: ${{ secrets.LEARN_TOKEN }}
-          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+          SLACK_TOKEN_SEIOPR: ${{ secrets.SLACK_TOKEN_SEIOPR }}
+          SLACK_TOKEN_HRSEIP: ${{ secrets.SLACK_TOKEN_HRSEIP }}

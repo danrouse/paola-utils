@@ -2,19 +2,42 @@
 require('dotenv').config();
 const fetch = require('node-fetch');
 const Bottleneck = require('bottleneck');
-const { SLACK_TM_EMAILS } = require('../constants');
+const {
+  SLACK_TM_EMAILS,
+  SLACK_WORKSPACE,
+  SLACK_JOIN_URL_STUB_HRSEIP,
+  SLACK_JOIN_URL_STUB_SEIOPR,
+} = require('../constants');
 // Limit to max of Tier 2 request rates (20 req/min)
 const rateLimiter = new Bottleneck({
   maxConcurrent: 1,
   minTime: 3000,
 });
 
-function slackAPIRequest(endpoint, method, body) {
-  if (!process.env.SLACK_TOKEN) {
-    throw new Error('Required env var SLACK_TOKEN is missing!');
+function getSlackToken() {
+  if (SLACK_WORKSPACE === 'hrseip') {
+    if (!process.env.SLACK_TOKEN_HRSEIP) {
+      console.error('No slack token in env provided for hrseip workspace!');
+      process.exit(1);
+    }
+    return process.env.SLACK_TOKEN_HRSEIP;
   }
+  if (!process.env.SLACK_TOKEN_SEIOPR) {
+    console.error('No slack token in env provided for sei-opr workspace!');
+    process.exit(1);
+  }
+  return process.env.SLACK_TOKEN_SEIOPR;
+}
+
+function getSlackInviteLink() {
+  return SLACK_WORKSPACE === 'hrseip'
+    ? SLACK_JOIN_URL_STUB_HRSEIP
+    : SLACK_JOIN_URL_STUB_SEIOPR;
+}
+
+function slackAPIRequest(endpoint, method, body) {
   const headers = {
-    Authorization: `Bearer ${process.env.SLACK_TOKEN}`,
+    Authorization: `Bearer ${getSlackToken()}`,
     'Content-Type': 'application/json; charset=utf-8',
   };
   return fetch(
@@ -133,7 +156,8 @@ const createChannelPerStudent = async (nameList) => {
 
 module.exports = {
   slackAPIRequest: rateLimitedAPIRequest,
-
+  getSlackToken,
+  getSlackInviteLink,
   createChannelPerStudent,
   sendMessageToChannel,
   getAllSlackUsers,
@@ -151,7 +175,7 @@ module.exports = {
 //   .on('error', reject));
 // const options = {
 //   headers: {
-//     Authorization: `Bearer ${process.env.SLACK_TOKEN}`
+//     Authorization: `Bearer ${getSlackToken()}`
 //   }
 // }
 // const limiter = new Bottleneck({

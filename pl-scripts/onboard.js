@@ -3,7 +3,6 @@ require('dotenv').config();
 
 const { format } = require('date-fns');
 const Bottleneck = require('bottleneck');
-const { addStudentToGroup } = require('../googleGroups');
 const { sendEmailFromDraft } = require('../googleMail');
 const { loadGoogleSpreadsheet, replaceWorksheet } = require('../googleSheets');
 const { addUsersToTeam, createBranches } = require('../github');
@@ -101,10 +100,6 @@ const NAUGHTY_LIST_HEADERS = [
   'studentOnboardingFormCompletedOn',
 ];
 
-const googleGroupFullTime = `seipw${currentCohortWeek}@galvanize.com`;
-const googleGroupPartTime = currentCohortWeek <= 2
-  ? `seip-rpt-w${currentCohortWeek}@galvanize.com`
-  : `seip.rptw${currentCohortWeek}@galvanize.com`;
 const currentDeadlineGroup = `W${currentCohortWeek}`;
 
 const rateLimiter = new Bottleneck({
@@ -112,10 +107,6 @@ const rateLimiter = new Bottleneck({
   minTime: 333,
 });
 const addStudentToCohortRL = rateLimiter.wrap(addStudentToCohort);
-const addStudentToGroupRL = rateLimiter.wrap(addStudentToGroup);
-
-const isFullTime = (student) => student.campus !== 'RPT Pacific';
-const isPartTime = (student) => !isFullTime(student);
 
 const formatStudentForRepoCompletion = (student, techMentor, rowIndex) => ({
   fullName: student.fullName,
@@ -212,13 +203,6 @@ const addStudentsToLearnCohort = (students) => Promise.all(
     return addStudentToCohortRL(LEARN_COHORT_ID, learnStudent);
   }),
 );
-
-const addStudentsToGoogleGroups = (students) => Promise.all([
-  ...students.filter(isFullTime)
-    .map((student) => addStudentToGroupRL(googleGroupFullTime, student.email)),
-  ...students.filter(isPartTime)
-    .map((student) => addStudentToGroupRL(googleGroupPartTime, student.email)),
-]);
 
 const createStudentSlackChannels = (students) => {
   const fullNames = students.map((student) => student.fullName);
@@ -359,13 +343,6 @@ const formatSFDCStudentForRoster = (student) => {
       await addStudentsToLearnCohort(eligibleNewStudents);
     } catch (err) {
       console.error('Error adding students to the Learn cohort!');
-      console.error(err);
-    }
-    try {
-      console.info('Adding students to Google Groups...');
-      await addStudentsToGoogleGroups(eligibleNewStudents);
-    } catch (err) {
-      console.error('Error adding students to Google Groups!');
       console.error(err);
     }
     try {

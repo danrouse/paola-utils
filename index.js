@@ -1,6 +1,5 @@
 require('dotenv').config();
 const GSheets = require('./googleSheets');
-const GGroups = require('./googleGroups');
 const GMail = require('./googleMail');
 const Salesforce = require('./salesforce');
 const GitHub = require('./github');
@@ -38,7 +37,6 @@ const Slack = require('./slack');
 exports.helloWorld = () => 'Hello World, I\'m Paola!';
 
 exports.GSheets = GSheets;
-exports.GGroups = GGroups;
 exports.GMail = GMail;
 exports.Salesforce = Salesforce;
 exports.GitHub = GitHub;

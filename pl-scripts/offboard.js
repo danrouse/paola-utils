@@ -2,7 +2,6 @@ require('dotenv').config();
 const Bottleneck = require('bottleneck');
 const { removeUsersFromTeam } = require('../github');
 const { removeStudentFromCohort } = require('../learn');
-const { removeGroupMember } = require('../googleGroups');
 const {
   loadGoogleSpreadsheet,
 } = require('../googleSheets');
@@ -17,7 +16,6 @@ const rateLimiter = new Bottleneck({
   minTime: 500,
 });
 const removeStudentFromCohortRL = rateLimiter.wrap(removeStudentFromCohort);
-const removeGroupMemberRL = rateLimiter.wrap(removeGroupMember);
 const updateRow = (row, col, newVal) => {
   row[col] = newVal;
   return row.save();
@@ -68,17 +66,4 @@ function updateStudentOffboardingProgress(students, col) {
     ),
   );
   await updateStudentOffboardingProgress(studentsToRemoveFromLearn, 'learnCohort');
-    
-  const studentsToRemoveFromGoogleGroups = students.filter(
-    (student) => !student.googleGroup && student.email);
-  console.info(`Removing ${studentsToRemoveFromGoogleGroups.length} students from Google Groups...`);
-  console.log(
-    await Promise.all(
-      studentsToRemoveFromGoogleGroups.map((student) => removeGroupMemberRL(
-        getStudentGoogleGroup(student), student.email,
-      )),
-    ),
-  );
-  await updateStudentOffboardingProgress(studentsToRemoveFromGoogleGroups, 'googleGroup');
-  await Promise.all(studentsToRemoveFromGoogleGroups.map((student) => updateRowRL(student, 'googleGroup', 'Done')));
 })();

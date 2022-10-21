@@ -48,6 +48,20 @@ function slackAPIRequest(endpoint, method, body) {
 
 const rateLimitedAPIRequest = rateLimiter.wrap(slackAPIRequest);
 
+async function paginatedSlackAPIRequest(getEndpoint, responseKey, method, body) {
+  let cursor = '';
+  const responses = [];
+  do {
+    const response = await rateLimitedAPIRequest(getEndpoint(cursor), 'GET'); // eslint-disable-line no-await-in-loop
+    if (!response || !response[responseKey]) {
+      throw new Error(`Key '${responseKey}' not found in response! ${JSON.stringify(response, null, 2)}`);
+    }
+    responses.push(...response[responseKey]);
+    cursor = response.response_metadata?.next_cursor;
+  } while (cursor);
+  return responses;
+}
+
 // Send a message to a channel
 const sendMessageToChannel = (channel, text) => rateLimitedAPIRequest(
   'chat.postMessage',
@@ -67,25 +81,25 @@ const formatListOfNames = (nameList) => nameList.map((name) => {
   return `${nameArray[0].toLowerCase()}_${nameArray[nameArray.length - 1].toLowerCase()}`;
 });
 
-const createChannel = async (name) => rateLimitedAPIRequest(
+const createChannel = (name) => rateLimitedAPIRequest(
   'conversations.create',
   'POST',
   { name, is_private: true },
 );
 
-const inviteUsersToChannel = async (channelID, userIDs) => rateLimitedAPIRequest(
+const inviteUsersToChannel = (channelID, userIDs) => rateLimitedAPIRequest(
   'conversations.invite',
   'POST',
   { channel: channelID, is_private: true, users: userIDs },
 );
 
-const setChannelPurpose = async (channelID, purpose) => rateLimitedAPIRequest(
+const setChannelPurpose = (channelID, purpose) => rateLimitedAPIRequest(
   'conversations.setPurpose',
   'POST',
   { channel: channelID, purpose },
 );
 
-const setChannelTopic = async (channelID, topic) => rateLimitedAPIRequest(
+const setChannelTopic = (channelID, topic) => rateLimitedAPIRequest(
   'conversations.setTopic',
   'POST',
   { channel: channelID, topic },
@@ -101,16 +115,23 @@ const setChannelTopic = async (channelID, topic) => rateLimitedAPIRequest(
 //   'GET',
 // );
 
-const getAllSlackUsers = async () => {
-  let cursor = '';
-  const slackUsers = [];
-  do {
-    const response = await slackAPIRequest(`users.list?cursor=${cursor}`, 'GET'); // eslint-disable-line no-await-in-loop
-    slackUsers.push(...response.members);
-    cursor = response.response_metadata.next_cursor;
-  } while (cursor);
-  return slackUsers;
-};
+const getAllSlackUsers = () => paginatedSlackAPIRequest(
+  (cursor) => `users.list?cursor=${cursor}`,
+  'members',
+  'GET'
+);
+
+const getAllSlackChannels = (includePrivateChannels) => paginatedSlackAPIRequest(
+  (cursor) => `conversations.list?types=public_channel${includePrivateChannels ? ',private_channel' : ''}&cursor=${cursor}`,
+  'channels',
+  'GET',
+);
+
+const getAllMessagesInChannel = (channelId) => paginatedSlackAPIRequest(
+  (cursor) => `conversations.history?channel=${channelId}&count=1000&cursor=${cursor}`,
+  'messages',
+  'GET',
+);
 
 let cachedTechMentorUserIDs;
 const getTechMentorUserIDs = async () => {
@@ -147,79 +168,42 @@ const createChannelPerStudent = async (nameList) => {
   }
   return true;
 };
-// const inviteNewTmsToChannels = async () => {}; // TODO?
-// const sendMessageViaDM = async () => {}; // TODO?
-// const getChannelHistory = async (channelID) => slackAPIRequest(
-//   `conversations.history?channel=${channelID}&limit=1000`,
-//   'GET',
-// );
+
+const deleteAllMessagesInThread = async (channelId, threadTs) => {
+  const replies = await paginatedSlackAPIRequest(
+    (cursor) => `conversations.replies?channel=${channelId}&ts=${threadTs}&cursor=${cursor}`,
+    'messages',
+    'GET'
+  );
+  console.log('Deleting', replies.length, 'replies to thread ts', threadTs, 'in channel', channelId);
+  return Promise.all(
+    replies.map((reply) => rateLimitedAPIRequest('chat.delete', 'POST', { channel: channelId, ts: reply.ts }))
+  );
+};
+
+const deleteAllMessagesInChannel = async (channelId) => {
+  const messages = await getAllMessagesInChannel(channelId);
+  console.log('Deleting', messages.length, 'messages in channel', channelId);
+  await Promise.all(
+    messages.map(async (message) => {
+      if (message.thread_ts) {
+        return deleteAllMessagesInThread(channelId, message.thread_ts);
+      } else {
+        return rateLimitedAPIRequest('chat.delete', 'POST', { channel: channelId, ts: message.ts });
+      }
+    })
+  );
+};
 
 module.exports = {
   slackAPIRequest: rateLimitedAPIRequest,
+  paginatedSlackAPIRequest,
   getSlackToken,
   getSlackInviteLink,
   createChannelPerStudent,
   sendMessageToChannel,
   getAllSlackUsers,
+  getAllSlackChannels,
+  getAllMessagesInChannel,
+  deleteAllMessagesInChannel,
 };
-
-// WIP block?
-// const apiConfig = {};
-// const get = (url) => new Promise((resolve, reject) => https.get(url, options, (res) => {
-//   let body = '';
-//   res.on('data', (chunk) => {
-//     (body += chunk);
-//   });
-//   res.on('end', () => resolve(JSON.parse(body)));
-// })
-//   .on('error', reject));
-// const options = {
-//   headers: {
-//     Authorization: `Bearer ${getSlackToken()}`
-//   }
-// }
-// const limiter = new Bottleneck({
-//   maxConcurrent: 2,
-//   minTime: 1000,
-// });
-// async function deleteMessages(threadTs, messages) {
-//   if (messages.length === 0) {
-//     return;
-//   }
-//   const message = messages.shift();
-//   if (message.thread_ts !== threadTs) {
-//     // Fetching replies, it will delete main message as well.
-//     // eslint-disable-next-line no-use-before-define
-//     await fetchAndDeleteMessages(message.thread_ts, '');
-//   } else {
-//     const wrapped = limiter.wrap(get);
-//     await wrapped(apiConfig.deleteApiUrl + message.ts);
-//   }
-//   await deleteMessages(threadTs, messages);
-// }
-// async function fetchAndDeleteMessages(threadTs, cursor) {
-//   const response = await get(
-//     (threadTs ? `${apiConfig.repliesApiUrl + threadTs}&cursor=` : apiConfig.historyApiUrl)
-//     + cursor
-//   );
-//   console.log(response);
-//   if (!response.ok) {
-//     return response;
-//   }
-//   if (!response.messages || response.messages.length === 0) {
-//     return response;
-//   }
-//   await deleteMessages(threadTs, response.messages);
-//   if (response.has_more) {
-//     await fetchAndDeleteMessages(threadTs, response.response_metadata.next_cursor);
-//   }
-// }
-// exports.clearChannel = (channelID) => {
-//   apiConfig.channel = channelID;
-//   apiConfig.baseApiUrl = 'https://slack.com/api/';
-//   apiConfig.historyApiUrl = `${apiConfig.baseApiUrl}conversations.history?channel=${apiConfig.channel}&count=1000&cursor=`;
-//   apiConfig.deleteApiUrl = `${apiConfig.baseApiUrl}chat.delete?channel=${apiConfig.channel}&ts=`;
-//   apiConfig.repliesApiUrl = `${apiConfig.baseApiUrl}conversations.replies?channel=${apiConfig.channel}&ts=`;
-//   console.log(apiConfig);
-//   return fetchAndDeleteMessages(null, '');
-// };

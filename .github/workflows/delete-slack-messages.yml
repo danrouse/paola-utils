@@ -1,0 +1,32 @@
+name: Delete Slack Messages
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: 'channel name to clear - set to ALL to clear all public channels'
+        required: true
+jobs:
+  delete-messages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - uses: actions/cache@v2
+        id: cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: Delete messages
+        run: node slack/deleteAllMessages.js ${{ github.event.inputs.channel }}
+        env:
+          SLACK_TOKEN_SEIOPR: ${{ secrets.SLACK_TOKEN_SEIOPR }}
+          SLACK_TOKEN_HRSEIP: ${{ secrets.SLACK_TOKEN_HRSEIP }}

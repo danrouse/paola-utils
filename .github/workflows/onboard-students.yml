@@ -17,17 +17,15 @@ jobs:
         id: cache
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install
+        run: npm install
         
       - name: Onboard new students
         run: node pl-scripts/onboard.js
         env:
-          GOOGLE_GROUPS_CLIENT_EMAIL: ${{ secrets.GOOGLE_GROUPS_CLIENT_EMAIL }}
-          GOOGLE_GROUPS_PRIVATE_KEY: ${{ secrets.GOOGLE_GROUPS_PRIVATE_KEY }}
           GOOGLE_SHEETS_CLIENT_EMAIL: ${{ secrets.GOOGLE_SHEETS_CLIENT_EMAIL }}
           GOOGLE_SHEETS_PRIVATE_KEY: ${{ secrets.GOOGLE_SHEETS_PRIVATE_KEY }}
           GMAIL_CLIENT_EMAIL: ${{ secrets.GMAIL_CLIENT_EMAIL }}

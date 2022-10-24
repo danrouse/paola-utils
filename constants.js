@@ -2,22 +2,21 @@ module.exports = {
   /**
    * The following constants MUST be updated each round
    */
-  COHORT_ID: 'seip2210',
-  PRECOURSE_COHORT_START_DATE: '2022-09-06',
-  FULL_TIME_COURSE_START_DATE: '2022-10-24',
-  PART_TIME_COURSE_START_DATE: '2022-10-25',
+  COHORT_ID: 'seip2212',
+  PRECOURSE_COHORT_START_DATE: '2022-10-24',
+  FULL_TIME_COURSE_START_DATE: '2022-12-12',
   DEADLINE_DATES: {
-    W1: ['9/21/2022', '9/28/2022', '10/5/2022'],
-    W2: ['9/28/2022', '10/5/2022', '10/12/2022'],
-    W3: ['10/5/2022', '10/12/2022', '10/16/2022'],
-    W4: ['10/10/2022', '10/14/2022', '10/16/2022'],
-    Final: ['10/10/2022', '10/14/2022', '10/16/2022'],
+    W1: ['11/9/2022', '11/16/2022', '11/23/2022'],
+    W2: ['11/16/2022', '11/23/2022', '11/30/2022'],
+    W3: ['11/23/2022', '11/30/2022', '12/4/2022'],
+    W4: ['11/28/2022', '12/2/2022', '12/4/2022'],
+    Final: ['11/28/2022', '12/2/2022', '12/4/2022'],
   },
-  LEARN_COHORT_ID: '3485',
-  GITHUB_STUDENT_TEAM: 'students-seip2210',
-  DOC_ID_PULSE: '1js3qogtnAybECSouQqg5Hi_pvZ_jqVhyAbS_KKWDauQ',
-  DOC_ID_CESP: '1cKpAm2SOW8jdZnf2g8quPpw7lA-9_61hD0LX_4kN1i4',
-  SHEET_ID_HRPTIV_ROSTER: '1416427324', // gid for each round's roster worksheet
+  LEARN_COHORT_ID: '3566',
+  GITHUB_STUDENT_TEAM: 'students-seip2212',
+  DOC_ID_PULSE: '19L7JySXLdNmbZNEmhCZ8DLxyJ2yFFLlTQSFCNxgNWQ0',
+  DOC_ID_CESP: '1YoguUvqyFLzQF13ixuWroCUns9fMknXlxnq7vcm-f10',
+  SHEET_ID_HRPTIV_ROSTER: '1078625675', // gid for each round's roster worksheet
   SLACK_WORKSPACE: 'seiopr', // valid values: hrseip (precourse), seiopr (precourse 2)
 
   // Update these as changes are made to the assignment test suites (for repo completion formulas)
@@ -56,7 +55,6 @@ module.exports = {
     'eliza.drinker@galvanize.com',
     'steven.chung@galvanize.com',
     'david.coleman@galvanize.com',
-    'peter.muller@galvanize.com',
   ],
   SLACK_JOIN_URL_STUB_HRSEIP: 'join.slack.com/t/hrseip/shared_invite/zt-u5go0u3k-9H_2XJZLp8JwSfvyhMNeRQ',
   SLACK_JOIN_URL_STUB_SEIOPR: 'join.slack.com/t/sei-opr/shared_invite/zt-1713wh5hc-vYsb9ut7gKri6CcGGJS~nQ',
@@ -64,7 +62,6 @@ module.exports = {
   /* Salesforce */
   SFDC_OPPTY_RECORD_ID: '012j0000000qVAP',
   SFDC_FULL_TIME_COURSE_TYPE: '12 Week',
-  SFDC_PART_TIME_COURSE_TYPE: '36 Week',
   SFDC_SELECT_QUERY: [
     'Id',
     'Student__c',

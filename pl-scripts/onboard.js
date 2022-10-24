@@ -34,12 +34,11 @@ const {
 
 exitIfCohortIsNotActive();
 
-const MAX_STUDENTS_PER_RUN = 30;
+const TESTING_MODE = false;
+const MAX_STUDENTS_PER_RUN = 1;
 const PRODUCT_CODE_CAMPUS_OVERRIDES = {
   RFP: 'RFT Pacific',
   RFE: 'RFT Eastern',
-  RPP: 'RPT Pacific',
-  RFC: 'RFT Central',
 };
 
 const NAUGHTY_LIST_HEADERS = [
@@ -297,28 +296,42 @@ const formatSFDCStudentForRoster = (student) => {
 };
 
 (async () => {
+  console.info(`Onboarding, week #${currentCohortWeek}`);
+  if (TESTING_MODE) console.info(`RUNNING IN TESTING MODE: ONLY ADDING A TEST USER`);
+
   const newStudents = (await getNewStudentsFromSFDC())
     .map(formatSFDCStudentForRoster)
     .sort((a, b) => a.campus.toLowerCase().localeCompare(b.campus.toLowerCase()));
   const allEligibleNewStudents = newStudents.filter(hasIntakeFormCompleted);
-  const eligibleNewStudents = allEligibleNewStudents.slice(0, MAX_STUDENTS_PER_RUN);
+  let eligibleNewStudents = allEligibleNewStudents.slice(0, MAX_STUDENTS_PER_RUN);
   const naughtyListStudents = newStudents.filter((student) => !hasIntakeFormCompleted(student));
 
   console.info(`Adding ${eligibleNewStudents.length} out of ${allEligibleNewStudents.length} new students`);
   console.info(naughtyListStudents.length, 'students without their intake form completed');
 
   const sheetHRPTIV = await loadGoogleSpreadsheet(DOC_ID_HRPTIV);
-  try {
-    // Always update naughty list, ensuring old records are all cleared
-    console.info('Updating HRPTIV naughty list...');
-    await replaceWorksheet(
-      sheetHRPTIV.sheetsById[SHEET_ID_HRPTIV_NAUGHTY_LIST],
-      NAUGHTY_LIST_HEADERS,
-      naughtyListStudents,
-    );
-  } catch (err) {
-    console.error('Error updating HRPTIV naughty list!');
-    console.error(err);
+
+  if (!TESTING_MODE) {
+    try {
+      // Always update naughty list, ensuring old records are all cleared
+      console.info('Updating HRPTIV naughty list...');
+      await replaceWorksheet(
+        sheetHRPTIV.sheetsById[SHEET_ID_HRPTIV_NAUGHTY_LIST],
+        NAUGHTY_LIST_HEADERS,
+        naughtyListStudents,
+      );
+    } catch (err) {
+      console.error('Error updating HRPTIV naughty list!');
+      console.error(err);
+    }
+  }
+
+  if (TESTING_MODE) {
+    eligibleNewStudents = [{
+      fullName: 'Testing Teststudent',
+      email: 'daniel.rouse+test@galvanize.com',
+      githubHandle: 'danrouse',
+    }];
   }
 
   if (eligibleNewStudents.length > 0) {

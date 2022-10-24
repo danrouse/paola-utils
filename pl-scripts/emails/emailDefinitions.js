@@ -2,8 +2,7 @@ const { getAllSlackUsers, getSlackInviteLink } = require('../../slack');
 const { getNewStudentsFromSFDC, hasIntakeFormCompleted } = require('../../salesforce');
 const {
   LEARN_COHORT_ID,
-  FULL_TIME_COURSE_START_DATE,
-  PART_TIME_COURSE_START_DATE
+  FULL_TIME_COURSE_START_DATE
 } = require('../../constants');
 const {
   getDeadline,
@@ -142,12 +141,8 @@ module.exports = [{
       return date.toLocaleDateString('en-US', { timeZone: 'UTC', month: 'long', day: 'numeric' }) + ord;
     };
     const fullTimeDate = formatDate(new Date(FULL_TIME_COURSE_START_DATE));
-    const partTimeDate = formatDate(new Date(PART_TIME_COURSE_START_DATE));
     return students.map((student) => {
-      const dateAndCourse = student.campus !== 'RPT Pacific'
-        ? fullTimeDate + ' Full Time'
-        : partTimeDate + ' Part Time';
-
+      const dateAndCourse = fullTimeDate + ' Full Time';
       return {
         student,
         fields: {

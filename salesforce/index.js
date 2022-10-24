@@ -5,9 +5,7 @@ const {
   SFDC_OPPTY_RECORD_ID,
   SFDC_SELECT_QUERY,
   FULL_TIME_COURSE_START_DATE,
-  PART_TIME_COURSE_START_DATE,
   SFDC_FULL_TIME_COURSE_TYPE,
-  SFDC_PART_TIME_COURSE_TYPE,
   DOC_ID_HRPTIV,
   SHEET_ID_HRPTIV_ROSTER,
 } = require('../constants');
@@ -140,11 +138,7 @@ const getStudents = async (courseStart, courseType) => {
   }
 };
 
-const getAllStudents = async () => []
-  .concat(
-    await getStudents(FULL_TIME_COURSE_START_DATE, SFDC_FULL_TIME_COURSE_TYPE),
-    await getStudents(PART_TIME_COURSE_START_DATE, SFDC_PART_TIME_COURSE_TYPE),
-  );
+const getAllStudents = () => getStudents(FULL_TIME_COURSE_START_DATE, SFDC_FULL_TIME_COURSE_TYPE);
 
 const getStudentsByReportID = async (reportID) => {
   try {

@@ -157,32 +157,6 @@ const CONFIG = [{
     firstName: 'Yao', lastName: 'Yu', email: 'yao.yu@galvanize.com', github: 'amyyuyao',
   }],
 }, {
-  teamName: 'Students: RPP2209',
-  learnCampusName: 'Remote Part Time',
-  learnCohortName: 'SEI-RPP2209',
-  learnCohortLabel: '22-09-SEI-RPT',
-  learnCohortStartDate: LEARN_COHORT_PT_START_DATE,
-  learnCohortEndDate: LEARN_COHORT_PT_END_DATE,
-  learnCohortIsPartTime: true,
-  precourseCampusName: 'RPT Pacific',
-  staff: [{
-    firstName: 'Jeffrey', lastName: 'Cho', email: 'jeffrey.cho@galvanize.com',
-  }, {
-    firstName: 'Alex', lastName: 'Jacobs', email: 'alex.jacobs@galvanize.com', github: 'lexjacobs',
-  }, {
-    firstName: 'Bella', lastName: 'Tea', email: 'bella.tea@galvanize.com', github: 'isabellatea',
-  }, {
-    firstName: 'Courtney', lastName: 'Walker', email: 'courtney.walker@galvanize.com', github: 'Comafke09',
-  }, {
-    firstName: 'Leslie', lastName: 'Pajuelo', email: 'leslie.pajuelo@galvanize.com', github: 'LesliePajuelo',
-  }, {
-    firstName: 'Maysie', lastName: 'Ocera', email: 'maysie.ocera@galvanize.com', github: 'maysieo',
-  }, {
-    firstName: 'Michelle', lastName: 'Lockett', email: 'michelle.lockett@galvanize.com', github: 'michellelockett',
-  }, {
-    firstName: 'Stephanie', lastName: 'Reissner', email: 'stephanie.reissner@galvanize.com',
-  }],
-}, {
   teamName: 'Students: SEIP2210',
   learnCampusName: 'Precourse',
   learnCohortName: 'SEI - Precourse - October 2022',
@@ -202,8 +176,6 @@ const CONFIG = [{
     firstName: 'Eliza', lastName: 'Drinker', email: 'eliza.drinker@galvanize.com', github: 'aesuan',
   }, {
     firstName: 'Steven', lastName: 'Chung', email: 'steven.chung@galvanize.com', github: 'stevenchung213',
-  }, {
-    firstName: 'Jake', lastName: 'Daurham', email: 'jake.daurham@galvanize.com', github: 'daurham',
   }],
 }];
 
@@ -259,7 +231,7 @@ const createLearnCohorts = () => Promise.all(
       ends_on: config.learnCohortEndDate,
       program: 'Consumer',
       subject: 'Software Engineering',
-      cohort_format: config.learnCohortIsPartTime ? 'Part Time' : 'Full Time',
+      cohort_format: 'Full Time',
       category: config.learnCohortIsPrep ? 'Prep' : 'Immersive',
     };
     console.log('Create Learn cohort', cohort);

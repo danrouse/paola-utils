@@ -1,13 +1,13 @@
-const { PRECOURSE_COHORT_START_DATE } = require('../constants');
+import { PRECOURSE_COHORT_START_DATE } from '../constants';
 
 const WEEK_DURATION_MS = 1000 * 60 * 60 * 24 * 7;
 const currentDate = new Date();
 function getCurrentCohortWeek() {
   return Math.ceil((currentDate - new Date(PRECOURSE_COHORT_START_DATE)) / WEEK_DURATION_MS);
 }
-const currentCohortWeek = getCurrentCohortWeek();
+export const currentCohortWeek = getCurrentCohortWeek();
 
-function exitIfCohortIsNotActive(minWeekNumber = 1, maxWeekNumber = 4) {
+export function exitIfCohortIsNotActive(minWeekNumber = 1, maxWeekNumber = 4) {
   if (
     currentCohortWeek < minWeekNumber || // no onboarding in W0
     currentCohortWeek > maxWeekNumber || // or after W4
@@ -18,8 +18,3 @@ function exitIfCohortIsNotActive(minWeekNumber = 1, maxWeekNumber = 4) {
     process.exit(0);
   }
 }
-
-module.exports = {
-  exitIfCohortIsNotActive,
-  currentCohortWeek,
-};

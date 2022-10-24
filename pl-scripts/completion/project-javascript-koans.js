@@ -1,5 +1,5 @@
 /* global jasmine */
-module.exports = {
+export default {
   repoName: 'javascript-koans',
   testRunnerFileName: 'KoansRunner.html',
   studentFilesToCopy: [

@@ -1,7 +1,7 @@
 require('dotenv').config();
-const fetch = require('node-fetch');
-const Bottleneck = require('bottleneck');
-const { GITHUB_ORG_NAME } = require('../constants');
+import fetch from 'node-fetch';
+import Bottleneck from 'bottleneck';
+import GITHUB_ORG_NAME from '../constants';
 
 const headers = { Authorization: `token ${process.env.GITHUB_AUTH_TOKEN}` };
 
@@ -16,26 +16,27 @@ const rateLimiter = new Bottleneck({
   minTime: 333,
 });
 const rateLimitedAPIRequest = rateLimiter.wrap(gitHubAPIRequest);
+export { rateLimitedAPIRequest as gitHubAPIRequest };
 
-const validateUser = (username) => gitHubAPIRequest(`users/${username}`);
+export const validateUser = (username) => gitHubAPIRequest(`users/${username}`);
 
-const createTeam = (teamName) => gitHubAPIRequest(
+export const createTeam = (teamName) => gitHubAPIRequest(
   `orgs/${GITHUB_ORG_NAME}/teams`,
   'POST',
   { name: teamName, privacy: 'closed' },
 );
 
-const deleteTeam = (teamName) => gitHubAPIRequest(
+export const deleteTeam = (teamName) => gitHubAPIRequest(
   `orgs/${GITHUB_ORG_NAME}/teams`,
   'DELETE',
   { name: teamName },
 );
 
-const isUserOnTeam = (username, team) => gitHubAPIRequest(
+export const isUserOnTeam = (username, team) => gitHubAPIRequest(
   `orgs/${GITHUB_ORG_NAME}/teams/${team}/memberships/${username}`,
 );
 
-const addUserToTeam = async (username, team, addAsMaintainer) => {
+export const addUserToTeam = async (username, team, addAsMaintainer) => {
   const res = await gitHubAPIRequest(
     `orgs/${GITHUB_ORG_NAME}/teams/${team}/memberships/${username}`,
     'PUT',
@@ -47,22 +48,22 @@ const addUserToTeam = async (username, team, addAsMaintainer) => {
   return res;
 };
 
-const addUsersToTeam = (usernames, team, addAsMaintainer) => Promise.all(
+export const addUsersToTeam = (usernames, team, addAsMaintainer) => Promise.all(
   usernames.map((username) => addUserToTeam(username, team, addAsMaintainer)),
 );
 
-const removeUserFromTeam = (username, team) => gitHubAPIRequest(
+export const removeUserFromTeam = (username, team) => gitHubAPIRequest(
   `orgs/${GITHUB_ORG_NAME}/teams/${team}/memberships/${username}`,
   'DELETE',
 );
 
-const removeUsersFromTeam = (usernames, team) => Promise.all(
+export const removeUsersFromTeam = (usernames, team) => Promise.all(
   usernames.map((username) => removeUserFromTeam(username, team)),
 );
 
 // Create Branch
 const createBranchHashCache = {};
-const createBranches = async (accountName, repoName, branchNames) => {
+export const createBranches = async (accountName, repoName, branchNames) => {
   const cacheKey = accountName + repoName;
   if (!createBranchHashCache.hasOwnProperty(cacheKey)) {
     const response = await rateLimitedAPIRequest(`repos/${accountName}/${repoName}/git/ref/heads/master`);
@@ -75,17 +76,4 @@ const createBranches = async (accountName, repoName, branchNames) => {
   ));
   const result = await Promise.all(promises);
   return result.every((res) => res.ref);
-};
-
-module.exports = {
-  gitHubAPIRequest: rateLimitedAPIRequest,
-  validateUser,
-  createTeam,
-  deleteTeam,
-  isUserOnTeam,
-  addUserToTeam,
-  addUsersToTeam,
-  removeUserFromTeam,
-  removeUsersFromTeam,
-  createBranches,
 };

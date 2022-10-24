@@ -1,15 +1,15 @@
 require('dotenv').config();
-const {
+import {
   getCodeSignalResults,
   formatResultObject,
-} = require('./helpers');
-const { loadGoogleSpreadsheet } = require('../googleSheets');
-const {
+} from './helpers';
+import { loadGoogleSpreadsheet } from '../googleSheets';
+import {
   PRECOURSE_COHORT_START_DATE,
   FULL_TIME_COURSE_START_DATE,
   DOC_ID_PULSE,
   DOC_ID_CESP,
-} = require('../constants');
+} from '../constants';
 
 // TODO - update list of CodeSignal testIDs if needed
 const mod1DiagID = 'TmxaK6kMj4WA5wah4';

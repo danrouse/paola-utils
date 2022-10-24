@@ -1,4 +1,4 @@
-module.exports = [{
+export default [{
   name: 'Beverly',
   repoCompletionSheetID: '1199935631',
   repoCompletionSheetName: 'BH - Repo Completion',

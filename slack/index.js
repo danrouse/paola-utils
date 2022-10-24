@@ -1,20 +1,21 @@
 /* eslint-disable no-console */
 require('dotenv').config();
-const fetch = require('node-fetch');
-const Bottleneck = require('bottleneck');
-const {
+import fetch from 'node-fetch';
+import Bottleneck from 'bottleneck';
+import {
   SLACK_TM_EMAILS,
   SLACK_WORKSPACE,
   SLACK_JOIN_URL_STUB_HRSEIP,
   SLACK_JOIN_URL_STUB_SEIOPR,
-} = require('../constants');
+} from '../constants';
+
 // Limit to max of Tier 2 request rates (20 req/min)
 const rateLimiter = new Bottleneck({
   maxConcurrent: 1,
   minTime: 3000,
 });
 
-function getSlackToken() {
+export function getSlackToken() {
   if (SLACK_WORKSPACE === 'hrseip') {
     if (!process.env.SLACK_TOKEN_HRSEIP) {
       console.error('No slack token in env provided for hrseip workspace!');
@@ -29,7 +30,7 @@ function getSlackToken() {
   return process.env.SLACK_TOKEN_SEIOPR;
 }
 
-function getSlackInviteLink() {
+export function getSlackInviteLink() {
   return SLACK_WORKSPACE === 'hrseip'
     ? SLACK_JOIN_URL_STUB_HRSEIP
     : SLACK_JOIN_URL_STUB_SEIOPR;
@@ -47,8 +48,9 @@ function slackAPIRequest(endpoint, method, body) {
 }
 
 const rateLimitedAPIRequest = rateLimiter.wrap(slackAPIRequest);
+export { rateLimitedAPIRequest as slackAPIRequest };
 
-async function paginatedSlackAPIRequest(getEndpoint, responseKey, method, body) {
+export async function paginatedSlackAPIRequest(getEndpoint, responseKey, method, body) {
   let cursor = '';
   const responses = [];
   do {
@@ -63,7 +65,7 @@ async function paginatedSlackAPIRequest(getEndpoint, responseKey, method, body) 
 }
 
 // Send a message to a channel
-const sendMessageToChannel = (channel, text) => rateLimitedAPIRequest(
+export const sendMessageToChannel = (channel, text) => rateLimitedAPIRequest(
   'chat.postMessage',
   'POST',
   { channel, text },
@@ -115,19 +117,19 @@ const setChannelTopic = (channelID, topic) => rateLimitedAPIRequest(
 //   'GET',
 // );
 
-const getAllSlackUsers = () => paginatedSlackAPIRequest(
+export const getAllSlackUsers = () => paginatedSlackAPIRequest(
   (cursor) => `users.list?cursor=${cursor}`,
   'members',
   'GET'
 );
 
-const getAllSlackChannels = (includePrivateChannels) => paginatedSlackAPIRequest(
+export const getAllSlackChannels = (includePrivateChannels) => paginatedSlackAPIRequest(
   (cursor) => `conversations.list?types=public_channel${includePrivateChannels ? ',private_channel' : ''}&cursor=${cursor}`,
   'channels',
   'GET',
 );
 
-const getAllMessagesInChannel = (channelId) => paginatedSlackAPIRequest(
+export const getAllMessagesInChannel = (channelId) => paginatedSlackAPIRequest(
   (cursor) => `conversations.history?channel=${channelId}&count=1000&cursor=${cursor}`,
   'messages',
   'GET',
@@ -144,7 +146,7 @@ const getTechMentorUserIDs = async () => {
   return cachedTechMentorUserIDs;
 };
 
-const createChannelPerStudent = async (nameList) => {
+export const createChannelPerStudent = async (nameList) => {
   const formattedNames = formatListOfNames(nameList);
   for (let name of formattedNames) {
     const result = await createChannel(name); // Tier 2
@@ -181,7 +183,7 @@ const deleteAllMessagesInThread = async (channelId, threadTs) => {
   );
 };
 
-const deleteAllMessagesInChannel = async (channelId) => {
+export const deleteAllMessagesInChannel = async (channelId) => {
   const messages = await getAllMessagesInChannel(channelId);
   console.log('Deleting', messages.length, 'messages in channel', channelId);
   await Promise.all(
@@ -193,17 +195,4 @@ const deleteAllMessagesInChannel = async (channelId) => {
       }
     })
   );
-};
-
-module.exports = {
-  slackAPIRequest: rateLimitedAPIRequest,
-  paginatedSlackAPIRequest,
-  getSlackToken,
-  getSlackInviteLink,
-  createChannelPerStudent,
-  sendMessageToChannel,
-  getAllSlackUsers,
-  getAllSlackChannels,
-  getAllMessagesInChannel,
-  deleteAllMessagesInChannel,
 };

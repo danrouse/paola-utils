@@ -1,15 +1,14 @@
 /* eslint-disable no-restricted-syntax, no-await-in-loop, no-console */
 require('dotenv').config();
-const Bottleneck = require('bottleneck');
-const { DOC_ID_PULSE } = require('../../constants');
-const {
+import Bottleneck from 'bottleneck';
+import { DOC_ID_PULSE } from '../../constants';
+import {
   loadGoogleSpreadsheet,
   getSheetMetadata,
   upsertSheetMetadata,
   // deleteSheetMetadata,
-} = require('../../googleSheets');
-
-const { sendEmailFromDraft } = require('../../googleMail');
+} from '../../googleSheets';
+import { sendEmailFromDraft } from '../../googleMail';
 
 const EMAIL_SENDER_NAME = 'SEI Precourse';
 const EMAIL_SENDER_ADDRESS = 'sei.precourse@galvanize.com';
@@ -20,7 +19,7 @@ const rateLimiter = new Bottleneck({
 });
 const sendEmailFromDraftRL = rateLimiter.wrap(sendEmailFromDraft);
 
-async function sendEmails(
+export default async function sendEmails(
   emailDefinitions,
   printRecipientsWithoutSending = true,
   testEmailAddress,
@@ -83,5 +82,3 @@ async function sendEmails(
     }
   }
 }
-
-module.exports = sendEmails;

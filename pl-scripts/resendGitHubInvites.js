@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 require('dotenv').config();
 
-const { addUsersToTeam, gitHubAPIRequest } = require('../github');
-const { GITHUB_STUDENT_TEAM, DOC_ID_PULSE } = require('../constants');
-const { loadGoogleSpreadsheet, getRows } = require('../googleSheets');
+import { addUsersToTeam, gitHubAPIRequest } from '../github';
+import { GITHUB_STUDENT_TEAM, DOC_ID_PULSE } from '../constants';
+import { loadGoogleSpreadsheet, getRows } from '../googleSheets';
 
 const getGitHubTeamMembers = async () => {
   const results = [];

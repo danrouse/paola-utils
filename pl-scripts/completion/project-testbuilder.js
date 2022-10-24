@@ -5,7 +5,7 @@ const MESSAGE_SUITE_COMPLETED =
   'Congratulations! You have finished the exercise!';
 const APPEND_TO_TEST_COUNT_ON_INCOMPLETE = ' ❌';
 
-module.exports = {
+export default {
   repoName: 'testbuilder',
   testRunnerFileName: 'index.html',
   studentFilesToCopy: [

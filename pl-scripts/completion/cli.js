@@ -1,16 +1,16 @@
 require('dotenv').config();
-const yargs = require('yargs');
-const path = require('path');
-const {
+import yargs from 'yargs';
+import path from 'path';
+import {
   updateRepoCompletionWorksheets,
   fetchAndTestProject,
-} = require('./completion');
-const projectDefinitions = require('./project-definitions');
-const techMentors = require('../../tech-mentors');
-const {
+} from './completion';
+import projectDefinitions from './project-definitions';
+import techMentors from '../../tech-mentors';
+import {
   COHORT_ID,
   DOC_ID_PULSE,
-} = require('../../constants');
+} from '../../constants';
 
 // TODO: allow passing in a path to student repos?
 const PATH_TO_STUDENT_REPOS = path.resolve(__dirname, '../../student-repos');

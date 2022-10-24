@@ -3,6 +3,7 @@
   "version": "1.0.4",
   "description": "Utility functions for Paola (Precourse Automated Operations and Logistics Assistant)",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "jest"
   },

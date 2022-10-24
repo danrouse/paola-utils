@@ -1,7 +1,7 @@
-const cypress = require('cypress');
-const path = require('path');
+import cypress from 'cypress';
+import path from 'path';
 
-module.exports = {
+export default {
   repoName: 'twiddler',
   repoCompletionColumnNames: ['twiddler'],
   skipLinting: true,

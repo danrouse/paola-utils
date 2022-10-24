@@ -1,14 +1,14 @@
 require('dotenv').config();
-const jsforce = require('jsforce');
-const { loadGoogleSpreadsheet } = require('../googleSheets');
-const {
+import jsforce from 'jsforce';
+import { loadGoogleSpreadsheet } from '../googleSheets';
+import {
   SFDC_OPPTY_RECORD_ID,
   SFDC_SELECT_QUERY,
   FULL_TIME_COURSE_START_DATE,
   SFDC_FULL_TIME_COURSE_TYPE,
   DOC_ID_HRPTIV,
   SHEET_ID_HRPTIV_ROSTER,
-} = require('../constants');
+} from '../constants';
 
 const conn = new jsforce.Connection({ loginUrl: process.env.SFDC_LOGIN_URL });
 // Salesforce API Integrations
@@ -121,7 +121,7 @@ const formatStudents = (students) => {
   return formattedStudents;
 };
 
-const getStudents = async (courseStart, courseType) => {
+export const getStudents = async (courseStart, courseType) => {
   try {
     await login();
     return await conn.sobject('Opportunity')
@@ -138,9 +138,9 @@ const getStudents = async (courseStart, courseType) => {
   }
 };
 
-const getAllStudents = () => getStudents(FULL_TIME_COURSE_START_DATE, SFDC_FULL_TIME_COURSE_TYPE);
+export const getAllStudents = () => getStudents(FULL_TIME_COURSE_START_DATE, SFDC_FULL_TIME_COURSE_TYPE);
 
-const getStudentsByReportID = async (reportID) => {
+export const getStudentsByReportID = async (reportID) => {
   try {
     await login();
     const report = conn.analytics.report(reportID);
@@ -156,7 +156,7 @@ const getStudentsByReportID = async (reportID) => {
   }
 };
 
-const hasIntakeFormCompleted = (student) => student.funFact
+export const hasIntakeFormCompleted = (student) => student.funFact
   && student.selfReportedPrepartion && student.githubHandle;
 
 const getEnrolledStudentSFDCContactIDs = async (docID, sheetID) => {
@@ -166,7 +166,7 @@ const getEnrolledStudentSFDCContactIDs = async (docID, sheetID) => {
   return rows.map((row) => row.sfdcContactId);
 };
 
-const getNewStudentsFromSFDC = async () => {
+export const getNewStudentsFromSFDC = async () => {
   const students = await getAllStudents();
   const enrolledStudentContactIDs = await getEnrolledStudentSFDCContactIDs(
     DOC_ID_HRPTIV,
@@ -174,12 +174,4 @@ const getNewStudentsFromSFDC = async () => {
   );
   return students.filter((student) =>
     !enrolledStudentContactIDs.includes(student.sfdcContactId));
-};
-
-module.exports = {
-  getStudents,
-  getAllStudents,
-  getStudentsByReportID,
-  hasIntakeFormCompleted,
-  getNewStudentsFromSFDC,
 };

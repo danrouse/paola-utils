@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   /**
    * The following constants MUST be updated each round
    */

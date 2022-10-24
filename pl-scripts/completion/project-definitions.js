@@ -1,10 +1,10 @@
-const javascriptKoans = require('./project-javascript-koans');
-const testbuilder = require('./project-testbuilder');
-const underbar = require('./project-underbar');
-const twiddler = require('./project-twiddler');
-const recursion = require('./project-recursion');
+import javascriptKoans from './project-javascript-koans';
+import testbuilder from './project-testbuilder';
+import underbar from './project-underbar';
+import twiddler from './project-twiddler';
+import recursion from './project-recursion';
 
-module.exports = {
+export default {
   javascriptKoans,
   testbuilder,
   underbar,

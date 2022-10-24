@@ -1,5 +1,5 @@
 /* global mocha */
-module.exports = {
+export default {
   repoName: 'recursion',
   testRunnerFileName: 'SpecRunner.html',
   studentFilesToCopy: [

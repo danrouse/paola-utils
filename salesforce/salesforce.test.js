@@ -1,7 +1,7 @@
 require('dotenv').config();
-const jsforce = require('jsforce');
-const { SFDC_SELECT_QUERY, SFDC_OPPTY_RECORD_ID } = require('../constants');
-const { getStudents } = require('.');
+import jsforce from 'jsforce';
+import { SFDC_SELECT_QUERY, SFDC_OPPTY_RECORD_ID } from '../constants';
+import { getStudents } from './index';
 
 const TEST_COURSE_START = '2020-05-11';
 const TEST_COURSE_TYPE = '12 Week';

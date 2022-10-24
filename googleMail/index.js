@@ -3,7 +3,7 @@
 // ------------------------------
 
 require('dotenv').config();
-const { google } = require('googleapis');
+import { google } from 'googleapis';
 
 const scopes = ['https://mail.google.com/'];
 const jwt = new google.auth.JWT(
@@ -100,7 +100,7 @@ const generateEmail = (body, subject, toList, ccList, bccList, alias, mergeField
 };
 
 // Send an email with TO, CC, and BCC list of receipients attached
-exports.sendEmail = async (body, subject, toList, ccList, bccList, alias, mergeFields) => {
+export const sendEmail = async (body, subject, toList, ccList, bccList, alias, mergeFields) => {
   try {
     const service = await authenticate();
     const encodedEmail = generateEmail(
@@ -119,7 +119,7 @@ exports.sendEmail = async (body, subject, toList, ccList, bccList, alias, mergeF
 };
 
 // Send an email using a draft email template
-exports.sendEmailFromDraft = async (subjectQuery, toList, ccList, bccList, alias, mergeFields) => {
+export const sendEmailFromDraft = async (subjectQuery, toList, ccList, bccList, alias, mergeFields) => {
   try {
     const service = await authenticate();
     const draft = await getDraftBySubject(subjectQuery);

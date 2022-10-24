@@ -1,4 +1,4 @@
-const {
+import {
   DEADLINE_DATES,
   TEST_COUNT_KOANS,
   TEST_COUNT_TESTBUILDER_MIN,
@@ -7,22 +7,22 @@ const {
   TEST_COUNT_UNDERBAR_PART_TWO,
   TEST_COUNT_TWIDDLER,
   TEST_COUNT_RECURSION,
-} = require('../../constants');
-const { getRepoCompletionStudents, getRosterStudents } = require('./getStudents');
+} from '../../constants';
+import { getRepoCompletionStudents, getRosterStudents } from './getStudents';
 
 const NO_FORK_TEXT = 'No Fork';
 const ERROR_TEXT = 'Timed Out';
 const TIMED_OUT_TEXT = 'Timed Out';
 const MESSAGE_NO_FORKS = 'According to our records, you haven\'t forked any of the assignment repositories.';
 
-const getDeadline = (student, moduleNumber, final) => {
+export const getDeadline = (student, moduleNumber, final) => {
   const { deadlineGroup } = student;
   let deadlinesKey = final ? 'Final' : deadlineGroup;
   if (!(deadlinesKey in DEADLINE_DATES)) deadlinesKey = 'W4'; // give up :(
   return DEADLINE_DATES[deadlinesKey][moduleNumber - 1];
 };
 
-async function getMissedDeadlineStudents(moduleNumber, daysInAdvance) {
+export async function getMissedDeadlineStudents(moduleNumber, daysInAdvance) {
   const repoCompletionStudents = await getRepoCompletionStudents();
   const rosterStudents = await getRosterStudents();
   return repoCompletionStudents.filter((student) => {
@@ -84,7 +84,7 @@ function getMissedDeadlineDetails(student, projects) {
   return `According to our records, ${messages.join(', ')}.`;
 }
 
-function getModule1MissDetails(student) {
+export function getModule1MissDetails(student) {
   return getMissedDeadlineDetails(student, [
     ['JavaScript Koans', student.javascriptKoans, student.koansMinReqs === 'Yes'],
     ['Testbuilder', student.testbuilder, Number(student.testbuilder) >= 3323 && Number(student.testbuilder) < 3330],
@@ -92,23 +92,15 @@ function getModule1MissDetails(student) {
   ]);
 }
 
-function getModule2MissDetails(student) {
+export function getModule2MissDetails(student) {
   return getMissedDeadlineDetails(student, [
     ['Underbar Part 2', student.underbarPartTwo, Number(student.underbarPartTwo) >= 58],
     ['Twiddler', student.twiddler, Number(student.twiddler) >= 3.5],
   ]);
 }
 
-function getModule3MissDetails(student) {
+export function getModule3MissDetails(student) {
   return getMissedDeadlineDetails(student, [
     ['Recursion', student.recursion, Number(student.recursion) >= 2],
   ]);
 }
-
-module.exports = {
-  getModule1MissDetails,
-  getModule2MissDetails,
-  getModule3MissDetails,
-  getMissedDeadlineStudents,
-  getDeadline,
-};

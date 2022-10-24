@@ -1,5 +1,5 @@
-const { testProject } = require('./completion');
-const projectDefinitions = require('./project-definitions');
+import { testProject } from './completion';
+import projectDefinitions from './project-definitions';
 
 const projectName = process.argv[2];
 const projectPath = process.argv[3];

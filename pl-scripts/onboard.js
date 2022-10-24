@@ -1,18 +1,18 @@
 /* eslint-disable no-console */
 require('dotenv').config();
 
-const { format } = require('date-fns');
-const Bottleneck = require('bottleneck');
-const { sendEmailFromDraft } = require('../googleMail');
-const { loadGoogleSpreadsheet, replaceWorksheet } = require('../googleSheets');
-const { addUsersToTeam, createBranches } = require('../github');
-const { addStudentToCohort } = require('../learn');
-const { createChannelPerStudent, sendMessageToChannel, getSlackInviteLink } = require('../slack');
-const techMentors = require('../tech-mentors');
-const { getNewStudentsFromSFDC, hasIntakeFormCompleted } = require('../salesforce');
-const { exitIfCohortIsNotActive, currentCohortWeek } = require('./runOnlyDuringActiveCohort');
+import { format } from 'date-fns';
+import Bottleneck from 'bottleneck';
+import { sendEmailFromDraft } from '../googleMail';
+import { loadGoogleSpreadsheet, replaceWorksheet } from '../googleSheets';
+import { addUsersToTeam, createBranches } from '../github';
+import { addStudentToCohort } from '../learn';
+import { createChannelPerStudent, sendMessageToChannel, getSlackInviteLink } from '../slack';
+import techMentors from '../tech-mentors';
+import { getNewStudentsFromSFDC, hasIntakeFormCompleted } from '../salesforce';
+import { exitIfCohortIsNotActive, currentCohortWeek } from './runOnlyDuringActiveCohort';
 
-const {
+import {
   COHORT_ID,
   PRECOURSE_COHORT_START_DATE,
   DEADLINE_DATES,
@@ -30,7 +30,7 @@ const {
   TEST_COUNT_UNDERBAR_PART_TWO,
   TEST_COUNT_TWIDDLER,
   TEST_COUNT_RECURSION,
-} = require('../constants');
+} from '../constants';
 
 exitIfCohortIsNotActive();
 

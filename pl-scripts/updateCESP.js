@@ -5,14 +5,14 @@
  *  - remove or update the "CES&P is updated" box with date on the sheet
  */
 require('dotenv').config();
-const { loadGoogleSpreadsheet, replaceWorksheet, getRows } = require('../googleSheets');
-const {
+import { loadGoogleSpreadsheet, replaceWorksheet, getRows } from '../googleSheets';
+import {
   DOC_ID_CESP,
   DOC_ID_PULSE,
   SHEET_ID_CESP_ROSTER,
   SHEET_ID_CESP_MODULE_COMPLETION,
-} = require('../constants');
-const techMentors = require('../tech-mentors');
+} from '../constants';
+import techMentors from '../tech-mentors';
 
 const CESP_ROSTER_SHEET_HEADERS = [
   'Full Name',

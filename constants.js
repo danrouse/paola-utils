@@ -37,8 +37,6 @@ module.exports = {
 
   /* GitHub */
   GITHUB_ORG_NAME: 'hackreactor',
-  GITHUB_API_USERS: 'https://api.github.com/users',
-  GITHUB_API_TEAMS: 'https://api.github.com/orgs/hackreactor/teams',
 
   /* Google Sheets */
   DOC_ID_HRPTIV: '1CZTeyLgVP70DtU33RkbqlvbGSyYCkgxYxp4PaiPUtVo',

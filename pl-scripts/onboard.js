@@ -34,7 +34,7 @@ const {
 
 exitIfCohortIsNotActive();
 
-const TESTING_MODE = false;
+const TESTING_MODE = true;
 const MAX_STUDENTS_PER_RUN = 1;
 const PRODUCT_CODE_CAMPUS_OVERRIDES = {
   RFP: 'RFT Pacific',
@@ -328,9 +328,9 @@ const formatSFDCStudentForRoster = (student) => {
 
   if (TESTING_MODE) {
     eligibleNewStudents = [{
-      fullName: 'Testing Teststudent',
-      email: 'daniel.rouse+test@galvanize.com',
-      githubHandle: 'danrouse',
+      fullName: 'Test Teststudent',
+      email: 'paola+test@galvanize.com',
+      githubHandle: 'hackreactor-paola',
     }];
   }
 

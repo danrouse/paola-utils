@@ -1,4 +1,3 @@
-require('dotenv').config();
 import yargs from 'yargs';
 import path from 'path';
 import {
@@ -11,6 +10,8 @@ import {
   COHORT_ID,
   DOC_ID_PULSE,
 } from '../../constants';
+
+require('dotenv').config();
 
 // TODO: allow passing in a path to student repos?
 const PATH_TO_STUDENT_REPOS = path.resolve(__dirname, '../../student-repos');

@@ -31,8 +31,7 @@ function getRepositoryURL(githubPath, authUser, authToken) {
 function getLocalRepositoryHash(localPath) {
   return new Promise((resolve) => {
     exec(`GIT_DIR=${localPath}/.git git rev-parse HEAD`, (err, stdout) =>
-      resolve(err ? null : stdout.trim()),
-    );
+      resolve(err ? null : stdout.trim()),);
   });
 }
 

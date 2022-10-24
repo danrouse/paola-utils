@@ -2,8 +2,9 @@
 // GMail API Integrations
 // ------------------------------
 
-require('dotenv').config();
 import { google } from 'googleapis';
+
+require('dotenv').config();
 
 const scopes = ['https://mail.google.com/'];
 const jwt = new google.auth.JWT(
@@ -50,7 +51,7 @@ const getDraftBySubject = async (subjectQuery) => {
     id: allDrafts.data.drafts[0].id,
     format: 'full',
   });
-  
+
   DRAFT_CACHE[subjectQuery] = draft.data;
   return draft.data;
 };
@@ -103,9 +104,7 @@ const generateEmail = (body, subject, toList, ccList, bccList, alias, mergeField
 export const sendEmail = async (body, subject, toList, ccList, bccList, alias, mergeFields) => {
   try {
     const service = await authenticate();
-    const encodedEmail = generateEmail(
-      body, subject, toList, ccList, bccList, alias, mergeFields,
-    );
+    const encodedEmail = generateEmail(body, subject, toList, ccList, bccList, alias, mergeFields,);
     const res = await service.users.messages.send({
       userId: 'me',
       requestBody: {
@@ -132,9 +131,7 @@ export const sendEmailFromDraft = async (subjectQuery, toList, ccList, bccList, 
     const subject = headers.find((item) => item.name === 'Subject').value;
     const { data } = draft.message.payload.parts[1].body;
     const body = Buffer.from(data, 'base64').toString('utf8');
-    const encodedEmail = generateEmail(
-      body, subject, toList, ccList, bccList, alias, mergeFields,
-    );
+    const encodedEmail = generateEmail(body, subject, toList, ccList, bccList, alias, mergeFields,);
 
     // send email
     const res = await service.users.messages.send({

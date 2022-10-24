@@ -35,8 +35,7 @@ export default {
         const failedTests = results.runs[0].tests.filter((test) =>
           test.state === 'failed' &&
           test.title[0] !== 'Extra credit' &&
-          !ignoredTests.includes(test.title[test.title.length - 1])
-        );
+          !ignoredTests.includes(test.title[test.title.length - 1]));
         if (
           failedTests[0] && failedTests[0].displayError && failedTests[0].displayError.startsWith(
             'TypeError: The following error originated from your application code, not from Cypress.'

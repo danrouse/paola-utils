@@ -1,10 +1,11 @@
 import fetch from 'node-fetch';
+
 const API_URL = 'https://app.codesignal.com/graphql';
 const apiRequest = (query) => fetch(API_URL, {
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer OGRHZUE2TE00TU1tWWR0QXQc5/jWJfwo+2gzBHj7wlA7Bx5DhFANyIDknoOz/kWT8g==',
+    Accept: 'application/json',
+    Authorization: 'Bearer OGRHZUE2TE00TU1tWWR0QXQc5/jWJfwo+2gzBHj7wlA7Bx5DhFANyIDknoOz/kWT8g==',
   },
   method: 'POST',
   body: JSON.stringify({ query }),
@@ -22,14 +23,14 @@ const paginatedApiRequest = async (queryGenerator, getResultFromPayload) => {
     results.push(...formattedResult);
     console.log('final res length', formattedResult.length);
     hasNextPage = formattedResult.length === MAX_RESULTS_PER_PAGE;
-    
+
     page += 1;
   } while (hasNextPage);
   return results;
 };
 
 (async () => {
-  const response = await paginatedApiRequest((offset) => `
+  await paginatedApiRequest((offset) => `
   query TestQuery {
     companyTestSessions(companyTestId: "kb3zp9cK5CYLadq22", first: ${MAX_RESULTS_PER_PAGE}, offset: ${offset}) {
       testTaker {

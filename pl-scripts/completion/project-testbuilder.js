@@ -16,7 +16,7 @@ export default {
   getTestResults: async (page) => {
     let hasCompletedMessage = false;
     let lastLogLine = '';
-    page.on('console', function onConsole(event) {
+    page.on('console', (event) => {
       lastLogLine = event.text();
       if (event.text() === MESSAGE_SUITE_COMPLETED) {
         hasCompletedMessage = true;
@@ -27,12 +27,12 @@ export default {
 
     const getErrorMessage = () => [
       'The test runner did not make it to the final completion message! ' +
-      'The last message logged was:\n```\n' +
-      lastLogLine.replace(/%c/g, '').replace(/\s+font\-weight.+$/, '') +
-      '\n```',
+      `The last message logged was:\n\`\`\`\n${
+        lastLogLine.replace(/%c/g, '').replace(/\s+font-weight.+$/, '')
+      }\n\`\`\``,
     ];
 
-    await page.evaluate(function evalPage() {
+    await page.evaluate(() => {
       window.detectNetwork('38345678901234');
       window.detectNetwork('39345678901234');
       window.detectNetwork('343456789012345');

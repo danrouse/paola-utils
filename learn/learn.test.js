@@ -1,4 +1,3 @@
-require('dotenv').config();
 import fetch from 'node-fetch';
 import { LEARN_API_COHORTS } from '../constants';
 
@@ -9,8 +8,9 @@ import {
   addStudentToCohort,
   removeStudentFromCohort,
   removeStudentFromCohortByID,
-  createNewCohort,
 } from './index';
+
+require('dotenv').config();
 
 const TEST_LEARN_COHORT_ID = 2024;
 const TEST_STUDENT = {

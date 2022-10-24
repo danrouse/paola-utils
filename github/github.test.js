@@ -1,4 +1,3 @@
-require('dotenv').config();
 import fetch from 'node-fetch';
 import { GITHUB_API_TEAMS } from '../constants';
 import {
@@ -9,6 +8,8 @@ import {
   addUsersToTeam,
   removeUsersFromTeam,
 } from './index';
+
+require('dotenv').config();
 
 const GITHUB_TEAM_USERNAME = 'paola-test-team';
 const GITHUB_TEST_USER = 'murphpaolatestuser';

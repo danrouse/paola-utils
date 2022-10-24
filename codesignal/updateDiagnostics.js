@@ -1,4 +1,3 @@
-require('dotenv').config();
 import {
   getCodeSignalResults,
   formatResultObject,
@@ -11,6 +10,8 @@ import {
   DOC_ID_CESP,
 } from '../constants';
 
+require('dotenv').config();
+
 // TODO - update list of CodeSignal testIDs if needed
 const mod1DiagID = 'TmxaK6kMj4WA5wah4';
 const mod2DiagID = 'hxYP2PGXNYR8FLSWz';
@@ -20,7 +21,6 @@ const cohortStartDate = new Date(PRECOURSE_COHORT_START_DATE);
 const seiDiagnosticStartDate = new Date(FULL_TIME_COURSE_START_DATE);
 const weekBeforeSei = seiDiagnosticStartDate.getDate() - 11;
 seiDiagnosticStartDate.setDate(weekBeforeSei);
-
 
 const sheetTabs = {
   [mod1DiagID]: {
@@ -39,12 +39,12 @@ const sheetTabs = {
     tabID: 1737554240,
     once: true,
   },
-  'HRPTIV': {
+  HRPTIV: {
     tabID: 1952690505,
     once: true,
     allStudents: [],
   },
-  'CESP': {
+  CESP: {
     tabID: 0,
     once: true,
     allStudents: [],
@@ -63,11 +63,12 @@ const updatePulseDiagnostic = async (diagID, first = 0, offset = 0, seiD = false
 
   // only for SEI Diagnostics
   if (seiD && sheetTabs.CESP.once) {
+    /* eslint-disable no-underscore-dangle */
     const cespRoster = cesp.sheetsByTitle.Roster;
     const cespRows = await cespRoster.getRows();
     const cespHeaders = cespRows[0]._sheet.headerValues;
-    cespRows.forEach(row => {
-      console.log(row._rawData)
+    cespRows.forEach((row) => {
+      console.log(row._rawData);
       const studentObj = {};
       row._rawData.forEach((val, i) => {
         studentObj[cespHeaders[i]] = val;
@@ -77,24 +78,24 @@ const updatePulseDiagnostic = async (diagID, first = 0, offset = 0, seiD = false
         name: studentObj['Full Name'],
         campus: studentObj.Campus,
         github: studentObj.GitHub,
-      }
+      };
     });
     sheetTabs.CESP.once = false;
     console.log(sheetTabs.CESP.allStudents);
     console.log(sheetTabs.CESP.studentEmails);
+    /* eslint-enable no-underscore-dangle */
   }
-
 
   const result = await getCodeSignalResults(diagID, first, offset);
 
   // format codesignal json for spreadsheet compatability
-  const allDiagnosticResults = result.data.companyTest.testSessions.map(test => (
+  const allDiagnosticResults = result.data.companyTest.testSessions.map((test) => (
     seiD ? formatResultObject(test, sheetTabs.CESP.studentEmails) : formatResultObject(test)
   ));
 
   // filter out previous cohort results
   // by cohortStartDate constant
-  const currentCohortResults = allDiagnosticResults.filter(studentObj => (
+  const currentCohortResults = allDiagnosticResults.filter((studentObj) => (
     seiD ? new Date(studentObj.startDate).getTime() >= seiDiagnosticStartDate.getTime()
       : new Date(studentObj.startDate).getTime() >= cohortStartDate.getTime()
   ));
@@ -146,7 +147,7 @@ const updateM1Diagnostics = async () => {
     // await updatePulseDiagnostic(mod1DiagID, 20, 160, false);
     // await updatePulseDiagnostic(mod1DiagID, 20, 180, false);
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
@@ -163,7 +164,7 @@ const updateM2Diagnostics = async () => {
     // await updatePulseDiagnostic(mod2DiagID, 20, 160, false);
     // await updatePulseDiagnostic(mod2DiagID, 20, 180, false);
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
@@ -181,15 +182,14 @@ const updateM3Diagnostics = async () => {
     // await updatePulseDiagnostic(mod3DiagID, 20, 160, false);
     // await updatePulseDiagnostic(mod3DiagID, 20, 180, false);
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
 const updateSEIDiagnostics = async () => {
-
   if (new Date().getTime() < seiDiagnosticStartDate.getTime()) {
     console.log('NOT TIME FOR SEI DIAGNOSTICS');
-    return false;
+    return;
   }
 
   try {
@@ -204,9 +204,8 @@ const updateSEIDiagnostics = async () => {
     // await updatePulseDiagnostic(seiDiagID, 20, 160, true);
     // await updatePulseDiagnostic(seiDiagID, 20, 180, true);
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-
 };
 
 const updateAllDiagnostics = async () => {
@@ -215,24 +214,23 @@ const updateAllDiagnostics = async () => {
     .then(() => {
       console.log('MODULE 1 COMPLETE');
       console.log('MODULE 2 DIAGNOSTICS');
-      updateM2Diagnostics()
+      updateM2Diagnostics();
     })
     .then(() => {
       console.log('MODULE 2 COMPLETE');
-      console.log('MODULE 3 DIAGNOSTICS')
-      updateM3Diagnostics()
+      console.log('MODULE 3 DIAGNOSTICS');
+      updateM3Diagnostics();
     })
     .then(() => {
       console.log('MODULE 3 COMPLETE');
-      console.log('SEI DIAGNOSTICS')
-      updateSEIDiagnostics()
+      console.log('SEI DIAGNOSTICS');
+      updateSEIDiagnostics();
     })
-    .catch(err => {
+    .catch((err) => {
       console.log('Uh Oh');
       console.log(err);
     });
 };
-
 
 // updateM2Diagnostics();
 

@@ -2,9 +2,7 @@
 /**
  * TODO:
  *  - handle separated students
- *  - remove or update the "CES&P is updated" box with date on the sheet
  */
-require('dotenv').config();
 import { loadGoogleSpreadsheet, replaceWorksheet, getRows } from '../googleSheets';
 import {
   DOC_ID_CESP,
@@ -13,6 +11,8 @@ import {
   SHEET_ID_CESP_MODULE_COMPLETION,
 } from '../constants';
 import techMentors from '../tech-mentors';
+
+require('dotenv').config();
 
 const CESP_ROSTER_SHEET_HEADERS = [
   'Full Name',
@@ -142,7 +142,7 @@ const assignPods = async (repoCompletionStudents, rosterStudents) => {
     let hasStudentsToMove = false;
     const largerPodAverage = getPodAverage(largerPod);
     const smallerPodAverage = getPodAverage(smallerPod);
-    for (let i = 0; i < largerPod.length; i++) {
+    for (let i = 0; i < largerPod.length; i += 1) {
       if (largerPod[i].hasDiagnostics) {
         if (
           (largerPodAverage > smallerPodAverage && largerPod[i].diagnosticAverage > smallerPodAverage) ||
@@ -164,6 +164,7 @@ const assignPods = async (repoCompletionStudents, rosterStudents) => {
     Math.abs(getPodAverage(caliPod) - getPodAverage(nonCaliPod)),
   );
   repoCompletionStudents.forEach((student) => {
+    /* eslint-disable no-param-reassign */
     if (largerPod.find((ts) => ts.githubHandle.toLowerCase() === student.githubHandle.toLowerCase())) {
       student['RFP Pod'] = largerPodName;
     } else if (smallerPod.find((ts) => ts.githubHandle.toLowerCase() === student.githubHandle.toLowerCase())) {
@@ -171,6 +172,7 @@ const assignPods = async (repoCompletionStudents, rosterStudents) => {
     } else {
       student['RFP Pod'] = '';
     }
+    /* eslint-enable no-param-reassign */
   });
 };
 
@@ -189,7 +191,7 @@ const assignPods = async (repoCompletionStudents, rosterStudents) => {
   const repoCompletionStudentsNotSeparated = students.filter((student) => !separations.find(
     (separatedStudent) => separatedStudent.fullName === student.fullName,
   ));
-  const rosterStudents = await getRows(pulseSheet.sheetsByTitle['HRPTIV']);
+  const rosterStudents = await getRows(pulseSheet.sheetsByTitle.HRPTIV);
   assignPods(repoCompletionStudentsNotSeparated, rosterStudents);
   const roster = formatStudentsForCESPRosterSheet(students, separations);
   const moduleCompletion = formatStudentsForCESPModuleCompletionSheet(repoCompletionStudentsNotSeparated);

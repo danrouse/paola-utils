@@ -1,7 +1,8 @@
-require('dotenv').config();
 import fetch from 'node-fetch';
 import Bottleneck from 'bottleneck';
 import GITHUB_ORG_NAME from '../constants';
+
+require('dotenv').config();
 
 const headers = { Authorization: `token ${process.env.GITHUB_AUTH_TOKEN}` };
 
@@ -65,7 +66,7 @@ export const removeUsersFromTeam = (usernames, team) => Promise.all(
 const createBranchHashCache = {};
 export const createBranches = async (accountName, repoName, branchNames) => {
   const cacheKey = accountName + repoName;
-  if (!createBranchHashCache.hasOwnProperty(cacheKey)) {
+  if (!createBranchHashCache.hasOwn(cacheKey)) {
     const response = await rateLimitedAPIRequest(`repos/${accountName}/${repoName}/git/ref/heads/master`);
     createBranchHashCache[cacheKey] = response.object.sha;
   }

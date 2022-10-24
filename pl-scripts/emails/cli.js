@@ -1,8 +1,8 @@
-require('dotenv').config();
-
 import yargs from 'yargs';
 import emailDefinitions from './emailDefinitions';
 import sendEmails from './sendEmails';
+
+require('dotenv').config();
 
 const { argv } = yargs(process.argv)
   .option('emails', {

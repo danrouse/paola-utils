@@ -1,4 +1,3 @@
-require('dotenv').config();
 import Bottleneck from 'bottleneck';
 import { removeUsersFromTeam } from '../github';
 import { removeStudentFromCohort } from '../learn';
@@ -11,27 +10,18 @@ import {
   LEARN_COHORT_ID,
 } from '../constants';
 
+require('dotenv').config();
+
 const rateLimiter = new Bottleneck({
   maxConcurrent: 2,
   minTime: 500,
 });
 const removeStudentFromCohortRL = rateLimiter.wrap(removeStudentFromCohort);
 const updateRow = (row, col, newVal) => {
-  row[col] = newVal;
+  row[col] = newVal; // eslint-disable-line no-param-reassign
   return row.save();
 };
 const updateRowRL = rateLimiter.wrap(updateRow);
-
-const getStudentGoogleGroup = (student) => {
-  const week = Number(student.deadlineGroup[1]);
-  if (student.campus.startsWith('RPT')) {
-    if (week <= 2) {
-      return `seip-rpt-w${week}@galvanize.com`;
-    }
-    return `seip.rptw${week}@galvanize.com`;
-  }
-  return `seipw${week}@galvanize.com`;
-};
 
 async function getStudentsToSeparate() {
   const doc = await loadGoogleSpreadsheet(DOC_ID_PULSE);
@@ -50,7 +40,8 @@ function updateStudentOffboardingProgress(students, col) {
   console.info(`Offboarding ${students.length} students...`);
 
   const studentsToRemoveFromGitHub = students.filter(
-    (student) => !student.githubTeam && student.githubHandle);
+    (student) => !student.githubTeam && student.githubHandle
+  );
   console.info(`Removing ${studentsToRemoveFromGitHub.length} students from GitHub team...`);
   console.log(
     await removeUsersFromTeam(studentsToRemoveFromGitHub.map((student) => student.githubHandle), GITHUB_STUDENT_TEAM),
@@ -58,7 +49,8 @@ function updateStudentOffboardingProgress(students, col) {
   await updateStudentOffboardingProgress(studentsToRemoveFromGitHub, 'githubTeam');
 
   const studentsToRemoveFromLearn = students.filter(
-    (student) => !student.learnCohort && student.email);
+    (student) => !student.learnCohort && student.email
+  );
   console.info(`Removing ${studentsToRemoveFromLearn.length} students from Learn cohort...`);
   console.log(
     await Promise.all(

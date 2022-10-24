@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-require('dotenv').config();
-
 import { format } from 'date-fns';
 import Bottleneck from 'bottleneck';
 import { sendEmailFromDraft } from '../googleMail';
@@ -11,10 +8,8 @@ import { createChannelPerStudent, sendMessageToChannel, getSlackInviteLink } fro
 import techMentors from '../tech-mentors';
 import { getNewStudentsFromSFDC, hasIntakeFormCompleted } from '../salesforce';
 import { exitIfCohortIsNotActive, currentCohortWeek } from './runOnlyDuringActiveCohort';
-
 import {
   COHORT_ID,
-  PRECOURSE_COHORT_START_DATE,
   DEADLINE_DATES,
   LEARN_COHORT_ID,
   GITHUB_STUDENT_TEAM,
@@ -31,6 +26,8 @@ import {
   TEST_COUNT_TWIDDLER,
   TEST_COUNT_RECURSION,
 } from '../constants';
+
+require('dotenv').config();
 
 exitIfCohortIsNotActive();
 
@@ -122,7 +119,7 @@ const formatStudentForRepoCompletion = (student, techMentor, rowIndex) => ({
   // NB: for this column to work on each new cohort,
   // the iferror in the formula has to be unwrapped to allow access
   hadLaserCoaching: `=IF(EQ(IFERROR(vlookup(A${rowIndex},` +
-                    `IMPORTRANGE("https://docs.google.com/spreadsheets/d/1v3ve2aYtO6MsG6Zjp-SBX-ote6JdWVvuYekHUst2wWw","Laser Coached Students Enrolled!A2:A"),1,false),` +
+                    'IMPORTRANGE("https://docs.google.com/spreadsheets/d/1v3ve2aYtO6MsG6Zjp-SBX-ote6JdWVvuYekHUst2wWw","Laser Coached Students Enrolled!A2:A"),1,false),' +
                     `"No"), A${rowIndex}), "Yes", "No")`,
   numPrecourseEnrollments: `=MAX(COUNTIF('Precourse Enrollments Archive'!B:B,A${rowIndex}),` +
                            `COUNTIF('Precourse Enrollments Archive'!D:D,D${rowIndex}),` +
@@ -141,13 +138,14 @@ const formatStudentForRepoCompletion = (student, techMentor, rowIndex) => ({
   partThreeComplete: `=IF(AND(S${rowIndex}>=${TEST_COUNT_RECURSION}, ISNUMBER(S${rowIndex})),"Yes", "No")`,
   allComplete: `=IF(AND(T${rowIndex}="Yes",U${rowIndex}="Yes",V${rowIndex}="Yes"),"Yes","No")`,
   completedDIF: `=IF(L${rowIndex} = 1, "N/A", IF(IFNA(MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0), "Not found") <> "Not found",` +
-                `HYPERLINK(CONCAT("#gid=1881266534&range=", MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0) & ":" & MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0)), "See responses"), "Not found"))`,
+                `HYPERLINK(CONCAT("#gid=1881266534&range=", MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0) & ":" & MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0)),` +
+                '"See responses"), "Not found"))',
   m1DiagnosticTask1: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 1'!A:Z, 9, false), "-")`,
   m1DiagnosticTask2: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 1'!A:Z,11, false), "-")`,
   m2DiagnosticTask1: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 2'!A:Z, 9, false), "-")`,
   m2DiagnosticTask2: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 2'!A:Z,11, false), "-")`,
   m3DiagnosticTask1: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 3'!A:Z, 9, false), "-")`,
-  m2DiagnosticTask2: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 3'!A:Z,11, false), "-")`,
+  m3DiagnosticTask2: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 3'!A:Z,11, false), "-")`,
 });
 
 const weightedPodSize = (pod) => Math.ceil(pod.podSize / (pod.podSizeRatio || 1));
@@ -297,7 +295,7 @@ const formatSFDCStudentForRoster = (student) => {
 
 (async () => {
   console.info(`Onboarding, week #${currentCohortWeek}`);
-  if (TESTING_MODE) console.info(`RUNNING IN TESTING MODE: ONLY ADDING A TEST USER`);
+  if (TESTING_MODE) console.info('RUNNING IN TESTING MODE: ONLY ADDING A TEST USER');
 
   const newStudents = (await getNewStudentsFromSFDC())
     .map(formatSFDCStudentForRoster)

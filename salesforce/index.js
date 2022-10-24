@@ -1,14 +1,14 @@
-require('dotenv').config();
 import jsforce from 'jsforce';
 import { loadGoogleSpreadsheet } from '../googleSheets';
 import {
-  SFDC_OPPTY_RECORD_ID,
   SFDC_SELECT_QUERY,
   FULL_TIME_COURSE_START_DATE,
   SFDC_FULL_TIME_COURSE_TYPE,
   DOC_ID_HRPTIV,
   SHEET_ID_HRPTIV_ROSTER,
 } from '../constants';
+
+require('dotenv').config();
 
 const conn = new jsforce.Connection({ loginUrl: process.env.SFDC_LOGIN_URL });
 // Salesforce API Integrations
@@ -29,7 +29,7 @@ const login = async () => {
 const generateWhereClause = (courseStart, courseType) => `Course_Product__c = 'Web Development'
 AND Course_Start_Date_Actual__c = ${courseStart}
 AND Course_Type__c LIKE '%${courseType}%'
-AND (StageName = 'Deposit Paid' OR StageName = 'Accepted'`/* OR StageName = 'Contract Out'*/ + `)`;
+AND (StageName = 'Deposit Paid' OR StageName = 'Accepted')`; /* OR StageName = 'Contract Out' */
 
 const formatAddress = ({
   street,
@@ -78,7 +78,7 @@ const formatStudents = (students) => {
       preferredFirstName: contact.Preferred_First_Name__c,
       birthday: contact.Birthdate,
       phoneNumber: contact.Phone,
-      mailingAddress: mailingAddress,
+      mailingAddress,
       emergencyContactName: contact.Emergency_Contact_Name__c,
       emergencyContactPhone: contact.Emergency_Contact_Phone__c,
       emergencyContactRelationship: contact.Emergency_Contact_Relationship__c,
@@ -93,9 +93,9 @@ const formatStudents = (students) => {
       isDependentOfUSVeteran: contact.Dependent_of_Veteran__c,
       isCitizenOrPermanentResident: contact.US_Citizen_or_Permanent_Resident__c,
       hoodieSize: contact.Hoodie_Size__c,
-      addressWhileInSchool: addressWhileInSchool,
+      addressWhileInSchool,
       allergies: contact.Allergies__c,
-      otherAddress: otherAddress,
+      otherAddress,
       studentFunding1: contact.Student_Funding_1__c,
       studentFunding1Stage: contact.Student_Funding_1_Stage__c,
       paymentOption: student.Payment_Option__c,
@@ -148,7 +148,7 @@ export const getStudentsByReportID = async (reportID) => {
       if (err) throw new Error('SALESFORCE ERROR', err);
       const { rows } = result.factMap['T!T'];
       const formattedStudents = rows.map((row) => result.reportMetadata.detailColumns
-        .reduce((a, b, i) => (a[b] = row.dataCells[i].value, a), {}));
+        .reduce((a, b, i) => (a[b] = row.dataCells[i].value, a), {})); // eslint-disable-line
       return formattedStudents;
     });
   } catch (error) {
@@ -172,6 +172,5 @@ export const getNewStudentsFromSFDC = async () => {
     DOC_ID_HRPTIV,
     SHEET_ID_HRPTIV_ROSTER,
   );
-  return students.filter((student) =>
-    !enrolledStudentContactIDs.includes(student.sfdcContactId));
+  return students.filter((student) => !enrolledStudentContactIDs.includes(student.sfdcContactId));
 };

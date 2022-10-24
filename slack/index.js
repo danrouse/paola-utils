@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-require('dotenv').config();
 import fetch from 'node-fetch';
 import Bottleneck from 'bottleneck';
 import {
@@ -8,6 +6,8 @@ import {
   SLACK_JOIN_URL_STUB_HRSEIP,
   SLACK_JOIN_URL_STUB_SEIOPR,
 } from '../constants';
+
+require('dotenv').config();
 
 // Limit to max of Tier 2 request rates (20 req/min)
 const rateLimiter = new Bottleneck({
@@ -54,7 +54,7 @@ export async function paginatedSlackAPIRequest(getEndpoint, responseKey, method,
   let cursor = '';
   const responses = [];
   do {
-    const response = await rateLimitedAPIRequest(getEndpoint(cursor), 'GET'); // eslint-disable-line no-await-in-loop
+    const response = await rateLimitedAPIRequest(getEndpoint(cursor), method, body);
     if (!response || !response[responseKey]) {
       throw new Error(`Key '${responseKey}' not found in response! ${JSON.stringify(response, null, 2)}`);
     }
@@ -120,7 +120,7 @@ const setChannelTopic = (channelID, topic) => rateLimitedAPIRequest(
 export const getAllSlackUsers = () => paginatedSlackAPIRequest(
   (cursor) => `users.list?cursor=${cursor}`,
   'members',
-  'GET'
+  'GET',
 );
 
 export const getAllSlackChannels = (includePrivateChannels) => paginatedSlackAPIRequest(
@@ -148,7 +148,7 @@ const getTechMentorUserIDs = async () => {
 
 export const createChannelPerStudent = async (nameList) => {
   const formattedNames = formatListOfNames(nameList);
-  for (let name of formattedNames) {
+  for (const name of formattedNames) {
     const result = await createChannel(name); // Tier 2
     if (!result.ok) {
       console.warn('Failed to create channel for', name);
@@ -168,7 +168,6 @@ export const createChannelPerStudent = async (nameList) => {
     const invited = await inviteUsersToChannel(result.channel.id, techMentorUserIDs); // Tier 3
     if (!invited.ok) console.warn(result.channel.id, 'Failed to invite users to channel', invited);
   }
-  return true;
 };
 
 const deleteAllMessagesInThread = async (channelId, threadTs) => {
@@ -190,9 +189,8 @@ export const deleteAllMessagesInChannel = async (channelId) => {
     messages.map(async (message) => {
       if (message.thread_ts) {
         return deleteAllMessagesInThread(channelId, message.thread_ts);
-      } else {
-        return rateLimitedAPIRequest('chat.delete', 'POST', { channel: channelId, ts: message.ts });
       }
+      return rateLimitedAPIRequest('chat.delete', 'POST', { channel: channelId, ts: message.ts });
     })
   );
 };

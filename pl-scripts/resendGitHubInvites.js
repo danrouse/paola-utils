@@ -1,9 +1,8 @@
-/* eslint-disable no-console */
-require('dotenv').config();
-
 import { addUsersToTeam, gitHubAPIRequest } from '../github';
 import { GITHUB_STUDENT_TEAM, DOC_ID_PULSE } from '../constants';
 import { loadGoogleSpreadsheet, getRows } from '../googleSheets';
+
+require('dotenv').config();
 
 const getGitHubTeamMembers = async () => {
   const results = [];
@@ -31,7 +30,7 @@ const getGitHubTeamMembers = async () => {
 
   console.info('Retrieving roster from Pulse...');
   const pulseSheet = await loadGoogleSpreadsheet(DOC_ID_PULSE);
-  const students = await getRows(pulseSheet.sheetsByTitle['HRPTIV']);
+  const students = await getRows(pulseSheet.sheetsByTitle.HRPTIV);
   const githubHandles = students.map((student) => student.githubHandle.toLowerCase()).filter((student) => student);
   console.info('Found', githubHandles.length, 'student records from roster');
 

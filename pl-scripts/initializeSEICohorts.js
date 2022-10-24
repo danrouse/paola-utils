@@ -1,10 +1,11 @@
 /* eslint-disable no-restricted-syntax, no-await-in-loop */
-require('dotenv').config();
 import Bottleneck from 'bottleneck';
-import GitHub from '../github';
-import Learn from '../learn';
+import { createTeam, addUsersToTeam } from '../github';
+import { createNewCohort, addStudentToCohort } from '../learn';
 import { loadGoogleSpreadsheet, getRows } from '../googleSheets';
 import { DOC_ID_CESP, SHEET_ID_CESP_ROSTER } from '../constants';
+
+require('dotenv').config();
 
 /*
   TODO:
@@ -18,8 +19,6 @@ const DO_IT_LIVE = false;
 
 const LEARN_COHORT_FT_START_DATE = '2022-09-05'; // direct from product cal
 const LEARN_COHORT_FT_END_DATE = '2022-12-12'; // start date of round after NEXT
-const LEARN_COHORT_PT_START_DATE = '2022-09-07'; // direct from product cal
-const LEARN_COHORT_PT_END_DATE = '2023-06-03'; // direct from product cal
 const LEARN_COHORT_PRECOURSE_START_DATE = '2022-09-05'; // direct from product cal
 const LEARN_COHORT_PRECOURSE_END_DATE = '2022-10-24'; // start date of next round
 
@@ -191,16 +190,15 @@ const learnRateLimiter = new Bottleneck({
   maxConcurrent: 2,
   minTime: 500,
 });
-const addStudentToCohortRL = learnRateLimiter.wrap(Learn.addStudentToCohort);
+const addStudentToCohortRL = learnRateLimiter.wrap(addStudentToCohort);
 
 const formatGitHubTeamNameAsSlug = (teamName) => teamName.replace(/:/g, '').replace(/\s+/g, '-');
 
 const createGitHubTeams = () => Promise.all(
   CONFIG.map((config) => {
     console.log('Create GitHub team', config.teamName);
-    if (DO_IT_LIVE) {
-      return GitHub.createTeam(config.teamName);
-    }
+    if (!DO_IT_LIVE) return true;
+    return createTeam(config.teamName);
   }),
 );
 
@@ -208,9 +206,8 @@ const addInstructorsToGitHubTeams = () => Promise.all(
   CONFIG.map((config) => {
     const usernames = config.staff.filter((s) => s.github).map((s) => s.github);
     console.log(`Adding staff to GitHub Team ${formatGitHubTeamNameAsSlug(config.teamName)}: ${usernames}...`);
-    if (DO_IT_LIVE) {
-      return GitHub.addUsersToTeam(usernames, formatGitHubTeamNameAsSlug(config.teamName), true);
-    }
+    if (!DO_IT_LIVE) return true;
+    return addUsersToTeam(usernames, formatGitHubTeamNameAsSlug(config.teamName), true);
   }),
 );
 
@@ -230,7 +227,7 @@ const createLearnCohorts = () => Promise.all(
     };
     console.log('Create Learn cohort', cohort);
     if (DO_IT_LIVE) {
-      const cohortId = await Learn.createNewCohort(cohort);
+      const cohortId = await createNewCohort(cohort);
       cohortIds[config.learnCohortName] = cohortId;
       console.log(`Created Learn cohort ${config.learnCohortName} with UID ${cohortId}`);
     }
@@ -266,8 +263,8 @@ const getStudentsToOnboard = async () => {
   console.log('eligible students', eligibleStudents.length, 'of', students.length);
   return eligibleStudents.map((student) => ({
     fullName: student['Full Name'],
-    campus: student['Campus'],
-    githubHandle: student['GitHub'],
+    campus: student.Campus,
+    githubHandle: student.GitHub,
     email: student['SFDC Email'],
   }));
 };
@@ -283,10 +280,10 @@ const addStudentsToGitHubTeams = async (students) => {
     const campusName = formatGitHubTeamNameAsSlug(config.teamName);
     console.log('Add', campusStudents.length, 'students to team', campusName);
     console.log(campusStudents.map((student) => student.githubHandle));
-    if (DO_IT_LIVE) {
-      await GitHub.addUsersToTeam(campusStudents.map((student) => student.githubHandle), campusName);
-    }
+    if (!DO_IT_LIVE) continue;
+    await addUsersToTeam(campusStudents.map((student) => student.githubHandle), campusName);
   }
+  return true;
 };
 
 const addStudentsToLearnCohorts = async (students) => {
@@ -305,12 +302,13 @@ const addStudentsToLearnCohorts = async (students) => {
       email: student.email,
     };
     console.log('Add student from Precourse', student.campus, 'to', campusConfig.learnCampusName, learnCohortId, JSON.stringify(learnStudent));
-    if (DO_IT_LIVE) {
-      await addStudentToCohortRL(learnCohortId, learnStudent);
-    }
+    if (!DO_IT_LIVE) continue;
+    await addStudentToCohortRL(learnCohortId, learnStudent);
   }
+  return true;
 };
 
+// eslint-disable-next-line no-unused-vars
 const initializeNewCohorts = async () => {
   console.log('Creating GitHub teams...');
   const gitHubTeamResult = await createGitHubTeams();
@@ -321,6 +319,7 @@ const initializeNewCohorts = async () => {
   console.log(learnCohortResult);
 };
 
+// eslint-disable-next-line no-unused-vars
 const populateNewCohortsWithStaff = async () => {
   console.log('Adding instructors to GitHub teams...');
   const addInstructorsToGitHubResult = await addInstructorsToGitHubTeams();
@@ -331,6 +330,7 @@ const populateNewCohortsWithStaff = async () => {
   console.log(addInstructorsToLearnResult);
 };
 
+// eslint-disable-next-line no-unused-vars
 const populateNewCohortsWithStudents = async () => {
   console.log('Getting students from roster...');
   const students = await getStudentsToOnboard();

@@ -20,47 +20,47 @@ const convertEpochTime = (epochTime, timezoneOffset = -8) => {
 };
 
 // helper to 'humanize' epoch times
-const convertMStoMinutes = epochTime => isNaN(epochTime) ? 0
-  : Math.round(Number(((epochTime / 1000) / 60).toFixed(1)));
+const convertMStoMinutes = (epochTime) => (Number.isNaN(epochTime) ? 0
+  : Math.round(Number(((epochTime / 1000) / 60).toFixed(1))));
 
 const mod2nullResultObject = {
-  "score": 'did not attempt',
-  "solvedTaskCount": 'did not attempt',
-  "taskResults": [
+  score: 'did not attempt',
+  solvedTaskCount: 'did not attempt',
+  taskResults: [
     {
-      "sessionTask": {
-        "task": {
-          "title": "PrecourseRobotValueTracker",
-          "maxScore": 300
+      sessionTask: {
+        task: {
+          title: 'PrecourseRobotValueTracker',
+          maxScore: 300
         }
       },
-      "labels": [
-        "SEIP-2204",
-        "Precourse"
+      labels: [
+        'SEIP-2204',
+        'Precourse'
       ],
-      "score": 'did not attempt',
-      "replayUrl": "na",
-      "solveTime": 'did not attempt',
-      "timeSpent": 'did not attempt'
+      score: 'did not attempt',
+      replayUrl: 'na',
+      solveTime: 'did not attempt',
+      timeSpent: 'did not attempt'
     },
     {
-      "sessionTask": {
-        "task": {
-          "title": "PrecourseRobotValueHOF",
-          "maxScore": 300
+      sessionTask: {
+        task: {
+          title: 'PrecourseRobotValueHOF',
+          maxScore: 300
         }
       },
-      "labels": [
-        "SEIP-2204",
-        "Precourse"
+      labels: [
+        'SEIP-2204',
+        'Precourse'
       ],
-      "score": 'did not attempt',
-      "replayUrl": "na",
-      "solveTime": 'did not attempt',
-      "timeSpent": 'did not attempt'
+      score: 'did not attempt',
+      replayUrl: 'na',
+      solveTime: 'did not attempt',
+      timeSpent: 'did not attempt'
     }
   ],
-  "url": "na"
+  url: 'na'
 };
 
 // helper to format nested objects within the results
@@ -69,7 +69,6 @@ export const formatResultObject = (obj, studentEmails) => {
   const {
     startDate,
     finishDate,
-    maxScore,
     status,
     testTaker: { email, firstName, lastName },
     result,
@@ -78,8 +77,8 @@ export const formatResultObject = (obj, studentEmails) => {
 
   // handling the destructuring of null if student's result value is null => 'did not attempt' cases
   const {
-    score, solvedTaskCount, taskResults, url
-  } = result || mod2nullResultObject
+    score: totalScore, taskResults, url
+  } = result || mod2nullResultObject;
 
   const resultObj = {
     email,
@@ -90,17 +89,16 @@ export const formatResultObject = (obj, studentEmails) => {
     finishDate: convertEpochTime(finishDate),
     // totalMaxScore: maxScore,
     status,
-    totalScore: score,
+    totalScore,
     // solvedTaskCount
   };
 
   let totalDuration = 0;
 
-  taskResults.forEach((taskResult, i) => {
+  taskResults.forEach((taskResult) => {
     const {
-      sessionTask: { task: { title, maxScore } },
+      sessionTask: { task: { title } },
       score,
-      replayUrl,
       solveTime,
       timeSpent
     } = taskResult;
@@ -115,7 +113,7 @@ export const formatResultObject = (obj, studentEmails) => {
     resultObj[`${title}-score`] = score;
     // resultObj[`task-${i + 1}-score`] = score;
     // resultObj[`${title}-solveTime`] = taskDuration;
-    resultObj[`${title}-duration`] = actualTime
+    resultObj[`${title}-duration`] = actualTime;
 
     // resultObj[`${title}-replayUrl`] = replayUrl;
 
@@ -127,10 +125,8 @@ export const formatResultObject = (obj, studentEmails) => {
 
   // only for SEI Diagnostics
   if (studentEmails !== undefined) {
-
     resultObj.campus = studentEmails[email] ? studentEmails[email].campus : 'NA';
     resultObj.fullName = studentEmails[email] ? studentEmails[email].name : `X -- ${firstName} ${lastName}`;
-
   }
   return resultObj;
 };
@@ -138,7 +134,6 @@ export const formatResultObject = (obj, studentEmails) => {
 // main function to get CodeSignal results
 // used in the googlesheets/index.js file
 export const getCodeSignalResults = async (taskID, first = 0, offset = 0) => {
-
   const key = process.env.CODESIGNAL_API_KEY;
 
   // graphql query
@@ -187,31 +182,30 @@ export const getCodeSignalResults = async (taskID, first = 0, offset = 0) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ' + key
+      Accept: 'application/json',
+      Authorization: `Bearer ${key}`
     },
     body: JSON.stringify({
-      query: query,
+      query,
       variables: { taskID }
     })
   })
-    .then(r => {
+    .then((r) => {
       console.log(r);
       return r.json();
     })
-    .then(results => {
+    .then((results) => {
       console.log('results returned:', results);
       // console.log('results returned:', JSON.stringify(results, null, 2));
       // TODO - uncomment line below to inspect actual result .json file
-      fs.writeFileSync('results.json', JSON.stringify(results, null, 2), err => err ? console.log(err) : console.log('file written'));
+      fs.writeFileSync('results.json', JSON.stringify(results, null, 2), (err) => (err ? console.log(err) : console.log('file written')));
       return results;
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       return err;
     });
 };
-
 
 // TODO
 // create wrapper function so that it takes:

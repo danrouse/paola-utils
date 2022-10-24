@@ -41,7 +41,7 @@ async function getCell(worksheet, rowIndex, colIndex) {
 }
 
 export async function updateWorksheet(worksheet, uniqueKey, values, rows) {
-  const _rows = rows || (await worksheet.getRows());
+  const _rows = rows || (await worksheet.getRows()); // eslint-disable-line no-underscore-dangle
   const matchingRow = _rows.find((row) => values[uniqueKey] === row[uniqueKey]);
   if (!matchingRow) {
     // TODO: complex values (objects with notes) aren't added properly here

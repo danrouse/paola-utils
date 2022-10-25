@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { CLIEngine } = require('eslint');
+const { CLIEngine } = require('eslint-legacy');
 const executeInHeadlessBrowser = require('../../puppeteer');
 const {
   loadGoogleSpreadsheet,

@@ -1,6 +1,6 @@
-import { GoogleSpreadsheet } from 'google-spreadsheet';
+const { GoogleSpreadsheet } = require('google-spreadsheet');
 
-export async function loadGoogleSpreadsheet(id) {
+async function loadGoogleSpreadsheet(id) {
   const doc = new GoogleSpreadsheet(id);
   await doc.useServiceAccountAuth({
     client_email: process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
@@ -10,13 +10,13 @@ export async function loadGoogleSpreadsheet(id) {
   return doc;
 }
 
-export async function replaceWorksheet(worksheet, headers, rows) {
+async function replaceWorksheet(worksheet, headers, rows) {
   await worksheet.clear();
   await worksheet.setHeaderRow(headers);
   await worksheet.addRows(rows);
 }
 
-export async function getRows(worksheet) {
+async function getRows(worksheet) {
   const rows = await worksheet.getRows();
   // convert Row objects to raw JS objects
   return rows.map((row) => worksheet.headerValues.reduce((obj, key) => {
@@ -40,7 +40,7 @@ async function getCell(worksheet, rowIndex, colIndex) {
   return cell;
 }
 
-export async function updateWorksheet(worksheet, uniqueKey, values, rows) {
+async function updateWorksheet(worksheet, uniqueKey, values, rows) {
   const _rows = rows || (await worksheet.getRows()); // eslint-disable-line no-underscore-dangle
   const matchingRow = _rows.find((row) => values[uniqueKey] === row[uniqueKey]);
   if (!matchingRow) {
@@ -48,7 +48,7 @@ export async function updateWorksheet(worksheet, uniqueKey, values, rows) {
     worksheet.addRow(values);
   } else {
     for (const colName in values) {
-      if (String(matchingRow[colName]) === String(values[colName])) continue; // eslint-disable-line no-continue
+      if (String(matchingRow[colName]) === String(values[colName])) continue;
 
       const cell = await getCell(
         worksheet,
@@ -81,7 +81,7 @@ export async function updateWorksheet(worksheet, uniqueKey, values, rows) {
   await worksheet.saveUpdatedCells();
 }
 
-export async function getSheetMetadata(doc, metadataKey) {
+async function getSheetMetadata(doc, metadataKey) {
   const res = await doc.axios.post('/developerMetadata:search', {
     dataFilters: [{
       developerMetadataLookup: {
@@ -96,7 +96,7 @@ export async function getSheetMetadata(doc, metadataKey) {
   return res.data.matchedDeveloperMetadata[0].developerMetadata.metadataValue;
 }
 
-export function createSheetMetadata(doc, metadataKey, metadataValue) {
+function createSheetMetadata(doc, metadataKey, metadataValue) {
   return doc.axios.post(':batchUpdate', {
     requests: [{
       createDeveloperMetadata: {
@@ -114,7 +114,7 @@ export function createSheetMetadata(doc, metadataKey, metadataValue) {
   });
 }
 
-export function updateSheetMetadata(doc, metadataKey, metadataValue) {
+function updateSheetMetadata(doc, metadataKey, metadataValue) {
   return doc.axios.post(':batchUpdate', {
     requests: [{
       updateDeveloperMetadata: {
@@ -141,7 +141,7 @@ export function updateSheetMetadata(doc, metadataKey, metadataValue) {
   });
 }
 
-export async function upsertSheetMetadata(doc, metadataKey, metadataValue) {
+async function upsertSheetMetadata(doc, metadataKey, metadataValue) {
   const existingMetadata = await getSheetMetadata(doc, metadataKey);
   if (!existingMetadata) {
     return createSheetMetadata(doc, metadataKey, metadataValue);
@@ -149,7 +149,7 @@ export async function upsertSheetMetadata(doc, metadataKey, metadataValue) {
   return updateSheetMetadata(doc, metadataKey, metadataValue);
 }
 
-export function deleteSheetMetadata(doc, metadataKey) {
+function deleteSheetMetadata(doc, metadataKey) {
   return doc.axios.post(':batchUpdate', {
     requests: [{
       deleteDeveloperMetadata: {
@@ -166,3 +166,16 @@ export function deleteSheetMetadata(doc, metadataKey) {
     includeSpreadsheetInResponse: false,
   });
 }
+
+module.exports = {
+  loadGoogleSpreadsheet,
+  replaceWorksheet,
+  getRows,
+  updateWorksheet,
+
+  getSheetMetadata,
+  createSheetMetadata,
+  updateSheetMetadata,
+  upsertSheetMetadata,
+  deleteSheetMetadata,
+};

@@ -1,16 +1,15 @@
-import fetch from 'node-fetch';
-import { LEARN_API_COHORTS } from '../constants';
+require('dotenv').config();
+const fetch = require('node-fetch');
+const { LEARN_API_COHORTS } = require('../constants');
 
-import {
+const {
   getAllStudentsInCohort,
   validateStudentEnrollment,
   validateStudentEnrollmentByID,
   addStudentToCohort,
   removeStudentFromCohort,
   removeStudentFromCohortByID,
-} from './index';
-
-require('dotenv').config();
+} = require('.');
 
 const TEST_LEARN_COHORT_ID = 2024;
 const TEST_STUDENT = {

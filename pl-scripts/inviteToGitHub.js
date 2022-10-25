@@ -1,7 +1,6 @@
-import { addUsersToTeam, createBranches } from '../github';
-import { GITHUB_STUDENT_TEAM, COHORT_ID, GITHUB_ORG_NAME } from '../constants';
-
 require('dotenv').config();
+const { addUsersToTeam, createBranches } = require('../github');
+const { GITHUB_STUDENT_TEAM, COHORT_ID, GITHUB_ORG_NAME } = require('../constants');
 
 (async () => {
   if (!process.argv[2]) {

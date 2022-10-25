@@ -1,8 +1,8 @@
-import yargs from 'yargs';
-import emailDefinitions from './emailDefinitions';
-import sendEmails from './sendEmails';
-
 require('dotenv').config();
+
+const yargs = require('yargs');
+const emailDefinitions = require('./emailDefinitions');
+const sendEmails = require('./sendEmails');
 
 const { argv } = yargs(process.argv)
   .option('emails', {

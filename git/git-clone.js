@@ -1,7 +1,7 @@
-import fs from 'fs';
-import { exec } from 'child_process';
+const fs = require('fs');
+const { exec } = require('child_process');
 
-export const GIT_RETURN_CODE = {
+const GIT_RETURN_CODE = {
   ERROR_REPO_CLONE: 0,
   ERROR_REPO_PULL: 1,
   REPO_CLONED: 2,
@@ -35,7 +35,7 @@ function getLocalRepositoryHash(localPath) {
   });
 }
 
-export async function cloneOrPullRepository(localPath, githubPath, previousSHA, authUser, authToken) {
+async function cloneOrPullRepository(localPath, githubPath, previousSHA, authUser, authToken) {
   // TODO: get ls-remote working to avoid extra clone step
   // const nextSHA = await getRemoteRepositoryHash(githubPath);
   // if (!nextSHA) {
@@ -95,3 +95,8 @@ export async function cloneOrPullRepository(localPath, githubPath, previousSHA, 
     }
   });
 }
+
+module.exports = {
+  cloneOrPullRepository,
+  GIT_RETURN_CODE,
+};

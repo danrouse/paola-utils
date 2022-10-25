@@ -1,6 +1,6 @@
-import puppeteer from 'puppeteer';
+const puppeteer = require('puppeteer');
 
-export default async function executeInHeadlessBrowser(callback, showConsole) {
+async function executeInHeadlessBrowser(callback, showConsole) {
   const browser = await puppeteer.launch({
     headless: true,
     args: [
@@ -22,3 +22,5 @@ export default async function executeInHeadlessBrowser(callback, showConsole) {
     throw err;
   }
 }
+
+module.exports = executeInHeadlessBrowser;

@@ -1,6 +1,6 @@
 /* global jasmine */
 /* eslint-disable no-underscore-dangle */
-export default {
+module.exports = {
   repoName: 'javascript-koans',
   testRunnerFileName: 'KoansRunner.html',
   studentFilesToCopy: [

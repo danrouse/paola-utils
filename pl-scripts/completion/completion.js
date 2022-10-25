@@ -1,18 +1,18 @@
-import fs from 'fs';
-import path from 'path';
-import { execSync } from 'child_process';
-import { CLIEngine } from 'eslint';
-import executeInHeadlessBrowser from '../../puppeteer';
-import {
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+const { CLIEngine } = require('eslint');
+const executeInHeadlessBrowser = require('../../puppeteer');
+const {
   loadGoogleSpreadsheet,
   getRows,
   updateWorksheet,
-} from '../../googleSheets';
-import {
+} = require('../../googleSheets');
+const {
   cloneOrPullRepository,
   GIT_RETURN_CODE,
-} from '../../git/git-clone';
-import { asyncTimeout, TimeoutError } from './async-timeout';
+} = require('../../git/git-clone');
+const { asyncTimeout, TimeoutError } = require('./async-timeout');
 
 const TEST_TIME_LIMIT_MS = 30000;
 
@@ -79,7 +79,7 @@ async function executeHTMLTestRunner(testRunnerPath, callback, showLogs) {
   }, showLogs);
 }
 
-export async function testProject({
+async function testProject({
   project,
   localRepoPath,
   verbose,
@@ -135,7 +135,7 @@ export async function testProject({
   };
 }
 
-export async function fetchAndTestProject({
+async function fetchAndTestProject({
   githubHandle,
   project,
   cohortId,
@@ -297,7 +297,7 @@ async function updateRepoCompletionWorksheet({
   return true;
 }
 
-export async function updateRepoCompletionWorksheets({
+async function updateRepoCompletionWorksheets({
   sheetId,
   sheetNames,
   projects,
@@ -338,3 +338,9 @@ export async function updateRepoCompletionWorksheets({
     }
   }
 }
+
+module.exports = {
+  testProject,
+  fetchAndTestProject,
+  updateRepoCompletionWorksheets,
+};

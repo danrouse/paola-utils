@@ -1,5 +1,5 @@
 /* global mocha */
-export default {
+module.exports = {
   repoName: 'underbar',
   testRunnerFileName: 'SpecRunner.html',
   studentFilesToCopy: ['src/underbar.js'],

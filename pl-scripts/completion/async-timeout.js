@@ -1,7 +1,7 @@
-export class TimeoutError extends Error {}
+class TimeoutError extends Error {}
 
 // Throw an error if a Promise doesn't resolve within the timeLimit
-export async function asyncTimeout(promise, timeLimit) {
+async function asyncTimeout(promise, timeLimit) {
   let timeout;
   const timeoutPromise = new Promise((resolve) => {
     timeout = setTimeout(() => {
@@ -13,3 +13,8 @@ export async function asyncTimeout(promise, timeLimit) {
   if (timeout) clearTimeout(timeout);
   return result;
 }
+
+module.exports = {
+  asyncTimeout,
+  TimeoutError,
+};

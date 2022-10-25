@@ -1,18 +1,17 @@
-/* eslint-disable no-console, quote-props */
+/* eslint-disable quote-props */
 /**
  * TODO:
  *  - handle separated students
  */
-import { loadGoogleSpreadsheet, replaceWorksheet, getRows } from '../googleSheets';
-import {
+require('dotenv').config();
+const { loadGoogleSpreadsheet, replaceWorksheet, getRows } = require('../googleSheets');
+const {
   DOC_ID_CESP,
   DOC_ID_PULSE,
   SHEET_ID_CESP_ROSTER,
   SHEET_ID_CESP_MODULE_COMPLETION,
-} from '../constants';
-import techMentors from '../tech-mentors';
-
-require('dotenv').config();
+} = require('../constants');
+const techMentors = require('../tech-mentors');
 
 const CESP_ROSTER_SHEET_HEADERS = [
   'Full Name',

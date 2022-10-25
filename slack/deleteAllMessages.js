@@ -1,6 +1,6 @@
-import { deleteAllMessagesInChannel, getAllSlackChannels } from './index';
-
 require('dotenv').config();
+
+const { deleteAllMessagesInChannel, getAllSlackChannels } = require('./index');
 
 const ALL_CHANNELS_VALUE = 'ALL';
 (async () => {

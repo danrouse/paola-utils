@@ -2,9 +2,8 @@
 // GMail API Integrations
 // ------------------------------
 
-import { google } from 'googleapis';
-
 require('dotenv').config();
+const { google } = require('googleapis');
 
 const scopes = ['https://mail.google.com/'];
 const jwt = new google.auth.JWT(
@@ -101,7 +100,7 @@ const generateEmail = (body, subject, toList, ccList, bccList, alias, mergeField
 };
 
 // Send an email with TO, CC, and BCC list of receipients attached
-export const sendEmail = async (body, subject, toList, ccList, bccList, alias, mergeFields) => {
+exports.sendEmail = async (body, subject, toList, ccList, bccList, alias, mergeFields) => {
   try {
     const service = await authenticate();
     const encodedEmail = generateEmail(body, subject, toList, ccList, bccList, alias, mergeFields,);
@@ -118,7 +117,7 @@ export const sendEmail = async (body, subject, toList, ccList, bccList, alias, m
 };
 
 // Send an email using a draft email template
-export const sendEmailFromDraft = async (subjectQuery, toList, ccList, bccList, alias, mergeFields) => {
+exports.sendEmailFromDraft = async (subjectQuery, toList, ccList, bccList, alias, mergeFields) => {
   try {
     const service = await authenticate();
     const draft = await getDraftBySubject(subjectQuery);

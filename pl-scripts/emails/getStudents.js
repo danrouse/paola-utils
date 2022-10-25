@@ -1,13 +1,13 @@
-import { loadGoogleSpreadsheet } from '../../googleSheets';
-import techMentors from '../../tech-mentors';
-import {
+const { loadGoogleSpreadsheet } = require('../../googleSheets');
+const techMentors = require('../../tech-mentors');
+const {
   DOC_ID_HRPTIV,
   DOC_ID_PULSE,
   SHEET_ID_HRPTIV_ROSTER,
-} from '../../constants';
+} = require('../../constants');
 
 let rosterStudents;
-export async function getRosterStudents() {
+async function getRosterStudents() {
   if (!rosterStudents) {
     const sheetHRPTIV = await loadGoogleSpreadsheet(DOC_ID_HRPTIV);
     rosterStudents = await sheetHRPTIV.sheetsById[SHEET_ID_HRPTIV_ROSTER].getRows();
@@ -16,7 +16,7 @@ export async function getRosterStudents() {
 }
 
 let repoCompletionStudents;
-export async function getRepoCompletionStudents() {
+async function getRepoCompletionStudents() {
   if (!repoCompletionStudents) {
     const doc = await loadGoogleSpreadsheet(DOC_ID_PULSE);
     const sheets = await Promise.all(
@@ -31,3 +31,8 @@ export async function getRepoCompletionStudents() {
   }
   return repoCompletionStudents;
 }
+
+module.exports = {
+  getRosterStudents,
+  getRepoCompletionStudents,
+};

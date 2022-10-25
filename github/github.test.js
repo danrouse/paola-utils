@@ -1,15 +1,14 @@
-import fetch from 'node-fetch';
-import { GITHUB_API_TEAMS } from '../constants';
-import {
+require('dotenv').config();
+const fetch = require('node-fetch');
+const { GITHUB_API_TEAMS } = require('../constants');
+const {
   validateUser,
   isUserOnTeam,
   addUserToTeam,
   removeUserFromTeam,
   addUsersToTeam,
   removeUsersFromTeam,
-} from './index';
-
-require('dotenv').config();
+} = require('.');
 
 const GITHUB_TEAM_USERNAME = 'paola-test-team';
 const GITHUB_TEST_USER = 'murphpaolatestuser';

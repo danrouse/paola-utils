@@ -1,11 +1,9 @@
-/* eslint-disable no-restricted-syntax, no-await-in-loop */
-import Bottleneck from 'bottleneck';
-import { createTeam, addUsersToTeam } from '../github';
-import { createNewCohort, addStudentToCohort } from '../learn';
-import { loadGoogleSpreadsheet, getRows } from '../googleSheets';
-import { DOC_ID_CESP, SHEET_ID_CESP_ROSTER } from '../constants';
-
 require('dotenv').config();
+const Bottleneck = require('bottleneck');
+const { createTeam, addUsersToTeam } = require('../github');
+const { createNewCohort, addStudentToCohort } = require('../learn');
+const { loadGoogleSpreadsheet, getRows } = require('../googleSheets');
+const { DOC_ID_CESP, SHEET_ID_CESP_ROSTER } = require('../constants');
 
 /*
   TODO:
@@ -182,7 +180,13 @@ const CONFIG = [{
 // populated when cohorts are created
 // if doing a late-run, or student population, set these manually!
 // the UIDs of newly-created cohorts are logged at creation-time
-const cohortIds = {};
+const cohortIds = {
+  'SEI-RFP2209': 'd2b43b937e89b8df0f',
+  'SEI-RFC2209': '4a217bdd03e841ab63',
+  'SEI-RFE2209': '0e6d1716b3da33e2a3',
+  'SEI-RPP2209': '5e5eae966ce77ee647',
+  'SEI - Precourse - October 2022': '943c2358b9423dcf8c',
+};
 
 // END OF CONFIGURATION
 

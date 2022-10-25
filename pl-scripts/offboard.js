@@ -1,16 +1,15 @@
-import Bottleneck from 'bottleneck';
-import { removeUsersFromTeam } from '../github';
-import { removeStudentFromCohort } from '../learn';
-import {
+require('dotenv').config();
+const Bottleneck = require('bottleneck');
+const { removeUsersFromTeam } = require('../github');
+const { removeStudentFromCohort } = require('../learn');
+const {
   loadGoogleSpreadsheet,
-} from '../googleSheets';
-import {
+} = require('../googleSheets');
+const {
   DOC_ID_PULSE,
   GITHUB_STUDENT_TEAM,
   LEARN_COHORT_ID,
-} from '../constants';
-
-require('dotenv').config();
+} = require('../constants');
 
 const rateLimiter = new Bottleneck({
   maxConcurrent: 2,

@@ -1,17 +1,17 @@
-import { getAllSlackUsers, getSlackInviteLink } from '../../slack';
-import { getNewStudentsFromSFDC, hasIntakeFormCompleted } from '../../salesforce';
-import {
+const { getAllSlackUsers, getSlackInviteLink } = require('../../slack');
+const { getNewStudentsFromSFDC, hasIntakeFormCompleted } = require('../../salesforce');
+const {
   LEARN_COHORT_ID,
   FULL_TIME_COURSE_START_DATE
-} from '../../constants';
-import {
+} = require('../../constants');
+const {
   getDeadline,
   getMissedDeadlineStudents,
   getModule1MissDetails,
   getModule2MissDetails,
   getModule3MissDetails,
-} from './missedDeadlines';
-import { getRosterStudents, getRepoCompletionStudents } from './getStudents';
+} = require('./missedDeadlines');
+const { getRosterStudents, getRepoCompletionStudents } = require('./getStudents');
 
 const MERGE_FIELD_STUDENT_INFO_FORM_URL = 'www.tfaforms.com/369587?tfa_57=';
 
@@ -34,7 +34,7 @@ const numDaysAgo = (dateString) => Math.floor(
   (new Date() - new Date(dateString)) / (1000 * 60 * 60 * 24),
 );
 
-export default [{
+module.exports = [{
   key: 'studentInfoFormReminder',
   draftName: '[Action Required] Student Onboarding Form Submission',
   async getEmails() {

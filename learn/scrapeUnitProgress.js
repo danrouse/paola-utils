@@ -1,9 +1,9 @@
-import executeInHeadlessBrowser from '../puppeteer';
-import { LEARN_COHORT_ID } from '../constants';
+const executeInHeadlessBrowser = require('../puppeteer');
+const { LEARN_COHORT_ID } = require('../constants');
 
 const UNIT_PROGRESS_URL = `https://learn-2.galvanize.com/cohorts/${LEARN_COHORT_ID}/unit_progress`;
 
-export default function scrapeUnitProgress() {
+module.exports = function scrapeUnitProgress() {
   if (!process.env.LEARN_SCRAPE_USER_EMAIL || !process.env.LEARN_SCRAPE_USER_PASSWORD) {
     throw new Error('LEARN_SCRAPE_USER_EMAIL and LEARN_SCRAPE_USER_PASSWORD must be set in the environment to use the Learn scraper');
   }

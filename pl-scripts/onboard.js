@@ -32,7 +32,7 @@ require('dotenv').config();
 exitIfCohortIsNotActive();
 
 const TESTING_MODE = false;
-const MAX_STUDENTS_PER_RUN = 1;
+const MAX_STUDENTS_PER_RUN = 30;
 const PRODUCT_CODE_CAMPUS_OVERRIDES = {
   RFP: 'RFT Pacific',
   RFE: 'RFT Eastern',
@@ -326,9 +326,9 @@ const formatSFDCStudentForRoster = (student) => {
 
   if (TESTING_MODE) {
     eligibleNewStudents = [{
-      fullName: 'Testing Teststudent',
-      email: 'daniel.rouse+test@galvanize.com',
-      githubHandle: 'danrouse',
+      fullName: 'Test Teststudent',
+      email: 'paola+test@galvanize.com',
+      githubHandle: 'hackreactor-paola',
     }];
   }
 

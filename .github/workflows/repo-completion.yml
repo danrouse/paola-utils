@@ -24,17 +24,17 @@ jobs:
         with:
           node-version: '16'
           
-      - uses: actions/cache@v3
-        id: cache
-        with:
-          path: |
-            **/node_modules
-            /home/runner/.cache/Cypress
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+      # - uses: actions/cache@v3
+      #   id: cache
+      #   with:
+      #     path: |
+      #       **/node_modules
+      #       /home/runner/.cache/Cypress
+      #     key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm install
+        run: npm install && cd node_modules/puppeteer && npm install
         
       - name: Run repo completion
         run: xvfb-run --auto-servernum node pl-scripts/completion/cli.js --cohort ${{ github.event.inputs.cohort }} --tech-mentors ${{ github.event.inputs.tech_mentors }} --projects ${{ github.event.inputs.projects }}

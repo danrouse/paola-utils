@@ -30,7 +30,7 @@ jobs:
           path: |
             **/node_modules
             /home/runner/.cache/Cypress
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}-with-cypress
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'

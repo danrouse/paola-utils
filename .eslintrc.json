@@ -14,7 +14,6 @@
     "comma-dangle": "off",
     "operator-linebreak": "off",
     "implicit-arrow-linebreak": "off",
-    "prefer-regex-literals": "off",
     "max-len": [
       "warn",
       { "code": 180 }

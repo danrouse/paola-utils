@@ -84,8 +84,7 @@ async function testProject({
   verbose,
   logPrefix = '',
 }) {
-  let lintErrors; let failureMessages; let repoCompletionChanges; let
-    runtimeError;
+  let lintErrors, failureMessages, repoCompletionChanges, runtimeError;
 
   if (!project.skipLinting) {
     console.info(getTime(), logPrefix, 'Running linter on project...');
@@ -163,8 +162,7 @@ async function fetchAndTestProject({
   );
   console.info(getTime(), logPrefix, GIT_RESPONSE_LOG_STRINGS[gitResult.code]);
 
-  let lintErrors; let failureMessages; let repoCompletionChanges; let
-    runtimeError;
+  let lintErrors, failureMessages, repoCompletionChanges, runtimeError;
   if (
     gitResult.code === GIT_RETURN_CODE.REPO_CLONED ||
     gitResult.code === GIT_RETURN_CODE.REPO_PULLED
@@ -186,7 +184,7 @@ async function fetchAndTestProject({
         fs.copyFileSync(
           path.join(localRepoPath, fileName),
           path.join(baseRepoPath, fileName),
-        ),);
+        ));
 
       pathToTest = baseRepoPath;
     }

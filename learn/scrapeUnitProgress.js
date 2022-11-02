@@ -19,8 +19,7 @@ module.exports = function scrapeUnitProgress() {
     );
     return reactProps.students.map((student) => {
       const progress = reactProps.submissionData.completion_progress[student.id];
-      let completed = 0; let
-        total = 0;
+      let completed = 0, total = 0;
       Object.values(progress).forEach((section) =>
         Object.values(section).forEach((lesson) => {
           completed += lesson.completed;

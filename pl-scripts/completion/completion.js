@@ -40,7 +40,6 @@ function getDefaultProjectValues(columnNames, value) {
 
 async function batchPromises(promiseGenerators, batchSize) {
   while (promiseGenerators.length) {
-    // eslint-disable-next-line no-await-in-loop
     await Promise.all(
       promiseGenerators.splice(0, batchSize || 1).map((g) => g()),
     );
@@ -310,10 +309,8 @@ async function updateRepoCompletionWorksheets({
   githubAuthToken,
   verbose,
 }) {
-  // eslint-disable-next-line no-restricted-syntax
   for (const sheetName of sheetNames) {
     try {
-      // eslint-disable-next-line no-await-in-loop
       const result = await updateRepoCompletionWorksheet({
         sheetId,
         sheetName,

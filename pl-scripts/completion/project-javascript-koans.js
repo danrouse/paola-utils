@@ -17,7 +17,6 @@ module.exports = {
   getTestResults: (page) =>
     page.evaluate(() => new Promise((resolve) => {
       function onComplete() {
-        // eslint-disable-next-line no-underscore-dangle
         const suites = jasmine.currentEnv_.currentRunner_.suites();
         const requiredSuites = [
           'About Expects',
@@ -45,7 +44,7 @@ module.exports = {
             javascriptKoans: suites.reduce(
               (sum, suite) =>
                 sum +
-                  suite.specs().filter((spec) => spec.results_.failedCount === 0) // eslint-disable-line no-underscore-dangle
+                  suite.specs().filter((spec) => spec.results_.failedCount === 0)
                     .length,
               0,
             ),
@@ -55,11 +54,11 @@ module.exports = {
       }
 
       if (
-        jasmine.currentEnv_.currentRunner_ // eslint-disable-line no-underscore-dangle
+        jasmine.currentEnv_.currentRunner_
           .suites()
           .some((suite) => !suite.finished)
       ) {
-        jasmine.currentEnv_.currentRunner_.finishCallback = onComplete; // eslint-disable-line no-underscore-dangle
+        jasmine.currentEnv_.currentRunner_.finishCallback = onComplete;
       } else {
         onComplete();
       }

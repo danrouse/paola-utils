@@ -94,6 +94,8 @@ async function testProject({
       lintErrors = await lintProject(localRepoPath);
     } catch (err) {
       // error thrown by eslint
+      console.log('ESLint error:');
+      console.log(err);
       lintErrors = [
         'An error occurred when linting your code. Make sure you have not changed any of the linter settings!',
         'These settings are not made to be modified.',

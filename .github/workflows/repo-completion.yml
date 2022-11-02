@@ -30,7 +30,8 @@ jobs:
           path: |
             **/node_modules
             /home/runner/.cache/Cypress
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+            /home/runner/.cache/puppeteer
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}-with-browsers
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'

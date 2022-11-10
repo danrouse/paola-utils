@@ -1,4 +1,5 @@
 name: Send Emails
+run-name: Send Emails (${{ inputs.emails }}) (Dry run: ${{ inputs.dry-run }})
 on:
   workflow_dispatch:
     inputs:

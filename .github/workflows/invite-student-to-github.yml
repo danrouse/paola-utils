@@ -1,4 +1,5 @@
 name: Invite Student to GitHub
+run-name: Invite Student to GitHub (${{ inputs.handle }})
 on:
   workflow_dispatch:
     inputs:

@@ -79,6 +79,7 @@ module.exports = {
     'Official_Withdrawal_Date__c',
     'Separation_Notes__c',
     'Student__r.Preferred_First_Name__c',
+    'Full_Primary_Name__c',
     'Student__r.Birthdate',
     'Student__r.Phone',
     'Student__r.MailingAddress',

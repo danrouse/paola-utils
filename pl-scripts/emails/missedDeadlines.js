@@ -1,6 +1,5 @@
 const {
   DEADLINE_DATES,
-  TEST_COUNT_KOANS,
   TEST_COUNT_TESTBUILDER_MIN,
   TEST_COUNT_TESTBUILDER_MAX,
   TEST_COUNT_UNDERBAR_PART_ONE,
@@ -87,21 +86,21 @@ function getMissedDeadlineDetails(student, projects) {
 function getModule1MissDetails(student) {
   return getMissedDeadlineDetails(student, [
     ['JavaScript Koans', student.javascriptKoans, student.koansMinReqs === 'Yes'],
-    ['Testbuilder', student.testbuilder, Number(student.testbuilder) >= 3323 && Number(student.testbuilder) < 3330],
-    ['Underbar Part 1', student.underbarPartOne, Number(student.underbarPartOne) >= 55],
+    ['Testbuilder', student.testbuilder, Number(student.testbuilder) >= TEST_COUNT_TESTBUILDER_MIN && Number(student.testbuilder) < TEST_COUNT_TESTBUILDER_MAX],
+    ['Underbar Part 1', student.underbarPartOne, Number(student.underbarPartOne) >= TEST_COUNT_UNDERBAR_PART_ONE],
   ]);
 }
 
 function getModule2MissDetails(student) {
   return getMissedDeadlineDetails(student, [
-    ['Underbar Part 2', student.underbarPartTwo, Number(student.underbarPartTwo) >= 58],
-    ['Twiddler', student.twiddler, Number(student.twiddler) >= 3.5],
+    ['Underbar Part 2', student.underbarPartTwo, Number(student.underbarPartTwo) >= TEST_COUNT_UNDERBAR_PART_TWO],
+    ['Twiddler', student.twiddler, Number(student.twiddler) >= TEST_COUNT_TWIDDLER],
   ]);
 }
 
 function getModule3MissDetails(student) {
   return getMissedDeadlineDetails(student, [
-    ['Recursion', student.recursion, Number(student.recursion) >= 2],
+    ['Recursion', student.recursion, Number(student.recursion) >= TEST_COUNT_RECURSION],
   ]);
 }
 

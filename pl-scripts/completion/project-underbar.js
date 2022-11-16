@@ -29,12 +29,14 @@ module.exports = {
           failureMessages: [].concat(partOneFailures, partTwoFailures),
         });
       }
-      // TODO: mocha._state is not present here, so there's a potential
-      // race condition where the test runner finishes before this runs
-      // if (mocha._state === 'init' || mocha._state === 'running') {
-      mocha.suite.afterAll(() => onComplete());
-      // } else {
-      //   onComplete();
-      // }
+      const testResults = [].concat(
+        mocha.suite.suites[0].suites.map((nested) => nested.tests).flat().map((test) => test.state),
+        mocha.suite.suites[1].suites.map((nested) => nested.tests).flat().map((test) => test.state),
+      );
+      if (testResults.every((state) => state === 'passed' || state === 'failed')) {
+        onComplete();
+      } else {
+        mocha.suite.afterAll(() => onComplete());
+      }
     })),
 };

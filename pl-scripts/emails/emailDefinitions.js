@@ -11,7 +11,7 @@ const {
   getModule2MissDetails,
   getModule3MissDetails,
 } = require('./missedDeadlines');
-const { getRosterStudents, getRepoCompletionStudents } = require('./getStudents');
+const { getRepoCompletionStudents } = require('./getStudents');
 
 const MERGE_FIELD_STUDENT_INFO_FORM_URL = 'www.tfaforms.com/369587?tfa_57=';
 
@@ -20,12 +20,13 @@ const normalizeEmail = (email) => email.toLowerCase().replace(/\./g, '');
 const normalizeName = (name) => name.toLowerCase().replace(/\s/g, '');
 async function getMissingSlackUsers() {
   const slackUsers = await getAllSlackUsers();
-  const rosterStudents = await getRosterStudents();
+  const rosterStudents = await getRepoCompletionStudents();
   return rosterStudents.filter((rosterStudent) => !slackUsers.find(
     (slackUser) => slackUser.profile && slackUser.profile.email
       && (
         normalizeEmail(slackUser.profile.email) === normalizeEmail(rosterStudent.email)
         || normalizeName(slackUser.profile.real_name) === normalizeName(rosterStudent.fullName)
+        || normalizeName(slackUser.profile.real_name) === normalizeName(rosterStudent.legalName)
       ),
   ));
 }

@@ -1,19 +1,6 @@
 const { loadGoogleSpreadsheet } = require('../../googleSheets');
 const techMentors = require('../../tech-mentors');
-const {
-  DOC_ID_HRPTIV,
-  DOC_ID_PULSE,
-  SHEET_ID_HRPTIV_ROSTER,
-} = require('../../constants');
-
-let rosterStudents;
-async function getRosterStudents() {
-  if (!rosterStudents) {
-    const sheetHRPTIV = await loadGoogleSpreadsheet(DOC_ID_HRPTIV);
-    rosterStudents = await sheetHRPTIV.sheetsById[SHEET_ID_HRPTIV_ROSTER].getRows();
-  }
-  return rosterStudents;
-}
+const { DOC_ID_PULSE } = require('../../constants');
 
 let repoCompletionStudents;
 async function getRepoCompletionStudents() {
@@ -33,6 +20,5 @@ async function getRepoCompletionStudents() {
 }
 
 module.exports = {
-  getRosterStudents,
   getRepoCompletionStudents,
 };

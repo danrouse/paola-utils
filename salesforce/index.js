@@ -142,8 +142,7 @@ const getStudentByOpportunityId = async (id) => {
   await login();
   return new Promise((resolve, reject) => {
     try {
-      
-      return conn.sobject('Opportunity')
+      conn.sobject('Opportunity')
         .retrieve(id, (err, res) => {
           if (err) throw new Error('SALESFORCE ERROR', err);
           // const formattedStudents = formatStudents([res]);

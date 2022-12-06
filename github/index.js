@@ -87,9 +87,9 @@ const getForks = async (baseRepoName) => {
       `repos/${GITHUB_ORG_NAME}/${baseRepoName}/forks?per_page=100&page=${page}`,
       'GET',
     );
-    response.forEach((fork) => forks[fork.owner.login] = fork.name);
+    response.forEach((fork) => { forks[fork.owner.login] = fork.name; });
     page += 1;
-  } while (response && response.length)
+  } while (response && response.length);
   getForksCache[baseRepoName] = forks;
   return forks;
 };

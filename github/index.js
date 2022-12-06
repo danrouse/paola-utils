@@ -87,11 +87,18 @@ const getForks = async (baseRepoName) => {
       `repos/${GITHUB_ORG_NAME}/${baseRepoName}/forks?per_page=100&page=${page}`,
       'GET',
     );
-    response.forEach((fork) => { forks[fork.owner.login] = fork.name; });
+    response.forEach((fork) => { forks[fork.owner.login.toLowerCase()] = fork.name; });
     page += 1;
   } while (response && response.length);
   getForksCache[baseRepoName] = forks;
   return forks;
+};
+
+const getFork = async (baseRepoName, githubHandle) => {
+  if (!getForksCache[baseRepoName]) {
+    await getForks(baseRepoName);
+  }
+  return getForksCache[baseRepoName][githubHandle.toLowerCase()];
 };
 
 module.exports = {
@@ -106,4 +113,5 @@ module.exports = {
   removeUsersFromTeam,
   createBranches,
   getForks,
+  getFork,
 };

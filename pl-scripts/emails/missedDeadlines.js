@@ -7,7 +7,7 @@ const {
   TEST_COUNT_TWIDDLER,
   TEST_COUNT_RECURSION,
 } = require('../../constants');
-const { getRepoCompletionStudents, getRosterStudents } = require('./getStudents');
+const { getRepoCompletionStudents } = require('./getStudents');
 
 const NO_FORK_TEXT = 'No Fork';
 const ERROR_TEXT = 'Timed Out';
@@ -23,7 +23,6 @@ const getDeadline = (student, moduleNumber, final) => {
 
 async function getMissedDeadlineStudents(moduleNumber, daysInAdvance) {
   const repoCompletionStudents = await getRepoCompletionStudents();
-  const rosterStudents = await getRosterStudents();
   return repoCompletionStudents.filter((student) => {
     const softDeadline = getDeadline(student, moduleNumber);
     const hardDeadline = getDeadline(student, moduleNumber, true);
@@ -48,11 +47,7 @@ async function getMissedDeadlineStudents(moduleNumber, daysInAdvance) {
     return cutoff < now
       && endingCutoff > now
       && !isModuleComplete[moduleNumber - 1];
-  }).map((student) => ({
-    ...student,
-    preferredFirstName: rosterStudents.find((rosterStudent) => rosterStudent.fullName
-      === student.fullName).preferredFirstName,
-  }));
+  });
 }
 
 function getProjectCompletionMessage(projectName, repoCompletionValue, isComplete) {

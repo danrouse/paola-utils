@@ -1,8 +1,8 @@
 require('dotenv').config();
 
 const { addUsersToTeam, gitHubAPIRequest } = require('../github');
-const { GITHUB_STUDENT_TEAM, DOC_ID_PULSE } = require('../constants');
-const { loadGoogleSpreadsheet, getRows } = require('../googleSheets');
+const { GITHUB_STUDENT_TEAM } = require('../constants');
+const { getRepoCompletionStudents } = require('./emails/getStudents');
 
 const getGitHubTeamMembers = async () => {
   const results = [];
@@ -29,8 +29,7 @@ const getGitHubTeamMembers = async () => {
   console.info('Found', pendingTeamMembers.length, 'pending invitations!');
 
   console.info('Retrieving roster from Pulse...');
-  const pulseSheet = await loadGoogleSpreadsheet(DOC_ID_PULSE);
-  const students = await getRows(pulseSheet.sheetsByTitle.HRPTIV);
+  const students = await getRepoCompletionStudents();
   const githubHandles = students.map((student) => student.githubHandle.toLowerCase()).filter((student) => student);
   console.info('Found', githubHandles.length, 'student records from roster');
 

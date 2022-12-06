@@ -12,6 +12,7 @@ const {
   cloneOrPullRepository,
   GIT_RETURN_CODE,
 } = require('../../git/git-clone');
+const { getForks } = require('../../github');
 const { asyncTimeout, TimeoutError } = require('./async-timeout');
 
 const TEST_TIME_LIMIT_MS = 30000;
@@ -152,7 +153,8 @@ async function fetchAndTestProject({
     githubHandle,
     qualifiedRepoName,
   );
-  const githubPath = `${githubHandle}/${qualifiedRepoName}.git`;
+  const forks = await getForks(qualifiedRepoName);
+  const githubPath = `${githubHandle}/${forks[githubHandle]}.git`;
   const gitResult = await cloneOrPullRepository(
     localRepoPath,
     githubPath,

@@ -24,8 +24,7 @@ module.exports = function scrapeUnitProgress() {
         Object.values(section).forEach((lesson) => {
           completed += lesson.completed;
           total += lesson.total;
-        })
-      );
+        }));
       return {
         id: student.id,
         name: student.full_name,

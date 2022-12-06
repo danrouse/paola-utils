@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { CLIEngine } = require('eslint-legacy');
 const executeInHeadlessBrowser = require('../../puppeteer');
-const { CLIEngine } = require('eslint');
 const {
   loadGoogleSpreadsheet,
   getRows,
@@ -20,7 +20,6 @@ const TEST_TIME_LIMIT_MS = 30000;
 const CELL_VALUE_NO_FORK = 'No Fork';
 const CELL_VALUE_TIMEOUT = 'Timed Out';
 const CELL_VALUE_ERROR = 'Error';
-const CELL_VALUE_APPEND_LINT_FAILURE = '🧹';
 
 const GIT_RESPONSE_LOG_STRINGS = {
   [GIT_RETURN_CODE.REPO_CLONED]: 'Cloned remote repo',
@@ -42,7 +41,6 @@ function getDefaultProjectValues(columnNames, value) {
 
 async function batchPromises(promiseGenerators, batchSize) {
   while (promiseGenerators.length) {
-    // eslint-disable-next-line no-await-in-loop
     await Promise.all(
       promiseGenerators.splice(0, batchSize || 1).map((g) => g()),
     );
@@ -62,9 +60,7 @@ async function lintProject(projectPath) {
   const report = eslintCLI.executeOnFiles('.');
   return report.results.map((results) =>
     results.messages.map((message) =>
-      `\`${results.filePath.replace(projectPath, '')}:${message.line}:${message.column}\`: \`${message.message}\``
-    )
-  ).flat();
+      `\`${results.filePath.replace(projectPath, '')}:${message.line}:${message.column}\`: \`${message.message}\``)).flat();
 }
 
 async function executeHTMLTestRunner(testRunnerPath, callback, showLogs) {
@@ -135,7 +131,9 @@ async function testProject({
     runtimeError = err;
   }
 
-  return { lintErrors, failureMessages, repoCompletionChanges, runtimeError };
+  return {
+    lintErrors, failureMessages, repoCompletionChanges, runtimeError
+  };
 }
 
 async function fetchAndTestProject({
@@ -188,13 +186,14 @@ async function fetchAndTestProject({
         fs.copyFileSync(
           path.join(localRepoPath, fileName),
           path.join(baseRepoPath, fileName),
-        ),
-      );
+        ));
 
       pathToTest = baseRepoPath;
     }
 
-    const result = await testProject({ project, localRepoPath: pathToTest, verbose, logPrefix });
+    const result = await testProject({
+      project, localRepoPath: pathToTest, verbose, logPrefix
+    });
 
     if (project.studentFilesToCopy) {
       // reset base repo
@@ -257,43 +256,41 @@ async function updateRepoCompletionWorksheet({
   }));
 
   // Defer creation of promises so execution doesn't begin immediately, for batching
-  const promiseGenerators = students.map((student) => {
-    return async () => {
-      const studentResults = { githubHandle: student.githubHandle };
-      await Promise.all(
-        projects.map(async (project) => {
-          const results = await fetchAndTestProject({
-            githubHandle: student.githubHandle,
-            project,
-            cohortId,
-            verbose,
-            lastCommitHash: student.metadata[`${project.repoName}LastCommit`],
-            localPathToStudentRepos,
-            githubAuthUser,
-            githubAuthToken,
-          });
-          Object.assign(studentResults, results.repoCompletionChanges);
-          student.metadata[`${project.repoName}LastCommit`] = results.gitCommitHash; // eslint-disable-line no-param-reassign
-        }),
-      );
-      // Update repo completion sheet
-      await updateWorksheet(
-        worksheet,
-        'githubHandle',
-        studentResults,
-        repoCompletionWorksheetRows,
-      );
-      // Update student metadata sheet with tested commit hashes
-      await updateWorksheet(
-        studentMetadataWorksheet,
-        'githubHandle',
-        {
+  const promiseGenerators = students.map((student) => async () => {
+    const studentResults = { githubHandle: student.githubHandle };
+    await Promise.all(
+      projects.map(async (project) => {
+        const results = await fetchAndTestProject({
           githubHandle: student.githubHandle,
-          json: JSON.stringify(student.metadata),
-        },
-        studentMetadataWorksheetRows,
-      );
-    };
+          project,
+          cohortId,
+          verbose,
+          lastCommitHash: student.metadata[`${project.repoName}LastCommit`],
+          localPathToStudentRepos,
+          githubAuthUser,
+          githubAuthToken,
+        });
+        Object.assign(studentResults, results.repoCompletionChanges);
+        student.metadata[`${project.repoName}LastCommit`] = results.gitCommitHash; // eslint-disable-line no-param-reassign
+      }),
+    );
+    // Update repo completion sheet
+    await updateWorksheet(
+      worksheet,
+      'githubHandle',
+      studentResults,
+      repoCompletionWorksheetRows,
+    );
+    // Update student metadata sheet with tested commit hashes
+    await updateWorksheet(
+      studentMetadataWorksheet,
+      'githubHandle',
+      {
+        githubHandle: student.githubHandle,
+        json: JSON.stringify(student.metadata),
+      },
+      studentMetadataWorksheetRows,
+    );
   });
 
   await batchPromises(promiseGenerators, batchSize || 1);
@@ -312,10 +309,8 @@ async function updateRepoCompletionWorksheets({
   githubAuthToken,
   verbose,
 }) {
-  // eslint-disable-next-line no-restricted-syntax
   for (const sheetName of sheetNames) {
     try {
-      // eslint-disable-next-line no-await-in-loop
       const result = await updateRepoCompletionWorksheet({
         sheetId,
         sheetName,

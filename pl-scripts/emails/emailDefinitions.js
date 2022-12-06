@@ -15,7 +15,6 @@ const { getRepoCompletionStudents } = require('./getStudents');
 
 const MERGE_FIELD_STUDENT_INFO_FORM_URL = 'www.tfaforms.com/369587?tfa_57=';
 
-
 const normalizeEmail = (email) => email.toLowerCase().replace(/\./g, '');
 const normalizeName = (name) => name.toLowerCase().replace(/\s/g, '');
 async function getMissingSlackUsers() {
@@ -133,7 +132,7 @@ module.exports = [{
   draftName: '🎉 Congratulations! You\'ve completed Precourse + Solution Video Password 🎉',
   async getEmails() {
     const students = (await getRepoCompletionStudents())
-      .filter((student)=> student.allComplete === 'Yes');
+      .filter((student) => student.allComplete === 'Yes');
     const formatDate = (date) => {
       let ord = 'th';
       if (date.getUTCDate() === '1') ord = 'st';
@@ -143,7 +142,7 @@ module.exports = [{
     };
     const fullTimeDate = formatDate(new Date(FULL_TIME_COURSE_START_DATE));
     return students.map((student) => {
-      const dateAndCourse = fullTimeDate + ' Full Time';
+      const dateAndCourse = `${fullTimeDate} Full Time`;
       return {
         student,
         fields: {

@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 
 const { deleteAllMessagesInChannel, getAllSlackChannels } = require('./index');
 
@@ -10,11 +10,10 @@ const ALL_CHANNELS_VALUE = 'ALL';
   }
   const channels = await getAllSlackChannels(process.argv[2] !== ALL_CHANNELS_VALUE);
   console.log(`Found ${channels.length} total channels`);
-  const filteredChannels = channels.filter((channel) =>
+  const filteredChannels = channels.filter((channel) => (
     process.argv[2] === ALL_CHANNELS_VALUE ||
-    process.argv[2] === channel.name
-  );
-  console.log(`Found ${filteredChannels.length} channels which meet requirements`)
+    process.argv[2] === channel.name));
+  console.log(`Found ${filteredChannels.length} channels which meet requirements`);
   for (const channel of filteredChannels) {
     if (
       process.argv[2] === ALL_CHANNELS_VALUE ||

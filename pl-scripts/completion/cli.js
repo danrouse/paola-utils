@@ -50,11 +50,9 @@ const { argv } = yargs(process.argv)
 if (argv.student) {
   // --student option passed, run against single student without updating sheet
   (async () => {
-    // eslint-disable-next-line no-restricted-syntax
     for (const projectName of argv.projects) {
       const project = projectDefinitions[projectName];
       try {
-        // eslint-disable-next-line no-await-in-loop
         const results = await fetchAndTestProject({
           githubHandle: argv.student,
           project,

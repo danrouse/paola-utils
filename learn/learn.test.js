@@ -9,7 +9,6 @@ const {
   addStudentToCohort,
   removeStudentFromCohort,
   removeStudentFromCohortByID,
-  createNewCohort,
 } = require('.');
 
 const TEST_LEARN_COHORT_ID = 2024;

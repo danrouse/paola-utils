@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 require('dotenv').config();
 
 const { addUsersToTeam, gitHubAPIRequest } = require('../github');

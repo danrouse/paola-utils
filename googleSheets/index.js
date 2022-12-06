@@ -41,14 +41,14 @@ async function getCell(worksheet, rowIndex, colIndex) {
 }
 
 async function updateWorksheet(worksheet, uniqueKey, values, rows) {
-  const _rows = rows || (await worksheet.getRows());
+  const _rows = rows || (await worksheet.getRows()); // eslint-disable-line no-underscore-dangle
   const matchingRow = _rows.find((row) => values[uniqueKey] === row[uniqueKey]);
   if (!matchingRow) {
     // TODO: complex values (objects with notes) aren't added properly here
     worksheet.addRow(values);
   } else {
     for (const colName in values) {
-      if (String(matchingRow[colName]) === String(values[colName])) continue; // eslint-disable-line no-continue
+      if (String(matchingRow[colName]) === String(values[colName])) continue;
 
       const cell = await getCell(
         worksheet,

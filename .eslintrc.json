@@ -1,0 +1,24 @@
+{
+  "extends": "airbnb-base",
+  "env": {
+    "jest": true
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "rules": {
+    "no-console": "off",
+    "no-await-in-loop": "off",
+    "no-restricted-syntax": "off",
+    "no-continue": "off",
+    "comma-dangle": "off",
+    "operator-linebreak": "off",
+    "implicit-arrow-linebreak": "off",
+    "one-var": "off",
+    "one-var-declaration-per-line": "off",
+    "max-len": [
+      "warn",
+      { "code": 180 }
+    ]
+  }
+}

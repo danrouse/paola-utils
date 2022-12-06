@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax, no-await-in-loop, no-console */
 require('dotenv').config();
 const Bottleneck = require('bottleneck');
 const { DOC_ID_PULSE } = require('../../constants');
@@ -23,7 +22,7 @@ const sendEmailFromDraftRL = rateLimiter.wrap(sendEmailFromDraft);
 async function sendEmails(
   emailDefinitions,
   printRecipientsWithoutSending = true,
-  testEmailAddress,
+  testEmailAddress = undefined,
 ) {
   const docPulse = await loadGoogleSpreadsheet(DOC_ID_PULSE);
   for (const { key, draftName, getEmails } of emailDefinitions) {
@@ -42,7 +41,7 @@ async function sendEmails(
     if (testEmailAddress) {
       if (filteredRecipients.length === 0) {
         recipients = [{
-          student: {email: testEmailAddress},
+          student: { email: testEmailAddress },
           fields: {
             name: 'Tchicphillait',
             deadlineDate: '13/37',

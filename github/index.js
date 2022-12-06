@@ -64,7 +64,7 @@ const removeUsersFromTeam = (usernames, team) => Promise.all(
 const createBranchHashCache = {};
 const createBranches = async (accountName, repoName, branchNames) => {
   const cacheKey = accountName + repoName;
-  if (!createBranchHashCache.hasOwnProperty(cacheKey)) {
+  if (!createBranchHashCache.hasOwn(cacheKey)) {
     const response = await rateLimitedAPIRequest(`repos/${accountName}/${repoName}/git/ref/heads/master`);
     createBranchHashCache[cacheKey] = response.object.sha;
   }
@@ -87,9 +87,9 @@ const getForks = async (baseRepoName) => {
       `repos/${GITHUB_ORG_NAME}/${baseRepoName}/forks?per_page=100&page=${page}`,
       'GET',
     );
-    response.forEach((fork) => forks[fork.owner.login] = fork.name);
+    response.forEach((fork) => { forks[fork.owner.login] = fork.name; });
     page += 1;
-  } while (response && response.length)
+  } while (response && response.length);
   getForksCache[baseRepoName] = forks;
   return forks;
 };

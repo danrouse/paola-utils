@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 require('dotenv').config();
 
 const { format } = require('date-fns');
@@ -14,7 +13,6 @@ const { exitIfCohortIsNotActive, currentCohortWeek } = require('./runOnlyDuringA
 
 const {
   COHORT_ID,
-  PRECOURSE_COHORT_START_DATE,
   DEADLINE_DATES,
   LEARN_COHORT_ID,
   GITHUB_STUDENT_TEAM,
@@ -123,7 +121,7 @@ const formatStudentForRepoCompletion = (student, techMentor, rowIndex) => ({
   // NB: for this column to work on each new cohort,
   // the iferror in the formula has to be unwrapped to allow access
   hadLaserCoaching: `=IF(EQ(IFERROR(vlookup(A${rowIndex},` +
-                    `IMPORTRANGE("https://docs.google.com/spreadsheets/d/1v3ve2aYtO6MsG6Zjp-SBX-ote6JdWVvuYekHUst2wWw","Laser Coached Students Enrolled!A2:A"),1,false),` +
+                    'IMPORTRANGE("https://docs.google.com/spreadsheets/d/1v3ve2aYtO6MsG6Zjp-SBX-ote6JdWVvuYekHUst2wWw","Laser Coached Students Enrolled!A2:A"),1,false),' +
                     `"No"), A${rowIndex}), "Yes", "No")`,
   numPrecourseEnrollments: `=MAX(COUNTIF('Precourse Enrollments Archive'!B:B,A${rowIndex}),` +
                            `COUNTIF('Precourse Enrollments Archive'!D:D,D${rowIndex}),` +
@@ -142,7 +140,8 @@ const formatStudentForRepoCompletion = (student, techMentor, rowIndex) => ({
   partThreeComplete: `=IF(AND(T${rowIndex}>=${TEST_COUNT_RECURSION}, ISNUMBER(T${rowIndex})),"Yes", "No")`,
   allComplete: `=IF(AND(U${rowIndex}="Yes",V${rowIndex}="Yes",W${rowIndex}="Yes"),"Yes","No")`,
   completedDIF: `=IF(M${rowIndex} = 1, "N/A", IF(IFNA(MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0), "Not found") <> "Not found",` +
-                `HYPERLINK(CONCAT("#gid=1881266534&range=", MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0) & ":" & MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0)), "See responses"), "Not found"))`,
+                `HYPERLINK(CONCAT("#gid=1881266534&range=", MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0) & ":" & MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0)), ` +
+                '"See responses"), "Not found"))',
   m1DiagnosticTask1: `=IFNA(VLOOKUP(H${rowIndex}, 'CodeSignal Results Module 1'!A:Z, 9, false), "-")`,
   m1DiagnosticTask2: `=IFNA(VLOOKUP(H${rowIndex}, 'CodeSignal Results Module 1'!A:Z,11, false), "-")`,
   m2DiagnosticTask1: `=IFNA(VLOOKUP(H${rowIndex}, 'CodeSignal Results Module 2'!A:Z, 9, false), "-")`,
@@ -298,7 +297,7 @@ const formatSFDCStudentForRoster = (student) => {
 
 (async () => {
   console.info(`Onboarding, week #${currentCohortWeek}`);
-  if (TESTING_MODE) console.info(`RUNNING IN TESTING MODE: ONLY ADDING A TEST USER`);
+  if (TESTING_MODE) console.info('RUNNING IN TESTING MODE: ONLY ADDING A TEST USER');
 
   const newStudents = (await getNewStudentsFromSFDC())
     .map(formatSFDCStudentForRoster)

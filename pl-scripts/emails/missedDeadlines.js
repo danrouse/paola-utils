@@ -67,6 +67,7 @@ function getProjectCompletionMessage(projectName, repoCompletionValue, isComplet
 }
 
 function getMissedDeadlineDetails(student, projects) {
+  // eslint-disable-next-line no-unused-vars
   if (projects.every(([projectName, projectValue]) => projectValue === NO_FORK_TEXT)) {
     return MESSAGE_NO_FORKS;
   }

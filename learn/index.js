@@ -121,6 +121,14 @@ const createNewCohort = async (options) => {
   }
 };
 
+const updateCohortContent = async (cohortId, contentURL) => {
+  const response = await fetch(
+    `${LEARN_API_COHORTS}/${cohortId}/resync`,
+    { method: 'POST', body: JSON.stringify({ course_config_url: contentURL }), headers },
+  );
+  return response.ok;
+};
+
 module.exports = {
   getAllStudentsInCohort,
   addStudentToCohort,
@@ -129,4 +137,5 @@ module.exports = {
   removeStudentFromCohort,
   removeStudentFromCohortByID,
   createNewCohort,
+  updateCohortContent,
 };

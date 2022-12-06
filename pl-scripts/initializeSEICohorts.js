@@ -5,6 +5,7 @@ const { createNewCohort, addStudentToCohort, updateCohortContent } = require('..
 const { loadGoogleSpreadsheet, getRows } = require('../googleSheets');
 const { DOC_ID_CESP, SHEET_ID_CESP_ROSTER } = require('../constants');
 
+// Set to true to actually run the commands on remote APIs
 const DO_IT_LIVE = false;
 
 const LEARN_COHORT_FT_START_DATE = '2022-12-12'; // direct from product cal
@@ -91,6 +92,10 @@ const CONFIG = [{
   // SEIRs
   {
     firstName: 'Michael', lastName: 'Raisch', github: 'LikeMike07',
+  }, {
+    firstName: 'Nicholas', lastName: 'Amenda', github: 'nickamenda',
+  }, {
+    firstName: 'Caitlin', lastName: 'Zhu', github: 'czhu67',
   }],
 }, {
   teamName: 'Students: SEIP2302',
@@ -119,11 +124,9 @@ const CONFIG = [{
 // if doing a late-run, or student population, set these manually!
 // the UIDs of newly-created cohorts are logged at creation-time
 const cohortIds = {
-  'SEI-RFP2209': 'd2b43b937e89b8df0f',
-  'SEI-RFC2209': '4a217bdd03e841ab63',
-  'SEI-RFE2209': '0e6d1716b3da33e2a3',
-  'SEI-RPP2209': '5e5eae966ce77ee647',
-  'SEI - Precourse - October 2022': '943c2358b9423dcf8c',
+  'SEI - Precourse - February 2023': 'eb9e72421b68ae9c6b',
+  'SEI-RFE2212': 'bbd1863c9eb44035ec',
+  'SEI-RFP2212': '0847807dc4f816e946',
 };
 
 // END OF CONFIGURATION
@@ -139,7 +142,7 @@ const formatGitHubTeamNameAsSlug = (teamName) => teamName.replace(/:/g, '').repl
 const createGitHubTeams = () => Promise.all(
   CONFIG.map((config) => {
     console.log('Create GitHub team', config.teamName);
-    if (!DO_IT_LIVE) return true;
+    if (!DO_IT_LIVE) return 'This is a test';
     return createTeam(config.teamName);
   }),
 );
@@ -148,7 +151,7 @@ const addInstructorsToGitHubTeams = () => Promise.all(
   CONFIG.map((config) => {
     const usernames = config.staff.filter((s) => s.github).map((s) => s.github);
     console.log(`Adding staff to GitHub Team ${formatGitHubTeamNameAsSlug(config.teamName)}: ${usernames}...`);
-    if (!DO_IT_LIVE) return true;
+    if (!DO_IT_LIVE) return 'This is a test';
     return addUsersToTeam(usernames, formatGitHubTeamNameAsSlug(config.teamName), true);
   }),
 );
@@ -302,8 +305,8 @@ const printURLs = () => {
 };
 
 (async () => {
-  await initializeNewCohorts();
-  await populateNewCohortsWithStaff();
-  // await populateNewCohortsWithStudents();
-  printURLs();
+  // await initializeNewCohorts();
+  // await populateNewCohortsWithStaff();
+  await populateNewCohortsWithStudents();
+  // printURLs();
 })();

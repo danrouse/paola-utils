@@ -13,7 +13,7 @@ const headers = {
 
 // Read all students in a cohort
 let cachedStudents;
-exports.getAllStudentsInCohort = async (cohortId, force) => {
+const getAllStudentsInCohort = async (cohortId, force) => {
   if (cachedStudents && !force) return cachedStudents;
   try {
     const response = await fetch(
@@ -30,7 +30,7 @@ exports.getAllStudentsInCohort = async (cohortId, force) => {
 };
 
 // Write a student to a cohort
-exports.addStudentToCohort = async (cohortId, student) => {
+const addStudentToCohort = async (cohortId, student) => {
   try {
     const response = await fetch(
       `${LEARN_API_COHORTS}/${cohortId}/users`,
@@ -45,9 +45,9 @@ exports.addStudentToCohort = async (cohortId, student) => {
 };
 
 // Validate that a student is enrolled in a cohort
-exports.validateStudentEnrollment = async (cohortId, email) => {
+const validateStudentEnrollment = async (cohortId, email) => {
   try {
-    const students = await exports.getAllStudentsInCohort(cohortId);
+    const students = await getAllStudentsInCohort(cohortId);
     if (!Array.isArray(students)) throw new Error(students);
     const activeStudent = students.find((student) => student.email === email);
     if (!activeStudent) throw new Error('No active student found with provided email.');
@@ -58,9 +58,9 @@ exports.validateStudentEnrollment = async (cohortId, email) => {
 };
 
 // Validate that a student is enrolled in a cohort
-exports.validateStudentEnrollmentByID = async (cohortId, id) => {
+const validateStudentEnrollmentByID = async (cohortId, id) => {
   try {
-    const students = await exports.getAllStudentsInCohort(cohortId);
+    const students = await getAllStudentsInCohort(cohortId);
     if (!Array.isArray(students)) throw new Error(students);
     const activeStudent = students.find((student) => student.id === id);
     if (!activeStudent) throw new Error('No active student found with provided ID.');
@@ -71,9 +71,9 @@ exports.validateStudentEnrollmentByID = async (cohortId, id) => {
 };
 
 // Delete a student from a cohort
-exports.removeStudentFromCohort = async (cohortId, email) => {
+const removeStudentFromCohort = async (cohortId, email) => {
   try {
-    const students = await exports.getAllStudentsInCohort(cohortId);
+    const students = await getAllStudentsInCohort(cohortId);
     if (!Array.isArray(students)) throw new Error(students);
     const activeStudent = students.find((student) => student.email === email);
     if (!activeStudent) throw new Error('No active student found with provided email.');
@@ -89,7 +89,7 @@ exports.removeStudentFromCohort = async (cohortId, email) => {
   }
 };
 
-exports.removeStudentFromCohortByID = async (cohortId, id) => {
+const removeStudentFromCohortByID = async (cohortId, id) => {
   try {
     const response = await fetch(
       `${LEARN_API_COHORTS}/${cohortId}/users/${id}`,
@@ -107,7 +107,7 @@ exports.removeStudentFromCohortByID = async (cohortId, id) => {
 };
 
 // Write a new cohort
-exports.createNewCohort = async (options) => {
+const createNewCohort = async (options) => {
   try {
     const response = await fetch(
       `${LEARN_API_COHORTS}`,
@@ -119,4 +119,14 @@ exports.createNewCohort = async (options) => {
   } catch (error) {
     return error.message;
   }
+};
+
+module.exports = {
+  getAllStudentsInCohort,
+  addStudentToCohort,
+  validateStudentEnrollment,
+  validateStudentEnrollmentByID,
+  removeStudentFromCohort,
+  removeStudentFromCohortByID,
+  createNewCohort,
 };

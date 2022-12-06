@@ -77,6 +77,23 @@ const createBranches = async (accountName, repoName, branchNames) => {
   return result.every((res) => res.ref);
 };
 
+const getForksCache = {};
+const getForks = async (baseRepoName) => {
+  if (getForksCache[baseRepoName]) return getForksCache[baseRepoName];
+  const forks = {};
+  let page = 1, response;
+  do {
+    response = await gitHubAPIRequest(
+      `repos/${GITHUB_ORG_NAME}/${baseRepoName}/forks?per_page=100&page=${page}`,
+      'GET',
+    );
+    response.forEach((fork) => forks[fork.owner.login] = fork.name);
+    page += 1;
+  } while (response && response.length)
+  getForksCache[baseRepoName] = forks;
+  return forks;
+};
+
 module.exports = {
   gitHubAPIRequest: rateLimitedAPIRequest,
   validateUser,
@@ -88,4 +105,5 @@ module.exports = {
   removeUserFromTeam,
   removeUsersFromTeam,
   createBranches,
+  getForks,
 };

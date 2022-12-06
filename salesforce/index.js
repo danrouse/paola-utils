@@ -139,6 +139,23 @@ const getStudents = async (courseStart, courseType) => {
   }
 };
 
+const getStudentByOpportunityId = async (id) => {
+  await login();
+  return new Promise((resolve, reject) => {
+    try {
+      
+      return conn.sobject('Opportunity')
+        .retrieve(id, (err, res) => {
+          if (err) throw new Error('SALESFORCE ERROR', err);
+          // const formattedStudents = formatStudents([res]);
+          resolve(res);
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
 const getAllStudents = () => getStudents(FULL_TIME_COURSE_START_DATE, SFDC_FULL_TIME_COURSE_TYPE);
 
 const getStudentsByReportID = async (reportID) => {
@@ -183,4 +200,5 @@ module.exports = {
   getStudentsByReportID,
   hasIntakeFormCompleted,
   getNewStudentsFromSFDC,
+  getStudentByOpportunityId,
 };

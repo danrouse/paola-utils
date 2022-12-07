@@ -1,8 +1,8 @@
 name: Re-send GitHub Invites
 on:
   workflow_dispatch: {}
-  schedule:
-    - cron: '5 */10 * * *'
+  # schedule:
+  #   - cron: '5 */10 * * *'
 jobs:
   resend-github-invites:
     runs-on: ubuntu-latest

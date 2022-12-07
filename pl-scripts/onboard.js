@@ -228,8 +228,8 @@ const sendWelcomeEmails = async (students) => {
     ? '[Review Required] Precourse Deadlines - When your work is due 🎯'
     : '[Review Required] Accelerated Pace Precourse Deadlines - When your work is due 🎯';
   const toList = [PROGRAM_EMAIL];
-  const ccList = students.map((student) => student.email);
-  const bccList = [];
+  const ccList = [];
+  const bccList = students.map((student) => student.email);
 
   if (ccList.length > 0) {
     await sendEmailFromDraft(

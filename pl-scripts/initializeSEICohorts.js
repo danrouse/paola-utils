@@ -5,8 +5,31 @@ const { createNewCohort, addStudentToCohort, updateCohortContent } = require('..
 const { loadGoogleSpreadsheet, getRows } = require('../googleSheets');
 const { DOC_ID_CESP, SHEET_ID_CESP_ROSTER } = require('../constants');
 
+/**
+ * Playbook for running this script:
+ * - Normally run on W0D1/W0D2, the day after final deadlines and after roster sync.
+ * - Set the CONFIG object to match all of the details about new cohorts,
+ *   with staff list coming from the EDU Org Chart Google Sheet.
+ *   https://docs.google.com/spreadsheets/d/1U_6ufNGVAmBxY69uBgTG-BhgBgCEkcgJzRWu3JFMUy8/edit#gid=1864231488
+ * - Date configs come from the Product Calendar sheet.
+ *   https://docs.google.com/spreadsheets/d/1F4JVODrkuycZlzkHVk71uwQ7_8V5cnEOZnuOqRtII8k/edit#gid=1397850501
+ * - For now, do not add SEIRs to this config, and leave that for the SEI campuses to do.
+ * - The DO_IT_LIVE flag toggles between a dry run, logging out what will happen.
+ *   Recommended to run each step with DO_IT_LIVE false as a test run/sanity check.
+ * - If adding students as a separate step, grab the Learn UIDs of newly-created cohorts
+ *   and populate them in the cohortIds object, so that students get added to the right places.
+ * - Conventionally, this is done in two runs:
+ *   First, to set everything up staff-side with CREATE_COHORTS true and ADD_STAFF true,
+ *   Second, once the rosters are finalized, with only ADD_STUDENTS true.
+ * - When CREATE_COHORTS is true, a Slack message is printed to be sent in the PLs channel.
+ *   Recommended to follow these links to make sure they were all created correctly!
+ */
+
 // Set to true to actually run the commands on remote APIs
 const DO_IT_LIVE = false;
+const CREATE_COHORTS = false; // Create groups in GitHub and Learn
+const ADD_STAFF = false; // Add staff members to the GitHub teams and Learn cohorts
+const ADD_STUDENTS = false; // Add students to the GitHub teams and Learn cohorts
 
 const LEARN_COHORT_FT_START_DATE = '2022-12-12'; // direct from product cal
 const LEARN_COHORT_FT_END_DATE = '2023-03-27'; // start date of round after NEXT
@@ -293,7 +316,7 @@ const populateNewCohortsWithStudents = async () => {
 };
 
 const printURLs = () => {
-  console.log('*New cohorts have been created!* 🎉\n');
+  console.log('\n*New cohorts have been created!* 🎉\n');
   console.log(
     CONFIG.map((config) => [
       `*${config.learnCampusName} (${config.learnCohortName})*`,
@@ -305,8 +328,10 @@ const printURLs = () => {
 };
 
 (async () => {
-  // await initializeNewCohorts();
-  // await populateNewCohortsWithStaff();
-  await populateNewCohortsWithStudents();
-  // printURLs();
+  if (CREATE_COHORTS) {
+    await initializeNewCohorts();
+    printURLs();
+  }
+  if (ADD_STAFF) { await populateNewCohortsWithStaff(); }
+  if (ADD_STUDENTS) { await populateNewCohortsWithStudents(); }
 })();

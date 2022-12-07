@@ -107,7 +107,6 @@ const addStudentToCohortRL = rateLimiter.wrap(addStudentToCohort);
 
 const formatStudentForRepoCompletion = (student, techMentor, rowIndex) => ({
   fullName: student.fullName,
-  legalName: student.legalName,
   preferredFirstName: student.preferredFirstName,
   pronouns: student.pronouns,
   campus: student.campus,

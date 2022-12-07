@@ -59,7 +59,7 @@ const formatStudents = (students) => {
     const addressWhileInSchool = contact.Address_While_in_School__c || ''; /* ? formatAddress(contact.Address_While_in_School__c) : ''; */
     return {
       fullName: student.Full_Primary_Name__c,
-      legalName: contact.Name,
+      // legalName: contact.Name,
       email: contact.Email,
       emailSecondary: contact.Secondary_Email__c,
       campus: student.Campus_Formatted__c,

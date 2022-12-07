@@ -25,7 +25,6 @@ async function getMissingSlackUsers() {
       && (
         normalizeEmail(slackUser.profile.email) === normalizeEmail(rosterStudent.email)
         || normalizeName(slackUser.profile.real_name) === normalizeName(rosterStudent.fullName)
-        || normalizeName(slackUser.profile.real_name) === normalizeName(rosterStudent.legalName)
       ),
   ));
 }

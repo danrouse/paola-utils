@@ -2,22 +2,22 @@ module.exports = {
   /**
    * The following constants MUST be updated each round
    */
-  COHORT_ID: 'seip2212',
-  PRECOURSE_COHORT_START_DATE: '2022-10-24',
-  FULL_TIME_COURSE_START_DATE: '2022-12-12',
+  COHORT_ID: 'seip2302',
+  PRECOURSE_COHORT_START_DATE: '2022-12-12',
+  FULL_TIME_COURSE_START_DATE: '2023-02-06',
   DEADLINE_DATES: {
-    W1: ['11/9/2022', '11/16/2022', '11/23/2022'],
-    W2: ['11/16/2022', '11/23/2022', '11/30/2022'],
-    W3: ['11/23/2022', '11/30/2022', '12/4/2022'],
-    W4: ['11/28/2022', '12/2/2022', '12/4/2022'],
-    Final: ['11/28/2022', '12/2/2022', '12/4/2022'],
+    W1: ['12/28/2022', '1/4/2023', '1/11/2023'],
+    W2: ['1/4/2023', '1/11/2023', '1/18/2023'],
+    W3: ['1/11/2023', '1/18/2023', '1/22/2023'],
+    W4: ['1/16/2023', '1/20/2023', '1/22/2023'],
+    Final: ['1/16/2023', '1/20/2023', '1/22/2023'],
   },
-  LEARN_COHORT_ID: '3566',
-  GITHUB_STUDENT_TEAM: 'students-seip2212',
-  DOC_ID_PULSE: '19L7JySXLdNmbZNEmhCZ8DLxyJ2yFFLlTQSFCNxgNWQ0',
-  DOC_ID_CESP: '1YoguUvqyFLzQF13ixuWroCUns9fMknXlxnq7vcm-f10',
-  SHEET_ID_HRPTIV_ROSTER: '1078625675', // gid for each round's roster worksheet
-  SLACK_WORKSPACE: 'seiopr', // valid values: hrseip (precourse), seiopr (precourse 2)
+  LEARN_COHORT_ID: '3604',
+  GITHUB_STUDENT_TEAM: 'students-seip2302',
+  DOC_ID_PULSE: '1UQiIxNn3PqsPRIcn2TTvWU5yk3X8Pd3IBqfF-E8TgSQ',
+  DOC_ID_CESP: '1i42Lf6AJKXUI9IMjB2HYds8ETOsWx_uMwJ30e9hY2tc',
+  SHEET_ID_HRPTIV_ROSTER: '1655506229', // gid for each round's roster worksheet
+  SLACK_WORKSPACE: 'hrseip', // valid values: hrseip (precourse), seiopr (precourse 2)
 
   // Update these as changes are made to the assignment test suites (for repo completion formulas)
   TEST_COUNT_KOANS: 26,
@@ -25,7 +25,7 @@ module.exports = {
   TEST_COUNT_TESTBUILDER_MAX: 3329,
   TEST_COUNT_UNDERBAR_PART_ONE: 65,
   TEST_COUNT_UNDERBAR_PART_TWO: 67,
-  TEST_COUNT_TWIDDLER: 53,
+  TEST_COUNT_TWIDDLER: 54,
   TEST_COUNT_RECURSION: 2,
 
   /**

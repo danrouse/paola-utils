@@ -132,21 +132,21 @@ const formatStudentForRepoCompletion = (student, techMentor, rowIndex) => ({
   underbarPartTwo: 'No Fork',
   twiddler: 'No Fork',
   recursion: 'No Fork',
-  partOneComplete: `=IF(AND(N${rowIndex}="Yes", O${rowIndex}>=${TEST_COUNT_KOANS},` +
-                   `P${rowIndex}>=${TEST_COUNT_TESTBUILDER_MIN}, Q${rowIndex}<=${TEST_COUNT_TESTBUILDER_MAX},` +
-                   `R${rowIndex}=${TEST_COUNT_UNDERBAR_PART_ONE}), "Yes", "No")`,
-  partTwoComplete: `=IF(AND(R${rowIndex}=${TEST_COUNT_UNDERBAR_PART_TWO}, S${rowIndex}>=${TEST_COUNT_TWIDDLER}, ISNUMBER(S${rowIndex})), "Yes", "No")`,
-  partThreeComplete: `=IF(AND(T${rowIndex}>=${TEST_COUNT_RECURSION}, ISNUMBER(T${rowIndex})),"Yes", "No")`,
-  allComplete: `=IF(AND(U${rowIndex}="Yes",V${rowIndex}="Yes",W${rowIndex}="Yes"),"Yes","No")`,
-  completedDIF: `=IF(M${rowIndex} = 1, "N/A", IF(IFNA(MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0), "Not found") <> "Not found",` +
+  partOneComplete: `=IF(AND(M${rowIndex}="Yes", N${rowIndex}>=${TEST_COUNT_KOANS},` +
+                   `O${rowIndex}>=${TEST_COUNT_TESTBUILDER_MIN}, O${rowIndex}<=${TEST_COUNT_TESTBUILDER_MAX},` +
+                   `P${rowIndex}=${TEST_COUNT_UNDERBAR_PART_ONE}), "Yes", "No")`,
+  partTwoComplete: `=IF(AND(Q${rowIndex}=${TEST_COUNT_UNDERBAR_PART_TWO}, R${rowIndex}>=${TEST_COUNT_TWIDDLER}, ISNUMBER(R${rowIndex})), "Yes", "No")`,
+  partThreeComplete: `=IF(AND(S${rowIndex}>=${TEST_COUNT_RECURSION}, ISNUMBER(S${rowIndex})),"Yes", "No")`,
+  allComplete: `=IF(AND(T${rowIndex}="Yes",U${rowIndex}="Yes",V${rowIndex}="Yes"),"Yes","No")`,
+  completedDIF: `=IF(L${rowIndex} = 1, "N/A", IF(IFNA(MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0), "Not found") <> "Not found",` +
                 `HYPERLINK(CONCAT("#gid=1881266534&range=", MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0) & ":" & MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0)), ` +
                 '"See responses"), "Not found"))',
-  m1DiagnosticTask1: `=IFNA(VLOOKUP(H${rowIndex}, 'CodeSignal Results Module 1'!A:Z, 9, false), "-")`,
-  m1DiagnosticTask2: `=IFNA(VLOOKUP(H${rowIndex}, 'CodeSignal Results Module 1'!A:Z,11, false), "-")`,
-  m2DiagnosticTask1: `=IFNA(VLOOKUP(H${rowIndex}, 'CodeSignal Results Module 2'!A:Z, 9, false), "-")`,
-  m2DiagnosticTask2: `=IFNA(VLOOKUP(H${rowIndex}, 'CodeSignal Results Module 2'!A:Z,11, false), "-")`,
-  m3DiagnosticTask1: `=IFNA(VLOOKUP(H${rowIndex}, 'CodeSignal Results Module 3'!A:Z, 9, false), "-")`,
-  m3DiagnosticTask2: `=IFNA(VLOOKUP(H${rowIndex}, 'CodeSignal Results Module 3'!A:Z,11, false), "-")`,
+  m1DiagnosticTask1: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 1'!A:Z, 9, false), "-")`,
+  m1DiagnosticTask2: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 1'!A:Z,11, false), "-")`,
+  m2DiagnosticTask1: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 2'!A:Z, 9, false), "-")`,
+  m2DiagnosticTask2: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 2'!A:Z,11, false), "-")`,
+  m3DiagnosticTask1: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 3'!A:Z, 9, false), "-")`,
+  m3DiagnosticTask2: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 3'!A:Z,11, false), "-")`,
 });
 
 const weightedPodSize = (pod) => Math.ceil(pod.podSize / (pod.podSizeRatio || 1));

@@ -226,14 +226,13 @@ const sendWelcomeEmails = async (students) => {
   const deadlinesSubjectQuery = currentCohortWeek !== 4
     ? '[Review Required] Precourse Deadlines - When your work is due 🎯'
     : '[Review Required] Accelerated Pace Precourse Deadlines - When your work is due 🎯';
-  const toList = [PROGRAM_EMAIL];
-  const ccList = [];
-  const bccList = students.map((student) => student.email);
+  const ccList = [PROGRAM_EMAIL];
+  const bccList = [];
 
-  if (ccList.length > 0) {
+  for (const student of students) {
     await sendEmailFromDraft(
       welcomeSubjectQuery,
-      toList,
+      [student.email],
       ccList,
       bccList,
       alias,
@@ -246,7 +245,7 @@ const sendWelcomeEmails = async (students) => {
 
     await sendEmailFromDraft(
       deadlinesSubjectQuery,
-      toList,
+      [student.email],
       ccList,
       bccList,
       alias,

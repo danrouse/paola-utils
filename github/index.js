@@ -64,7 +64,7 @@ const removeUsersFromTeam = (usernames, team) => Promise.all(
 const createBranchHashCache = {};
 const createBranches = async (accountName, repoName, branchNames) => {
   const cacheKey = accountName + repoName;
-  if (!createBranchHashCache.hasOwn(cacheKey)) {
+  if (!createBranchHashCache.hasOwnProperty(cacheKey)) { // eslint-disable-line no-prototype-builtins
     const response = await rateLimitedAPIRequest(`repos/${accountName}/${repoName}/git/ref/heads/master`);
     createBranchHashCache[cacheKey] = response.object.sha;
   }

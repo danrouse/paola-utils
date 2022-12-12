@@ -8,8 +8,8 @@ on:
       projects:
         description: 'Project names (space-separated)'
         required: false
-  # schedule:
-  #   - cron: '0 13,16,19,22 * * *'
+  schedule:
+    - cron: '0 13,16,19,22 * * *'
 jobs:
   repo-completion:
     runs-on: ubuntu-latest

@@ -167,34 +167,29 @@ const sendWelcomeEmails = async (students) => {
   const PROGRAM_EMAIL = 'sei.precourse@galvanize.com';
   const PROGRAM_NAME = 'SEI Precourse';
   const alias = { name: PROGRAM_NAME, email: PROGRAM_EMAIL };
-  const welcomeSubjectQuery = '[Action Required] Welcome to Precourse! Please Read Thoroughly 🎉';
+  const WELCOME_EMAIL_DRAFT_SUBJECT = '[Action Required] Welcome to SEI Precourse! Please Read Thoroughly 🎉';
+  /*
+  NOTE: Combined emails don't handle having separate copy for the urgency of W4 students!
+        Resolve this before W4!
   const deadlinesSubjectQuery = currentCohortWeek !== 4
     ? '[Review Required] Precourse Deadlines - When your work is due 🎯'
     : '[Review Required] Accelerated Pace Precourse Deadlines - When your work is due 🎯';
+  */
   const ccList = [PROGRAM_EMAIL];
   const bccList = [];
 
   for (const student of students) {
     await sendEmailFromDraft(
-      welcomeSubjectQuery,
+      WELCOME_EMAIL_DRAFT_SUBJECT,
       [student.email],
       ccList,
       bccList,
       alias,
       {
+        preferredFirstName: student.preferredFirstName,
         cohortId: COHORT_ID,
         slackJoinURL: getSlackInviteLink(),
         learnCohortId: LEARN_COHORT_ID,
-      },
-    );
-
-    await sendEmailFromDraft(
-      deadlinesSubjectQuery,
-      [student.email],
-      ccList,
-      bccList,
-      alias,
-      {
         milestoneOne: DEADLINE_DATES[currentDeadlineGroup][0],
         milestoneTwo: DEADLINE_DATES[currentDeadlineGroup][1],
         milestoneThree: DEADLINE_DATES[currentDeadlineGroup][2],

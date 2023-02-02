@@ -13,8 +13,7 @@ const { DOC_ID_CESP, SHEET_ID_CESP_ROSTER } = require('../constants');
  *   https://docs.google.com/spreadsheets/d/1U_6ufNGVAmBxY69uBgTG-BhgBgCEkcgJzRWu3JFMUy8/edit#gid=1864231488
  * - Date configs come from the Product Calendar sheet.
  *   https://docs.google.com/spreadsheets/d/1F4JVODrkuycZlzkHVk71uwQ7_8V5cnEOZnuOqRtII8k/edit#gid=1397850501
- * - For now, do not add SEIRs to this config, and leave that for the SEI campuses to do.
- * - The DO_IT_LIVE flag toggles between a dry run, logging out what will happen.
+ * - The DO_IT_LIVE flag toggles between a dry run, logging what _would_ happen.
  *   Recommended to run each step with DO_IT_LIVE false as a test run/sanity check.
  * - If adding students as a separate step, grab the Learn UIDs of newly-created cohorts
  *   and populate them in the cohortIds object, so that students get added to the right places.
@@ -26,21 +25,21 @@ const { DOC_ID_CESP, SHEET_ID_CESP_ROSTER } = require('../constants');
  */
 
 // Set to true to actually run the commands on remote APIs
-const DO_IT_LIVE = false;
+const DO_IT_LIVE = true;
 const CREATE_COHORTS = false; // Create groups in GitHub and Learn
 const ADD_STAFF = false; // Add staff members to the GitHub teams and Learn cohorts
-const ADD_STUDENTS = false; // Add students to the GitHub teams and Learn cohorts
+const ADD_STUDENTS = true; // Add students to the GitHub teams and Learn cohorts
 
-const LEARN_COHORT_FT_START_DATE = '2022-12-12'; // direct from product cal
-const LEARN_COHORT_FT_END_DATE = '2023-03-27'; // start date of round after NEXT
-const LEARN_COHORT_PRECOURSE_START_DATE = '2022-12-12'; // direct from product cal
-const LEARN_COHORT_PRECOURSE_END_DATE = '2023-02-06'; // start date of next round
+const LEARN_COHORT_FT_START_DATE = '2023-02-06'; // direct from product cal
+const LEARN_COHORT_FT_END_DATE = '2023-05-15'; // start date of round after NEXT
+const LEARN_COHORT_PRECOURSE_START_DATE = '2023-02-06'; // direct from product cal
+const LEARN_COHORT_PRECOURSE_END_DATE = '2023-03-27'; // start date of next round
 
 const CONFIG = [{
-  teamName: 'Students: RFP2212',
+  teamName: 'Students: RFP2302',
   learnCampusName: 'Remote Pacific',
-  learnCohortName: 'SEI-RFP2212',
-  learnCohortLabel: '22-12-SEI-RFP',
+  learnCohortName: 'SEI-RFP2302',
+  learnCohortLabel: '23-02-SEI-RFP',
   learnCohortStartDate: LEARN_COHORT_FT_START_DATE,
   learnCohortEndDate: LEARN_COHORT_FT_END_DATE,
   learnContentConfig: 'https://github.com/gSchool/learn-course-files/blob/master/SE/SEI/hrr.yaml',
@@ -66,33 +65,33 @@ const CONFIG = [{
   },
   // SEIRs
   {
-    firstName: 'Gracie', lastName: 'Fogarty', github: 'GracieFogarty', email: 'graciealysse@gmail.com',
+    firstName: 'Jaden', lastName: 'Ee', github: 'jadennnnnnn', email: 'jaden.ee@galvanize.com',
   }, {
-    firstName: 'Darryl', lastName: 'Grier', github: 'darryl-dg', email: 'darrylgrierjr@gmail.com',
+    firstName: 'Jonah', lastName: 'Choi', github: 'jonahchoi', email: 'jonah.choi@galvanize.com',
   }, {
-    firstName: 'Ivan', lastName: 'Luk', github: 'theivanluk', email: 'luk.ivan.mech@gmail.com',
+    firstName: 'Josh', lastName: 'Garza', github: 'joshgarza', email: 'josh.garza@galvanize.com',
   }, {
-    firstName: 'Amberly', lastName: 'Malone', github: 'amberlyM', email: 'amberm1205@gmail.com',
+    firstName: 'Kally', lastName: 'Cao', github: 'kallycao', email: 'kally.cao@galvanize.com',
   }, {
-    firstName: 'Kathryn', lastName: 'Gao', github: 'katto030', email: 'kathryn.kuroko@gmail.com',
+    firstName: 'Sean', lastName: 'McEntagart', github: 'sean-mcodes', email: 'sean.mcentagart@galvanize.com',
   }, {
-    firstName: 'Jaden', lastName: 'Ee', github: 'jadennnnnnn', email: 'jadenjee@gmail.com',
+    firstName: 'Sophia', lastName: 'Zhou', github: 'sbagel', email: 'sophia.zhou@galvanize.com',
   }, {
-    firstName: 'Jonah', lastName: 'Choi', github: 'jonahchoi', email: 'cjonah227@gmail.com',
+    firstName: 'Andrew', lastName: 'Heim', github: 'andepants', email: 'andrew.heim@galvanize.com',
   }, {
-    firstName: 'Josh', lastName: 'Garza', github: 'joshgarza', email: 'josh@sf-iron.com',
+    firstName: 'Jordan', lastName: 'Searcy-Hosea', github: 'o7endofwatch', email: 'jordan.searcy-hosea@galvanize.com',
   }, {
-    firstName: 'Kally', lastName: 'Cao', github: 'kallycao', email: 'kallycao98@gmail.com',
+    firstName: 'Matthew', lastName: 'Sigler', github: 'siglerm', email: 'matthew.sigler@galvanize.com',
   }, {
-    firstName: 'Sean', lastName: 'McEntagart', github: 'sean-mcodes', email: 'seanmcentagart45@gmail.com',
+    firstName: 'Mo', lastName: 'Akbari', github: 'akbarimo', email: 'mo.akbari@galvanize.com',
   }, {
-    firstName: 'Sophia', lastName: 'Zhou', github: 'sbagel', email: 'tosophiazhou@gmail.com',
+    firstName: 'Thomas', lastName: 'Saldana', github: 'SaldanaThomas', email: 'thomas.saldana@galvanize.com',
   }],
 }, {
-  teamName: 'Students: RFE2212',
+  teamName: 'Students: RFE2302',
   learnCampusName: 'Remote Eastern',
-  learnCohortName: 'SEI-RFE2212',
-  learnCohortLabel: '22-12-SEI-RFE',
+  learnCohortName: 'SEI-RFE2302',
+  learnCohortLabel: '23-02-SEI-RFE',
   learnCohortStartDate: LEARN_COHORT_FT_START_DATE,
   learnCohortEndDate: LEARN_COHORT_FT_END_DATE,
   learnContentConfig: 'https://github.com/gSchool/learn-course-files/blob/master/SE/SEI/sei12.yaml',
@@ -114,16 +113,30 @@ const CONFIG = [{
   },
   // SEIRs
   {
-    firstName: 'Michael', lastName: 'Raisch', github: 'LikeMike07',
+    firstName: 'Nicholas', lastName: 'Amenda', github: 'nickamenda', email: 'Nicholas.Amenda@galvanize.com',
   }, {
-    firstName: 'Nicholas', lastName: 'Amenda', github: 'nickamenda',
+    firstName: 'Caitlin', lastName: 'Zhu', github: 'czhu67', email: 'Caitlin.Zhu@galvanize.com',
   }, {
-    firstName: 'Caitlin', lastName: 'Zhu', github: 'czhu67',
+    firstName: 'Michael', lastName: 'Raisch', github: 'LikeMike07', email: 'Michael.Raisch@galvanize.com',
+  }, {
+    firstName: 'Adam', lastName: 'Polk', github: 'APolk10', email: 'Adam.Polk@galvanize.com',
+  }, {
+    firstName: 'Alice', lastName: 'Blank', github: 'AllEyesBlank', email: 'Alice.Blank@galvanize.com',
+  }, {
+    firstName: 'Aaron', lastName: 'Mikulka', github: 'amikulka', email: 'Aaron.Mikulka@galvanize.com',
+  }, {
+    firstName: 'Joon', lastName: 'Hwang', github: 'codejune9th', email: 'Joon.Hwang@galvanize.com',
+  }, {
+    firstName: 'Luke', lastName: 'Anger', github: 'LukeAnger', email: 'Luke.Anger@galvanize.com',
+  }, {
+    firstName: 'Nika', lastName: 'Woodfill', github: 'nikawoodfill', email: 'Nika.Woodfill@galvanize.com',
+  }, {
+    firstName: 'Willy', lastName: 'McNamara', github: 'Willy-McNamara', email: 'William.McNamara@galvanize.com',
   }],
 }, {
-  teamName: 'Students: SEIP2302',
+  teamName: 'Students: SEIP2303',
   learnCampusName: 'Precourse',
-  learnCohortName: 'SEI - Precourse - February 2023',
+  learnCohortName: 'SEI - Precourse - March 2023',
   learnCohortLabel: null,
   learnCohortStartDate: LEARN_COHORT_PRECOURSE_START_DATE,
   learnCohortEndDate: LEARN_COHORT_PRECOURSE_END_DATE,
@@ -147,9 +160,9 @@ const CONFIG = [{
 // if doing a late-run, or student population, set these manually!
 // the UIDs of newly-created cohorts are logged at creation-time
 const cohortIds = {
-  'SEI - Precourse - February 2023': 'eb9e72421b68ae9c6b',
-  'SEI-RFE2212': 'bbd1863c9eb44035ec',
-  'SEI-RFP2212': '0847807dc4f816e946',
+  'SEI-RFE2302': 'b14d74e1d6a048d77a',
+  'SEI-RFP2302': '5eeab981ebfdbfeadf',
+  'SEI - Precourse - March 2023': 'c7dab418d37e281fd5',
 };
 
 // END OF CONFIGURATION

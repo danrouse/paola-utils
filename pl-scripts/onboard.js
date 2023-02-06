@@ -246,6 +246,7 @@ const reportNewStudentsToSlack = async (newStudents, pods) => {
 
   if (TESTING_MODE) {
     eligibleNewStudents = [{
+      preferredFirstName: 'Test',
       fullName: 'Test Teststudent',
       email: 'paola+test@galvanize.com',
       githubHandle: 'hackreactor-paola',

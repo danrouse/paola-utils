@@ -155,7 +155,14 @@ const createStudentSlackChannels = (students) => {
 const addStudentsToGitHub = async (students) => {
   const gitHandles = students.map((student) => student.githubHandle);
 
-  await addUsersToTeam(gitHandles, GITHUB_STUDENT_TEAM);
+  const addToTeamResponse = await addUsersToTeam(gitHandles, GITHUB_STUDENT_TEAM);
+  for (const index in addToTeamResponse) {
+    if (addToTeamResponse[index].message === 'Not Found') {
+      const student = students[index];
+      const message = `⚠ GitHub handle "${student.githubHandle}" not found for student ${student.fullName}!`;
+      await sendMessageToChannel('new-students', message);
+    }
+  }
   await createBranches(GITHUB_ORG_NAME, `${COHORT_ID}-javascript-koans`, gitHandles);
   await createBranches(GITHUB_ORG_NAME, `${COHORT_ID}-testbuilder`, gitHandles);
   await createBranches(GITHUB_ORG_NAME, `${COHORT_ID}-underbar`, gitHandles);

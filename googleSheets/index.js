@@ -25,23 +25,9 @@ async function getRows(worksheet) {
   }, {}));
 }
 
-async function getCell(worksheet, rowIndex, colIndex) {
-  let cell;
-  try {
-    cell = worksheet.getCell(rowIndex, colIndex);
-  } catch (err) {
-    if (err.message !== 'This cell has not been loaded yet') {
-      console.log('Error getting cell at row', rowIndex, 'col', colIndex);
-      throw err;
-    }
-    await worksheet.loadCells();
-    cell = worksheet.getCell(rowIndex, colIndex);
-  }
-  return cell;
-}
-
 async function updateWorksheet(worksheet, uniqueKey, values, rows) {
   const _rows = rows || (await worksheet.getRows()); // eslint-disable-line no-underscore-dangle
+  await worksheet.loadCells(); // make sure cells are loaded for individual cell lookup
   const matchingRow = _rows.find((row) => values[uniqueKey] === row[uniqueKey]);
   if (!matchingRow) {
     // TODO: complex values (objects with notes) aren't added properly here
@@ -50,8 +36,7 @@ async function updateWorksheet(worksheet, uniqueKey, values, rows) {
     for (const colName in values) {
       if (String(matchingRow[colName]) === String(values[colName])) continue;
 
-      const cell = await getCell(
-        worksheet,
+      const cell = await worksheet.getCell(
         matchingRow.rowIndex - 1,
         worksheet.headerValues.indexOf(colName),
       );

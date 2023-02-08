@@ -3,6 +3,7 @@ require('dotenv').config();
 const { deleteAllMessagesInChannel, getAllSlackChannels } = require('./index');
 
 const ALL_CHANNELS_VALUE = 'ALL';
+const DRY_RUN = false;
 (async () => {
   if (!process.argv[2]) {
     console.error(`A channel name or "${ALL_CHANNELS_VALUE}" must be provided!`);
@@ -20,7 +21,9 @@ const ALL_CHANNELS_VALUE = 'ALL';
       process.argv[2] === channel.name
     ) {
       console.log(`Deleting all messages in channel "${channel.name}"`);
-      await deleteAllMessagesInChannel(channel.id);
+      if (!DRY_RUN) {
+        await deleteAllMessagesInChannel(channel.id);
+      }
     }
   }
 })();

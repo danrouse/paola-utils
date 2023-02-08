@@ -1,12 +1,7 @@
 require('dotenv').config();
 const Bottleneck = require('bottleneck');
 const { DOC_ID_PULSE } = require('../../constants');
-const {
-  loadGoogleSpreadsheet,
-  getSheetMetadata,
-  upsertSheetMetadata,
-  // deleteSheetMetadata,
-} = require('../../googleSheets');
+const { loadGoogleSpreadsheet } = require('../../googleSheets');
 
 const { sendEmailFromDraft } = require('../../googleMail');
 
@@ -25,15 +20,24 @@ async function sendEmails(
   testEmailAddress = undefined,
 ) {
   const docPulse = await loadGoogleSpreadsheet(DOC_ID_PULSE);
+  const cacheWorksheet = docPulse.sheetsByTitle['PAOLA Email Cache'];
+  const cacheWorksheetRows = await cacheWorksheet.getRows();
+  const emailsCache = cacheWorksheetRows.reduce(
+    (acc, row) => ({
+      ...acc,
+      [row.emailKey]: {
+        addresses: row.addresses.split(','),
+        row,
+      },
+    }),
+    {},
+  );
+
   for (const { key, draftName, getEmails } of emailDefinitions) {
     console.info(`Checking for ${draftName}...`);
-    // if (CLEAR_CACHE) {
-    //   console.info('Clearing list of sent emails...');
-    //   await deleteSheetMetadata(docPulse, key);
-    // }
 
-    const sheetMetadata = (await getSheetMetadata(docPulse, key)) || '';
-    const sentEmails = sheetMetadata.split(',');
+    const sentEmails = emailsCache[key] ? emailsCache[key].addresses : [];
+
     const allRecipients = await getEmails();
     const filteredRecipients = allRecipients.filter(({ student }) => !sentEmails.includes(student.email));
     filteredRecipients.forEach(({ student }) => console.info('> ', student.email));
@@ -78,7 +82,16 @@ async function sendEmails(
     // only update cache if using real data
     if (!printRecipientsWithoutSending && !testEmailAddress && recipients.length > 0) {
       console.info('Updating list of sent emails...');
-      await upsertSheetMetadata(docPulse, key, allRecipients.map(({ student }) => student.email).join(','));
+      const cacheValue = allRecipients.map(({ student }) => student.email).join(',');
+      if (emailsCache[key]) {
+        emailsCache[key].row.addresses = cacheValue;
+        await emailsCache[key].row.save();
+      } else {
+        await cacheWorksheet.addRow({
+          emailKey: key,
+          addresses: cacheValue,
+        });
+      }
     }
   }
 }

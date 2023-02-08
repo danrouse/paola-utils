@@ -46,14 +46,14 @@ const sortStudentsByFullName = (a, b) =>
 const sortStudentsByCampus = (a, b) =>
   a.campus.toLowerCase().localeCompare(b.campus.toLowerCase());
 const sortStudentsByDateAdded = (a, b) =>
-  a.dateAdded.toLowerCase().localeCompare(b.dateAdded.toLowerCase());
+  a.dateAddedToPrecourse.toLowerCase().localeCompare(b.dateAddedToPrecourse.toLowerCase());
 
 const formatStudentsForCESPRosterSheet = (students, separations) => students.map((student) => ({
   'Full Name': student.fullName,
   'Campus': student.campus,
   'GitHub': student.githubHandle,
   'Deadline Group': student.deadlineGroup,
-  'Date Added': student.dateAdded,
+  'Date Added': student.dateAddedToPrecourse,
   'SFDC Email': student.email,
   'VBA Funding Type': student.VBAFundingType,
   'Prep Type': student.prepType,
@@ -68,7 +68,7 @@ const formatStudentsForCESPModuleCompletionSheet = (students) => students.map((s
   'Campus': student.campus,
   'GitHub': student.githubHandle,
   'Deadline Group': student.deadlineGroup,
-  'Date Added': student.dateAdded,
+  'Date Added': student.dateAddedToPrecourse,
   'Tech Mentor': student.techMentor,
   'Module 1': student.partOneComplete,
   'Module 2': student.partTwoComplete,

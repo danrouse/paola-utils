@@ -15,7 +15,7 @@ const formatStudentForRepoCompletion = (student, techMentor, rowIndex, currentDe
   campus: student.campus,
   githubHandle: student.githubHandle,
   deadlineGroup: currentDeadlineGroup,
-  dateAdded: student.dateAddedToPrecourse,
+  dateAddedToPrecourse: student.dateAddedToPrecourse,
   email: student.email,
   techMentor,
   // VBAFundingType: student.VBAFundingType,

@@ -236,7 +236,7 @@ async function updateRepoCompletionWorksheet({
   const repoCompletionWorksheetRows = await worksheet.getRows();
 
   // Parse JSON from student metadata worksheet
-  const studentMetadataWorksheet = sheet.sheetsByTitle['Repo Completion Metadata'];
+  const studentMetadataWorksheet = sheet.sheetsByTitle['PAOLA: Repo Completion Cache'];
   const studentMetadataWorksheetRows = await studentMetadataWorksheet.getRows();
   const studentMetadata = studentMetadataWorksheetRows.reduce(
     (acc, cur) => ({

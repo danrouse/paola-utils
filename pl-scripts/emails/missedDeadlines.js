@@ -32,7 +32,7 @@ async function getMissedDeadlineStudents(moduleNumber, daysInAdvance) {
       student.partThreeComplete === 'Yes',
     ];
     if (softDeadline === hardDeadline) return false;
-    if (student[`notifiedM${moduleNumber}Miss`]) return false;
+    if (student.willMissSoftDeadline) return false;
 
     const dateParts = softDeadline.split('/');
     const cutoff = new Date(dateParts[2], Number(dateParts[0]) - 1, Number(dateParts[1]) + 1);

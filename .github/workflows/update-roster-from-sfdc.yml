@@ -1,0 +1,33 @@
+name: Update Roster from SFDC
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 */12 * * *'
+jobs:
+  update-roster-from-sfdc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          
+      - uses: actions/cache@v3
+        id: cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Update Roster from SFDC
+        run: node pl-scripts/updateRosterFromSFDC.js
+        env:
+          GOOGLE_SHEETS_CLIENT_EMAIL: ${{ secrets.GOOGLE_SHEETS_CLIENT_EMAIL }}
+          GOOGLE_SHEETS_PRIVATE_KEY: ${{ secrets.GOOGLE_SHEETS_PRIVATE_KEY }}
+          SFDC_LOGIN_URL: ${{ secrets.SFDC_LOGIN_URL }}
+          SFDC_USERNAME: ${{ secrets.SFDC_USERNAME }}
+          SFDC_PASSWORD: ${{ secrets.SFDC_PASSWORD }}

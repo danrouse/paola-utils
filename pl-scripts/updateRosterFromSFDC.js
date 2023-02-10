@@ -1,11 +1,7 @@
-/*
-  get all students for current round from SFDC
-  update HRPTIV by opp id
-  update repo completion by github handle
-*/
 require('dotenv').config();
-const { getStudentByOpportunityId, getAllStudents, formatSFDCStudentForRoster } = require('../salesforce');
-const { loadGoogleSpreadsheet, updateWorksheet } = require('../googleSheets');
+
+const { getAllStudents, formatSFDCStudentForRoster } = require('../salesforce');
+const { loadGoogleSpreadsheet } = require('../googleSheets');
 const {
   DOC_ID_HRPTIV,
   DOC_ID_PULSE,
@@ -37,7 +33,7 @@ const normalizeField = (str) => String(str).replace(/\r/g, '');
     }
     const formattedSFDCStudent = formatSFDCStudentForRoster(sfdcStudent);
     let hasChanges = false;
-    rosterStudent._sheet.headerValues.forEach((key) => {
+    rosterStudent._sheet.headerValues.forEach((key) => { // eslint-disable-line no-underscore-dangle
       if (
         !ignoredKeys.includes(key) &&
         !(formattedSFDCStudent[key] === null && !rosterStudent[key]) &&

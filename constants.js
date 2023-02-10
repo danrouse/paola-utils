@@ -17,6 +17,7 @@ module.exports = {
   DOC_ID_PULSE: '1No5KCkrr-sEjYOIuKFC_Y66fxhH8iOEqHbwFeBivBxA',
   DOC_ID_CESP: '1RqZnNYyRcpc-oJ-E70Um_LYXb1B1m-scCvgcENWEFuw',
   SHEET_ID_HRPTIV_ROSTER: '1872934203', // gid for each round's roster worksheet
+  SHEET_ID_DEFERRAL_FORM: '1470691862', // gid for Pulse tab for DIF
   SLACK_WORKSPACE: 'seiopr', // valid values: hrseip (precourse), seiopr (precourse 2)
 
   // Update these as changes are made to the assignment test suites (for repo completion formulas)

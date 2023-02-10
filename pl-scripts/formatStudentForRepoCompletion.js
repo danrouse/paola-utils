@@ -6,6 +6,7 @@ const {
   TEST_COUNT_UNDERBAR_PART_TWO,
   TEST_COUNT_TWIDDLER,
   TEST_COUNT_RECURSION,
+  SHEET_ID_DEFERRAL_FORM,
 } = require('../constants');
 
 const val = (name) => `INDIRECT("R[0]C" & MATCH("${name}",$A$1:$1,0), false)`;
@@ -43,7 +44,7 @@ const formatStudentForRepoCompletion = (student, techMentor, currentDeadlineGrou
   partThreeComplete: `=IF(AND(${val('recursion')}>=${TEST_COUNT_RECURSION}, ISNUMBER(${val('recursion')})),"Yes", "No")`,
   allComplete: `=IF(AND(${val('partOneComplete')}="Yes",${val('partTwoComplete')}="Yes",${val('partThreeComplete')}="Yes"),"Yes","No")`,
   completedDIF: `=IF(${val('numPrecourseEnrollments')} = 1, "N/A", IF(IFNA(MATCH(${val('fullName')}, 'Deferral Intake Form'!$B:$B, 0), "Not found") <> "Not found",` +
-                `HYPERLINK(CONCAT("#gid=1881266534&range=", MATCH(${val('fullName')}, 'Deferral Intake Form'!$B:$B, 0) & ":" & MATCH(${val('fullName')}, 'Deferral Intake Form'!$B:$B, 0)),` +
+                `HYPERLINK(CONCAT("#gid=${SHEET_ID_DEFERRAL_FORM}&range=", MATCH(${val('fullName')}, 'Deferral Intake Form'!$B:$B, 0) & ":" & MATCH(${val('fullName')}, 'Deferral Intake Form'!$B:$B, 0)),` +
                 '"See responses"), "Not found"))',
   m1DiagnosticTask1: `=IFNA(VLOOKUP(${val('email')}, 'CodeSignal Results Module 1'!$A:$Z, 9, false), "-")`,
   m1DiagnosticTask2: `=IFNA(VLOOKUP(${val('email')}, 'CodeSignal Results Module 1'!$A:$Z,11, false), "-")`,

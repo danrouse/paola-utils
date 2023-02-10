@@ -334,6 +334,7 @@ async function updateRepoCompletionWorksheets({
       );
       console.error(`sheetId: ${sheetId}, sheetName: ${sheetName}`);
       console.error(err);
+      process.exit(1);
     }
   }
 }

@@ -119,7 +119,7 @@ const assignStudentsToPods = async (pulseDoc, students) => {
     console.info(`Assigning ${student.fullName} to ${pod.name}'s pod`);
 
     pod.podSize += 1;
-    pod.repoCompletionRowsToAdd.push(formatStudentForRepoCompletion(student, pod.name, pod.podSize + 1, currentDeadlineGroup));
+    pod.repoCompletionRowsToAdd.push(formatStudentForRepoCompletion(student, pod.name, currentDeadlineGroup));
   });
 
   return techMentorsWithPodSize;

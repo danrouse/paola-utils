@@ -60,15 +60,14 @@ const normalizeField = (str) => String(str).replace(/\r/g, '');
     const repoCompletionStudents = await sheetPulse.sheetsById[repoCompletionSheetID].getRows();
     console.log(`For techMentor ${techMentorName}, ${repoCompletionStudents.length} students found`);
 
-    for (const index in repoCompletionStudents) { // eslint-disable-line
-      const repoCompletionStudent = repoCompletionStudents[index];
+    for (const repoCompletionStudent of repoCompletionStudents) { // eslint-disable-line
       const sfdcStudent = sfdcStudents.find((s) => s.github === repoCompletionStudent.githubHandle);
       if (!sfdcStudent) {
         // Student opp not found, which means they've separated
         console.log('No match for student:', repoCompletionStudent.fullName, ' - has this student separated?');
         continue;
       }
-      const formattedSFDCStudent = formatStudentForRepoCompletion(formatSFDCStudentForRoster(sfdcStudent), techMentorName, index);
+      const formattedSFDCStudent = formatStudentForRepoCompletion(formatSFDCStudentForRoster(sfdcStudent), techMentorName);
       let hasChanges = false;
       repoCompletionFieldWhitelist.forEach((key) => {
         if (

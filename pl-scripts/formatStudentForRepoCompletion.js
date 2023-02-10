@@ -8,7 +8,9 @@ const {
   TEST_COUNT_RECURSION,
 } = require('../constants');
 
-const formatStudentForRepoCompletion = (student, techMentor, rowIndex, currentDeadlineGroup) => ({
+const val = (name) => `INDIRECT("R[0]C" & MATCH("${name}",$A$1:$1,0), false)`;
+
+const formatStudentForRepoCompletion = (student, techMentor, currentDeadlineGroup) => ({
   fullName: student.fullName,
   preferredFirstName: student.preferredFirstName,
   pronouns: student.pronouns,
@@ -18,16 +20,15 @@ const formatStudentForRepoCompletion = (student, techMentor, rowIndex, currentDe
   dateAddedToPrecourse: student.dateAddedToPrecourse,
   email: student.email,
   techMentor,
-  // VBAFundingType: student.VBAFundingType,
   prepType: student.selfReportedPrepartion,
   // NB: for this column to work on each new cohort,
-  // the iferror in the formula has to be unwrapped to allow access
-  hadLaserCoaching: `=IF(EQ(IFERROR(vlookup(A${rowIndex},` +
+  // // the iferror in the formula has to be unwrapped to allow access
+  hadLaserCoaching: `=IF(EQ(IFERROR(vlookup(${val('fullName')},` +
                     'IMPORTRANGE("https://docs.google.com/spreadsheets/d/1v3ve2aYtO6MsG6Zjp-SBX-ote6JdWVvuYekHUst2wWw","Laser Coached Students Enrolled!A2:A"),1,false),' +
-                    `"No"), A${rowIndex}), "Yes", "No")`,
-  numPrecourseEnrollments: `=MAX(COUNTIF('Precourse Enrollments Archive'!B:B,A${rowIndex}),` +
-                           `COUNTIF('Precourse Enrollments Archive'!D:D,D${rowIndex}),` +
-                           `COUNTIF('Precourse Enrollments Archive'!G:G,G${rowIndex})) + 1`,
+                    `"No"), ${val('fullName')}), "Yes", "No")`,
+  numPrecourseEnrollments: `=MAX(COUNTIF('Precourse Enrollments Archive'!B:B,${val('fullName')}),` +
+                          `COUNTIF('Precourse Enrollments Archive'!D:D,${val('githubHandle')}),` +
+                          `COUNTIF('Precourse Enrollments Archive'!G:G,${val('email')})) + 1`,
   koansMinReqs: 'No Fork',
   javascriptKoans: 'No Fork',
   testbuilder: 'No Fork',
@@ -35,21 +36,21 @@ const formatStudentForRepoCompletion = (student, techMentor, rowIndex, currentDe
   underbarPartTwo: 'No Fork',
   twiddler: 'No Fork',
   recursion: 'No Fork',
-  partOneComplete: `=IF(AND(M${rowIndex}="Yes", N${rowIndex}>=${TEST_COUNT_KOANS},` +
-                   `O${rowIndex}>=${TEST_COUNT_TESTBUILDER_MIN}, O${rowIndex}<=${TEST_COUNT_TESTBUILDER_MAX},` +
-                   `P${rowIndex}=${TEST_COUNT_UNDERBAR_PART_ONE}), "Yes", "No")`,
-  partTwoComplete: `=IF(AND(Q${rowIndex}=${TEST_COUNT_UNDERBAR_PART_TWO}, R${rowIndex}>=${TEST_COUNT_TWIDDLER}, ISNUMBER(R${rowIndex})), "Yes", "No")`,
-  partThreeComplete: `=IF(AND(S${rowIndex}>=${TEST_COUNT_RECURSION}, ISNUMBER(S${rowIndex})),"Yes", "No")`,
-  allComplete: `=IF(AND(T${rowIndex}="Yes",U${rowIndex}="Yes",V${rowIndex}="Yes"),"Yes","No")`,
-  completedDIF: `=IF(L${rowIndex} = 1, "N/A", IF(IFNA(MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0), "Not found") <> "Not found",` +
-                `HYPERLINK(CONCAT("#gid=1881266534&range=", MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0) & ":" & MATCH(A${rowIndex}, 'Deferral Intake Form'!B:B, 0)), ` +
+  partOneComplete: `=IF(AND(${val('koansMinReqs')}="Yes", ${val('javascriptKoans')}>=${TEST_COUNT_KOANS},` +
+                  `${val('testbuilder')}>=${TEST_COUNT_TESTBUILDER_MIN}, ${val('testbuilder')}<=${TEST_COUNT_TESTBUILDER_MAX},` +
+                  `${val('underbarPartOne')}=${TEST_COUNT_UNDERBAR_PART_ONE}), "Yes", "No")`,
+  partTwoComplete: `=IF(AND(${val('underbarPartTwo')}=${TEST_COUNT_UNDERBAR_PART_TWO}, ${val('twiddler')}>=${TEST_COUNT_TWIDDLER}, ISNUMBER(${val('twiddler')})), "Yes", "No")`,
+  partThreeComplete: `=IF(AND(${val('recursion')}>=${TEST_COUNT_RECURSION}, ISNUMBER(${val('recursion')})),"Yes", "No")`,
+  allComplete: `=IF(AND(${val('partOneComplete')}="Yes",${val('partTwoComplete')}="Yes",${val('partThreeComplete')}="Yes"),"Yes","No")`,
+  completedDIF: `=IF(${val('numPrecourseEnrollments')} = 1, "N/A", IF(IFNA(MATCH(${val('fullName')}, 'Deferral Intake Form'!B:B, 0), "Not found") <> "Not found",` +
+                `HYPERLINK(CONCAT("#gid=1881266534&range=", MATCH(${val('fullName')}, 'Deferral Intake Form'!B:B, 0) & ":" & MATCH(${val('fullName')}, 'Deferral Intake Form'!B:B, 0)),` +
                 '"See responses"), "Not found"))',
-  m1DiagnosticTask1: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 1'!A:Z, 9, false), "-")`,
-  m1DiagnosticTask2: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 1'!A:Z,11, false), "-")`,
-  m2DiagnosticTask1: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 2'!A:Z, 9, false), "-")`,
-  m2DiagnosticTask2: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 2'!A:Z,11, false), "-")`,
-  m3DiagnosticTask1: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 3'!A:Z, 9, false), "-")`,
-  m3DiagnosticTask2: `=IFNA(VLOOKUP(G${rowIndex}, 'CodeSignal Results Module 3'!A:Z,11, false), "-")`,
+  m1DiagnosticTask1: `=IFNA(VLOOKUP(${val('email')}, 'CodeSignal Results Module 1'!A:Z, 9, false), "-")`,
+  m1DiagnosticTask2: `=IFNA(VLOOKUP(${val('email')}, 'CodeSignal Results Module 1'!A:Z,11, false), "-")`,
+  m2DiagnosticTask1: `=IFNA(VLOOKUP(${val('email')}, 'CodeSignal Results Module 2'!A:Z, 9, false), "-")`,
+  m2DiagnosticTask2: `=IFNA(VLOOKUP(${val('email')}, 'CodeSignal Results Module 2'!A:Z,11, false), "-")`,
+  m3DiagnosticTask1: `=IFNA(VLOOKUP(${val('email')}, 'CodeSignal Results Module 3'!A:Z, 9, false), "-")`,
+  m3DiagnosticTask2: `=IFNA(VLOOKUP(${val('email')}, 'CodeSignal Results Module 3'!A:Z,11, false), "-")`,
 });
 
 module.exports = formatStudentForRepoCompletion;

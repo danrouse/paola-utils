@@ -9,12 +9,13 @@ module.exports = function scrapeUnitProgress() {
   }
   return executeInHeadlessBrowser(async (page) => {
     await page.goto(UNIT_PROGRESS_URL);
-    await page.type('#user_email', process.env.LEARN_SCRAPE_USER_EMAIL);
-    await page.type('#user_password', process.env.LEARN_SCRAPE_USER_PASSWORD);
-    await page.$eval('#new_user', (form) => form.submit());
+    await page.type('#user_email', process.env.LEARN_SCRAPE_USER_EMAIL, { delay: 100 });
+    await page.type('#user_password', process.env.LEARN_SCRAPE_USER_PASSWORD, { delay: 100 });
+    await page.$eval('#new_user', (form) => form.submit(), { delay: 100 });
+    await page.waitForNavigation({ waitUntil: 'networkidle2' });
     await page.goto(UNIT_PROGRESS_URL);
     const reactProps = await page.$eval(
-      '[data-react-class="cohorts/unit_progress/UnitProgress"]',
+      '[data-react-class^="cohorts/unit_progress/UnitProgress"]',
       (container) => JSON.parse(container.dataset.reactProps),
     );
     return reactProps.students.map((student) => {

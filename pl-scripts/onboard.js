@@ -28,6 +28,10 @@ exitIfCohortIsNotActive();
 const TESTING_MODE = false;
 const MAX_STUDENTS_PER_RUN = 30;
 
+const PROGRAM_EMAIL = 'sei.precourse@galvanize.com';
+const PROGRAM_NAME = 'SEI Precourse';
+const EMAIL_ALIAS = { name: PROGRAM_NAME, email: PROGRAM_EMAIL };
+
 const NAUGHTY_LIST_HEADERS = [
   'fullName',
   'campus',
@@ -153,13 +157,27 @@ const createStudentSlackChannels = (students) => {
 };
 
 const addStudentsToGitHub = async (students) => {
+  const INVALID_GITHUB_HANDLE_DRAFT_NAME = '[Action Required] GitHub Username Confirmation';
+
   const gitHandles = students.map((student) => student.githubHandle);
 
   const addToTeamResponse = await addUsersToTeam(gitHandles, GITHUB_STUDENT_TEAM);
   for (const index in addToTeamResponse) {
     if (addToTeamResponse[index].message === 'Not Found') {
       const student = students[index];
-      const message = `⚠ GitHub handle "${student.githubHandle}" not found for student ${student.fullName}!`;
+      await sendEmailFromDraft(
+        INVALID_GITHUB_HANDLE_DRAFT_NAME,
+        [student.email],
+        [PROGRAM_EMAIL],
+        [],
+        EMAIL_ALIAS,
+        {
+          name: student.preferredFirstName,
+          githubHandle: student.githubHandle,
+        },
+      );
+
+      const message = `⚠ GitHub handle "${student.githubHandle}" not found for student ${student.fullName}! The student has been emailed.`;
       await sendMessageToChannel('new-students', message);
     }
   }
@@ -171,9 +189,6 @@ const addStudentsToGitHub = async (students) => {
 };
 
 const sendWelcomeEmails = async (students) => {
-  const PROGRAM_EMAIL = 'sei.precourse@galvanize.com';
-  const PROGRAM_NAME = 'SEI Precourse';
-  const alias = { name: PROGRAM_NAME, email: PROGRAM_EMAIL };
   const WELCOME_EMAIL_DRAFT_SUBJECT = '[Action Required] Welcome to SEI Precourse! Please Read Thoroughly 🎉';
   /*
   NOTE: Combined emails don't handle having separate copy for the urgency of W4 students!
@@ -182,16 +197,13 @@ const sendWelcomeEmails = async (students) => {
     ? '[Review Required] Precourse Deadlines - When your work is due 🎯'
     : '[Review Required] Accelerated Pace Precourse Deadlines - When your work is due 🎯';
   */
-  const ccList = [PROGRAM_EMAIL];
-  const bccList = [];
-
   for (const student of students) {
     await sendEmailFromDraft(
       WELCOME_EMAIL_DRAFT_SUBJECT,
       [student.email],
-      ccList,
-      bccList,
-      alias,
+      [PROGRAM_EMAIL],
+      [],
+      EMAIL_ALIAS,
       {
         preferredFirstName: student.preferredFirstName,
         cohortId: COHORT_ID,

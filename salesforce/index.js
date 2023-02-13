@@ -4,12 +4,12 @@ const jsforce = require('jsforce');
 const { loadGoogleSpreadsheet } = require('../googleSheets');
 const {
   SFDC_SELECT_QUERY,
-  FULL_TIME_COURSE_START_DATE,
   SFDC_FULL_TIME_COURSE_TYPE,
 } = require('../config');
 const {
   DOC_ID_HRPTIV,
   SHEET_ID_HRPTIV_ROSTER,
+  FULL_TIME_COURSE_START_DATE,
 } = require('../config/cohorts');
 
 const PRODUCT_CODE_CAMPUS_OVERRIDES = {

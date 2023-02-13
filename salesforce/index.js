@@ -6,9 +6,11 @@ const {
   SFDC_SELECT_QUERY,
   FULL_TIME_COURSE_START_DATE,
   SFDC_FULL_TIME_COURSE_TYPE,
+} = require('../config');
+const {
   DOC_ID_HRPTIV,
   SHEET_ID_HRPTIV_ROSTER,
-} = require('../config');
+} = require('../config/cohorts');
 
 const PRODUCT_CODE_CAMPUS_OVERRIDES = {
   RFP: 'RFT Pacific',

@@ -9,7 +9,7 @@ const {
   FULL_TIME_COURSE_START_DATE,
   DOC_ID_PULSE,
   DOC_ID_CESP,
-} = require('../constants');
+} = require('../config/cohorts');
 
 // TODO - update list of CodeSignal testIDs if needed
 const mod1DiagID = 'TmxaK6kMj4WA5wah4';

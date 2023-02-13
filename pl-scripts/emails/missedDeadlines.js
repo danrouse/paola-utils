@@ -6,7 +6,7 @@ const {
   TEST_COUNT_UNDERBAR_PART_TWO,
   TEST_COUNT_TWIDDLER,
   TEST_COUNT_RECURSION,
-} = require('../../constants');
+} = require('../../config/cohorts');
 const { getRepoCompletionStudents } = require('./getStudents');
 
 const NO_FORK_TEXT = 'No Fork';

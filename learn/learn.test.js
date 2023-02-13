@@ -1,6 +1,6 @@
 require('dotenv').config();
 const fetch = require('node-fetch');
-const { LEARN_API_COHORTS } = require('../constants');
+const { LEARN_API_COHORTS } = require('../config');
 
 const {
   getAllStudentsInCohort,

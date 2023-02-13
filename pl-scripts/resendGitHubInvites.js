@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const { addUsersToTeam, gitHubAPIRequest } = require('../github');
-const { GITHUB_STUDENT_TEAM } = require('../constants');
+const { GITHUB_STUDENT_TEAM } = require('../config/cohorts');
 const { getRepoCompletionStudents } = require('./emails/getStudents');
 
 const getGitHubTeamMembers = async () => {

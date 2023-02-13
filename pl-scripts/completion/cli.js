@@ -6,11 +6,8 @@ const {
   fetchAndTestProject,
 } = require('./completion');
 const projectDefinitions = require('./project-definitions');
-const techMentors = require('../../tech-mentors');
-const {
-  COHORT_ID,
-  DOC_ID_PULSE,
-} = require('../../constants');
+const techMentors = require('../../config/techMentors');
+const { COHORT_ID, DOC_ID_PULSE } = require('../../config/cohorts');
 
 // TODO: allow passing in a path to student repos?
 const PATH_TO_STUDENT_REPOS = path.resolve(__dirname, '../../student-repos');

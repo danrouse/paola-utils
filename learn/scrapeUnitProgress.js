@@ -1,5 +1,5 @@
 const executeInHeadlessBrowser = require('../puppeteer');
-const { LEARN_COHORT_ID } = require('../constants');
+const { LEARN_COHORT_ID } = require('../config/cohorts');
 
 const UNIT_PROGRESS_URL = `https://learn-2.galvanize.com/cohorts/${LEARN_COHORT_ID}/unit_progress`;
 

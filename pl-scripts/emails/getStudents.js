@@ -1,6 +1,6 @@
 const { loadGoogleSpreadsheet } = require('../../googleSheets');
 const techMentors = require('../../config/techMentors');
-const { DOC_ID_PULSE } = require('../../config');
+const { DOC_ID_PULSE } = require('../../config/cohorts');
 
 let repoCompletionStudents;
 async function getRepoCompletionStudents() {

@@ -1,9 +1,6 @@
 const { getAllSlackUsers, getSlackInviteLink } = require('../../slack');
 const { getNewStudentsFromSFDC, hasIntakeFormCompleted } = require('../../salesforce');
-const {
-  LEARN_COHORT_ID,
-  FULL_TIME_COURSE_START_DATE
-} = require('../../constants');
+const { LEARN_COHORT_ID, FULL_TIME_COURSE_START_DATE } = require('../../config/cohorts');
 const {
   getDeadline,
   getMissedDeadlineStudents,

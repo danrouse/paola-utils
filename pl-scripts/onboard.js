@@ -11,17 +11,17 @@ const { getNewStudentsFromSFDC, hasIntakeFormCompleted, formatSFDCStudentForRost
 const { exitIfCohortIsNotActive, currentCohortWeek } = require('./runOnlyDuringActiveCohort');
 const formatStudentForRepoCompletion = require('./formatStudentForRepoCompletion');
 
+const { GITHUB_ORG_NAME } = require('../config');
 const {
   COHORT_ID,
   DEADLINE_DATES,
   LEARN_COHORT_ID,
   GITHUB_STUDENT_TEAM,
-  GITHUB_ORG_NAME,
   DOC_ID_HRPTIV,
   DOC_ID_PULSE,
   SHEET_ID_HRPTIV_ROSTER,
   SHEET_ID_HRPTIV_NAUGHTY_LIST,
-} = require('../config');
+} = require('../config/cohorts');
 
 exitIfCohortIsNotActive();
 

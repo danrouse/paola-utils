@@ -1,6 +1,6 @@
 require('dotenv').config();
 const Bottleneck = require('bottleneck');
-const { DOC_ID_PULSE } = require('../../constants');
+const { DOC_ID_PULSE } = require('../../config/cohorts');
 const { loadGoogleSpreadsheet } = require('../../googleSheets');
 
 const { sendEmailFromDraft } = require('../../googleMail');

@@ -1,6 +1,6 @@
 require('dotenv').config();
 const fetch = require('node-fetch');
-const { GITHUB_API_TEAMS } = require('../constants');
+const { GITHUB_API_TEAMS } = require('../config');
 const {
   validateUser,
   isUserOnTeam,

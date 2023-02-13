@@ -4,10 +4,10 @@ const fetch = require('node-fetch');
 const Bottleneck = require('bottleneck');
 const {
   SLACK_TM_EMAILS,
-  SLACK_WORKSPACE,
   SLACK_JOIN_URL_STUB_HRSEIP,
   SLACK_JOIN_URL_STUB_SEIOPR,
 } = require('../config');
+const { SLACK_WORKSPACE } = require('../config/cohorts');
 
 // Limit to max of Tier 2 request rates (20 req/min)
 const rateLimiter = new Bottleneck({

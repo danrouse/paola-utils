@@ -9,7 +9,7 @@ const {
   DOC_ID_PULSE,
   GITHUB_STUDENT_TEAM,
   LEARN_COHORT_ID,
-} = require('../constants');
+} = require('../config/cohorts');
 
 const rateLimiter = new Bottleneck({
   maxConcurrent: 2,

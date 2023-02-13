@@ -6,7 +6,7 @@ const {
   DOC_ID_HRPTIV,
   DOC_ID_PULSE,
   SHEET_ID_HRPTIV_ROSTER,
-} = require('../config');
+} = require('../config/cohorts');
 const techMentors = require('../config/techMentors');
 const formatStudentForRepoCompletion = require('./formatStudentForRepoCompletion');
 

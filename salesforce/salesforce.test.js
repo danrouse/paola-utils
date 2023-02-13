@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jsforce = require('jsforce');
-const { SFDC_SELECT_QUERY, SFDC_OPPTY_RECORD_ID } = require('../constants');
+const { SFDC_SELECT_QUERY, SFDC_OPPTY_RECORD_ID } = require('../config');
 const { getStudents } = require('.');
 
 const TEST_COURSE_START = '2020-05-11';

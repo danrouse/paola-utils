@@ -11,7 +11,7 @@ const {
   SHEET_ID_CESP_ROSTER,
   SHEET_ID_CESP_MODULE_COMPLETION,
 } = require('../constants');
-const techMentors = require('../tech-mentors');
+const techMentors = require('../config/techMentors');
 
 const CESP_ROSTER_SHEET_HEADERS = [
   'Full Name',

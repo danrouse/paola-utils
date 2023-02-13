@@ -1,5 +1,5 @@
 const { loadGoogleSpreadsheet } = require('../../googleSheets');
-const techMentors = require('../../tech-mentors');
+const techMentors = require('../../config/techMentors');
 const { DOC_ID_PULSE } = require('../../constants');
 
 let repoCompletionStudents;

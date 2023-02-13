@@ -7,7 +7,7 @@ const {
   DOC_ID_PULSE,
   SHEET_ID_HRPTIV_ROSTER,
 } = require('../constants');
-const techMentors = require('../tech-mentors');
+const techMentors = require('../config/techMentors');
 const formatStudentForRepoCompletion = require('./formatStudentForRepoCompletion');
 
 const normalizeField = (str) => String(str).replace(/\r/g, '');

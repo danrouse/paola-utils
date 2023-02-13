@@ -13,14 +13,16 @@ const formatStudentForRepoCompletion = require('./formatStudentForRepoCompletion
 
 const { GITHUB_ORG_NAME } = require('../config');
 const {
+  DOC_ID_HRPTIV,
+  SHEET_ID_HRPTIV_NAUGHTY_LIST,
+} = require('../config');
+const {
   COHORT_ID,
   DEADLINE_DATES,
   LEARN_COHORT_ID,
   GITHUB_STUDENT_TEAM,
-  DOC_ID_HRPTIV,
   DOC_ID_PULSE,
   SHEET_ID_HRPTIV_ROSTER,
-  SHEET_ID_HRPTIV_NAUGHTY_LIST,
 } = require('../config/cohorts');
 
 exitIfCohortIsNotActive();

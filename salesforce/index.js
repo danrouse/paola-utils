@@ -5,9 +5,9 @@ const { loadGoogleSpreadsheet } = require('../googleSheets');
 const {
   SFDC_SELECT_QUERY,
   SFDC_FULL_TIME_COURSE_TYPE,
+  DOC_ID_HRPTIV,
 } = require('../config');
 const {
-  DOC_ID_HRPTIV,
   SHEET_ID_HRPTIV_ROSTER,
   FULL_TIME_COURSE_START_DATE,
 } = require('../config/cohorts');

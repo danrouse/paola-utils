@@ -21,7 +21,7 @@ const {
   DOC_ID_PULSE,
   SHEET_ID_HRPTIV_ROSTER,
   SHEET_ID_HRPTIV_NAUGHTY_LIST,
-} = require('../constants');
+} = require('../config');
 
 exitIfCohortIsNotActive();
 

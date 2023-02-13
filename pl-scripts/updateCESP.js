@@ -10,7 +10,7 @@ const {
   DOC_ID_PULSE,
   SHEET_ID_CESP_ROSTER,
   SHEET_ID_CESP_MODULE_COMPLETION,
-} = require('../constants');
+} = require('../config');
 const techMentors = require('../config/techMentors');
 
 const CESP_ROSTER_SHEET_HEADERS = [

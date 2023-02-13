@@ -1,7 +1,7 @@
 require('dotenv').config();
 const fetch = require('node-fetch');
 const Bottleneck = require('bottleneck');
-const { GITHUB_ORG_NAME } = require('../constants');
+const { GITHUB_ORG_NAME } = require('../config');
 
 const headers = { Authorization: `token ${process.env.GITHUB_AUTH_TOKEN}` };
 

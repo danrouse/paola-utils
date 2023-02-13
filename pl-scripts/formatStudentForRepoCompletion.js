@@ -7,7 +7,7 @@ const {
   TEST_COUNT_TWIDDLER,
   TEST_COUNT_RECURSION,
   SHEET_ID_DEFERRAL_FORM,
-} = require('../constants');
+} = require('../config');
 
 const val = (name) => `INDIRECT("R[0]C" & MATCH("${name}",$A$1:$1,0), false)`;
 

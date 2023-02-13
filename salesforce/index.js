@@ -8,7 +8,7 @@ const {
   SFDC_FULL_TIME_COURSE_TYPE,
   DOC_ID_HRPTIV,
   SHEET_ID_HRPTIV_ROSTER,
-} = require('../constants');
+} = require('../config');
 
 const PRODUCT_CODE_CAMPUS_OVERRIDES = {
   RFP: 'RFT Pacific',

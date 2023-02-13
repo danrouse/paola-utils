@@ -1,4 +1,4 @@
-const { PRECOURSE_COHORT_START_DATE } = require('../constants');
+const { PRECOURSE_COHORT_START_DATE } = require('../config');
 
 const WEEK_DURATION_MS = 1000 * 60 * 60 * 24 * 7;
 const currentDate = new Date();

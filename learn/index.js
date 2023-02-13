@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { LEARN_API_COHORTS } = require('../constants');
+const { LEARN_API_COHORTS } = require('../config');
 
 const headers = {
   Authorization: `Bearer ${process.env.LEARN_TOKEN}`,

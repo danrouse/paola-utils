@@ -24,7 +24,7 @@ jobs:
         run: npm install
 
       - name: Update Roster from SFDC
-        run: node pl-scripts/updateRosterFromSFDC.js
+        run: node tools/updateRosterFromSFDC.js
         env:
           GOOGLE_SHEETS_CLIENT_EMAIL: ${{ secrets.GOOGLE_SHEETS_CLIENT_EMAIL }}
           GOOGLE_SHEETS_PRIVATE_KEY: ${{ secrets.GOOGLE_SHEETS_PRIVATE_KEY }}

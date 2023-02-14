@@ -35,7 +35,7 @@ jobs:
         run: npm install
 
       - name: Send emails
-        run: node pl-scripts/emails/cli.js --emails ${{ github.event.inputs.emails }} --dry-run ${{ github.event.inputs.dry-run }} --test-email-address ${{ github.event.inputs.test-email-address }}
+        run: node tools/emails/cli.js --emails ${{ github.event.inputs.emails }} --dry-run ${{ github.event.inputs.dry-run }} --test-email-address ${{ github.event.inputs.test-email-address }}
         env:
           GOOGLE_SHEETS_CLIENT_EMAIL: ${{ secrets.GOOGLE_SHEETS_CLIENT_EMAIL }}
           GOOGLE_SHEETS_PRIVATE_KEY: ${{ secrets.GOOGLE_SHEETS_PRIVATE_KEY }}

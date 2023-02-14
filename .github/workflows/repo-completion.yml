@@ -34,7 +34,7 @@ jobs:
         run: npm install
         
       - name: Run repo completion
-        run: xvfb-run --auto-servernum node pl-scripts/completion/cli.js --tech-mentors ${{ github.event.inputs.tech_mentors }} --projects ${{ github.event.inputs.projects }}
+        run: xvfb-run --auto-servernum node tools/completion/cli.js --tech-mentors ${{ github.event.inputs.tech_mentors }} --projects ${{ github.event.inputs.projects }}
         env:
           GOOGLE_SHEETS_PRIVATE_KEY: ${{ secrets.GOOGLE_SHEETS_PRIVATE_KEY }}
           GOOGLE_SHEETS_CLIENT_EMAIL: ${{ secrets.GOOGLE_SHEETS_CLIENT_EMAIL }}

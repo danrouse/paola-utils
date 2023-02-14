@@ -27,6 +27,6 @@ jobs:
         run: npm install
         
       - name: Invite student to GitHub
-        run: node pl-scripts/inviteToGitHub.js ${{ github.event.inputs.handle }}
+        run: node tools/inviteToGitHub.js ${{ github.event.inputs.handle }}
         env:
           GITHUB_AUTH_TOKEN: ${{ secrets.GIT_AUTH_TOKEN }}

@@ -24,7 +24,7 @@ jobs:
         run: npm install
         
       - name: Onboard new students
-        run: node pl-scripts/onboard.js
+        run: node tools/onboard.js
         env:
           GOOGLE_SHEETS_CLIENT_EMAIL: ${{ secrets.GOOGLE_SHEETS_CLIENT_EMAIL }}
           GOOGLE_SHEETS_PRIVATE_KEY: ${{ secrets.GOOGLE_SHEETS_PRIVATE_KEY }}
